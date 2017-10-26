@@ -1,0 +1,90 @@
+#!/bin/sh
+
+#SIMBIOMJAR=$HOME/classes/simbiom-browser/target/simbiom-browser-1.0.jar
+SIMBIOMJAR=simbiom-browser-1.0.jar
+JAVA_CMD=`which java`
+
+if [ "$1" = "" -o "$1" = "-h" ]; then
+    echo
+    echo "Usage: $0 [<options>] <command>"
+    echo
+    echo "  <command>:"
+    echo
+    echo "    start                               starts the simbiom-browser webapp"
+    echo "    stop                                stops the simbiom-browser webapp"
+    echo
+    echo "  <options>:"
+    echo
+    echo "    -h                                  displays this help screen"
+    echo
+    exit 1
+fi
+
+logdir=`dirname $0`/../log
+targetdir=`dirname $0`/../target
+
+template=
+reqMethod=GET
+reqHeader=
+command=$1
+cmdset=0
+qset=0
+template=default
+
+for a do
+
+  if [ "$a" = "-h" ]; then
+      echo
+      echo "Usage: $0 [<options>] <command>"
+      echo
+      echo "  <command>:"
+      echo
+      echo "    start                               starts the simbiom-browser webapp"
+      echo "    stop                                stops the simbiom-browser webapp"
+      echo
+      echo "  <options>:"
+      echo
+      echo "    -h                                  displays this help screen"
+      echo
+      exit 1
+  fi
+
+  if [ $cmdset -eq 0 -a $a = "start" ]; then
+      command=$a
+      cmdset=1
+  elif [ $cmdset -eq 0 -a $a = "stop" ]; then
+      command=$a
+      cmdset=1
+  fi
+
+done
+
+if [ "$command" = "start" ]; then
+    if [ "$JDK_HOME" != "" ]; then
+	JAVA_CMD=$JDK_HOME/bin/java
+    elif [ "$JAVA_HOME" != "" ]; then
+	JAVA_CMD=$JAVA_HOME/bin/java
+    fi
+    echo "Starting simbiom-browser..."
+    if [ -e $targetdir/$SIMBIOMJAR ]; then
+#    if [ -e $SIMBIOMJAR ]; then
+	$JAVA_CMD -jar $targetdir/$SIMBIOMJAR >$logdir/simbiom-browser-`date +%Y-%m-%d_%H-%M`.log &
+#	$JAVA_CMD -jar $SIMBIOMJAR >$logdir/simbiom-browser-`date +%Y-%m-%d_%H-%M`.log &
+	sleep 4
+	tail -n 1000 $logdir/simbiom-browser-`date +%Y-%m-%d_%H-%M`.log
+    else
+	echo
+	echo "Error: cannot locate $targetdir/$SIMBIOMJAR"
+#	echo "Error: cannot locate $SIMBIOMJAR"
+	echo
+	exit 2
+    fi
+elif [ "$command" = "stop" ]; then
+    procid=`ps -ef | grep simbiom-browser | grep jar | awk '{ print $2 }'`
+    if [ "$procid" != "" ]; then
+	echo "Stopping process $procid"
+	kill $procid
+    fi
+fi
+
+
