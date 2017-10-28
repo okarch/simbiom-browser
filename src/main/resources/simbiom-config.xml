@@ -68,6 +68,11 @@
     <command config-class="com.emd.simbiom.view.SwitchTab"
              commandName="tbBrowser"
              event="onSelect" /> 
+<!--
+    <command config-class="com.emd.simbiom.view.SwitchTab"
+             commandName="tbBrowser"
+             event="onAfterRender" /> 
+-->
 
     <command config-class="com.emd.simbiom.cost.AmountChange"
              commandName="intCostCount_0"

@@ -109,12 +109,124 @@ public class InventoryPortletController extends GenericForwardComposer {
 	log.debug( "Inventory actions wired" );
     }
 
+    private void initTabs() {
+     	String showPanels = Stringx.getDefault(Executions.getCurrent().getParameter("show"),"all");
+     	String hidePanels = Stringx.getDefault(Executions.getCurrent().getParameter("hide"),""); 
+    	Tabbox tb = (Tabbox)wndBrowser.getFellowIfAny( TABBOX_ID );
+     	List<String> aPanels = new ArrayList<String>();
+     	List<String> aPanelIds = new ArrayList<String>();
+     	if( tb != null ) {
+     	    Tabs tabs = tb.getTabs();
+     	    if( tabs != null ) {
+     		List<Component> cmps = tabs.getChildren();
+     		for( Component cmp : cmps ) {
+     		    if( cmp instanceof Tab ) 
+     			aPanels.add( Stringx.getDefault(((Tab)cmp).getLabel(),"") );
+     		}
+     	    }
+     	    Tabpanels tPanels = tb.getTabpanels();
+     	    if( tPanels != null ) {
+     		List<Component> cmps = tPanels.getChildren();
+     		for( Component cmp : cmps ) {
+     		    if( cmp instanceof Tabpanel )
+     			aPanelIds.add( Stringx.getDefault(cmp.getId(),"") );
+     		}
+     	    }
+     	}
+     	String[] panels = new String[ aPanels.size() ];
+     	panels = (String[])aPanels.toArray( panels );
+     	if( panels.length <= 0 ) {
+     	    log.debug( "Using default panel setup" );
+     	    return;
+     	}
+     	String[] sPanels = showPanels.split( "," );
+     	List<String> panelIds = new ArrayList<String>();
+     	for( int i = 0; i < sPanels.length; i++ ) {
+     	    if( "all".equalsIgnoreCase(sPanels[i]) ) {
+     		panelIds.addAll(aPanelIds);
+     		break;
+     	    }
+     	    for( int j = 0; j < panels.length; j++ ) {
+     		if( panels[j].equalsIgnoreCase(sPanels[i]) ) {
+     		    if( j < aPanelIds.size() ) {
+     			panelIds.add( aPanelIds.get(j) );
+     			break;
+     		    }
+     		    else {
+     			log.debug( "Cannot find panel id of \""+sPanels[i]+"\"" );
+     		    }
+     		}
+     	    }
+     	}
+     	if( panelIds.size() <= 0 )
+     	    panelIds.addAll(aPanelIds);
+
+     	log.debug( "panels to show: "+panelIds );
+	
+     	String[] hPanels = hidePanels.split( "," );
+     	for( int i = 0; i < hPanels.length; i++ ) {
+     	    for( int j = 0; j < panels.length; j++ ) {
+     		if( panels[j].equalsIgnoreCase(hPanels[i]) ) {
+     		    if( j < aPanelIds.size() ) {
+     			String dPanelId = aPanelIds.get(j);
+     			int delIdx = 0;
+     			boolean foundIt = false;
+     			for( String sId : panelIds ) {
+     			    if( sId.equals( dPanelId ) ) {
+     				foundIt = true;
+     				break;
+     			    }
+     			    delIdx++;
+     			}
+     			if( foundIt )
+     			    panelIds.remove( delIdx );
+     			break;
+     		    }
+     		    else {
+     			log.debug( "Cannot find panel id of \""+hPanels[i]+"\"" );
+     		    }
+     		}
+     	    }
+     	}
+
+     	for( String pId : aPanelIds ) {
+     	    Component cmp = wndBrowser.getFellowIfAny( pId );
+     	    if( cmp != null ) 
+     		cmp.setVisible( false ); 
+	    String tabId = "tab"+pId.substring(2);
+	    cmp = wndBrowser.getFellowIfAny( tabId );
+     	    if( cmp != null ) 
+     		cmp.setVisible( false ); 
+     	}
+
+	String firstPanelId = null;
+     	for( String pId : panelIds ) {
+     	    Component cmp = wndBrowser.getFellowIfAny( pId );
+     	    if( cmp != null ) {
+     		cmp.setVisible( true ); 
+		if( firstPanelId == null )
+		    firstPanelId = pId;
+	    }
+	    String tabId = "tab"+pId.substring(2);
+	    cmp = wndBrowser.getFellowIfAny( tabId );
+     	    if( cmp != null ) 
+     		cmp.setVisible( true ); 
+     	}
+
+	if( tb != null ) {
+	    log.debug( "Set selected panel: "+firstPanelId );
+     	    Tabpanel tp = (Tabpanel)wndBrowser.getFellowIfAny( firstPanelId );
+	    if( tp != null )
+		tb.setSelectedPanel( tp );
+	}
+	
+    }
+
     // private void initTabs() {
     // 	String showPanels = Stringx.getDefault(Executions.getCurrent().getParameter("show"),"all");
     // 	String hidePanels = Stringx.getDefault(Executions.getCurrent().getParameter("hide"),""); 
     // 	Tabbox tb = (Tabbox)wndBrowser.getFellowIfAny( TABBOX_ID );
     // 	List<String> aPanels = new ArrayList<String>();
-    // 	List<String> aPanelIds = new ArrayList<String>();
     // 	if( tb != null ) {
     // 	    Tabs tabs = tb.getTabs();
     // 	    if( tabs != null ) {
@@ -122,14 +234,6 @@ public class InventoryPortletController extends GenericForwardComposer {
     // 		for( Component cmp : cmps ) {
     // 		    if( cmp instanceof Tab ) 
     // 			aPanels.add( Stringx.getDefault(((Tab)cmp).getLabel(),"") );
-    // 		}
-    // 	    }
-    // 	    Tabpanels tPanels = tb.getTabpanels();
-    // 	    if( tPanels != null ) {
-    // 		List<Component> cmps = tPanels.getChildren();
-    // 		for( Component cmp : cmps ) {
-    // 		    if( cmp instanceof Tabpanel )
-    // 			aPanelIds.add( Stringx.getDefault(cmp.getId(),"") );
     // 		}
     // 	    }
     // 	}
@@ -202,100 +306,6 @@ public class InventoryPortletController extends GenericForwardComposer {
     // 	}
 	
     // }
-
-    private void initTabs() {
-	String showPanels = Stringx.getDefault(Executions.getCurrent().getParameter("show"),"all");
-	String hidePanels = Stringx.getDefault(Executions.getCurrent().getParameter("hide"),""); 
-	Tabbox tb = (Tabbox)wndBrowser.getFellowIfAny( TABBOX_ID );
-	List<String> aPanels = new ArrayList<String>();
-	List<String> aPanelIds = new ArrayList<String>();
-	if( tb != null ) {
-	    Tabs tabs = tb.getTabs();
-	    if( tabs != null ) {
-		List<Component> cmps = tabs.getChildren();
-		for( Component cmp : cmps ) {
-		    if( cmp instanceof Tab ) 
-			aPanels.add( Stringx.getDefault(((Tab)cmp).getLabel(),"") );
-		}
-	    }
-	    Tabpanels tPanels = tb.getTabpanels();
-	    if( tPanels != null ) {
-		List<Component> cmps = tPanels.getChildren();
-		for( Component cmp : cmps ) {
-		    if( cmp instanceof Tabpanel )
-			aPanelIds.add( Stringx.getDefault(cmp.getId(),"") );
-		}
-	    }
-	}
-	String[] panels = new String[ aPanels.size() ];
-	panels = (String[])aPanels.toArray( panels );
-	if( panels.length <= 0 ) {
-	    log.debug( "Using default panel setup" );
-	    return;
-	}
-	String[] sPanels = showPanels.split( "," );
-	List<String> panelIds = new ArrayList<String>();
-	for( int i = 0; i < sPanels.length; i++ ) {
-	    if( "all".equalsIgnoreCase(sPanels[i]) ) {
-		panelIds.addAll(aPanelIds);
-		break;
-	    }
-	    for( int j = 0; j < panels.length; j++ ) {
-		if( panels[j].equalsIgnoreCase(sPanels[i]) ) {
-		    if( j < aPanelIds.size() ) {
-			panelIds.add( aPanelIds.get(j) );
-			break;
-		    }
-		    else {
-			log.debug( "Cannot find panel id of \""+sPanels[i]+"\"" );
-		    }
-		}
-	    }
-	}
-	if( panelIds.size() <= 0 )
-	    panelIds.addAll(aPanelIds);
-
-	log.debug( "panels to show: "+panelIds );
-	
-	String[] hPanels = hidePanels.split( "," );
-	for( int i = 0; i < hPanels.length; i++ ) {
-	    for( int j = 0; j < panels.length; j++ ) {
-		if( panels[j].equalsIgnoreCase(hPanels[i]) ) {
-		    if( j < aPanelIds.size() ) {
-			String dPanelId = aPanelIds.get(j);
-			int delIdx = 0;
-			boolean foundIt = false;
-			for( String sId : panelIds ) {
-			    if( sId.equals( dPanelId ) ) {
-				foundIt = true;
-				break;
-			    }
-			    delIdx++;
-			}
-			if( foundIt )
-			    panelIds.remove( delIdx );
-			break;
-		    }
-		    else {
-			log.debug( "Cannot find panel id of \""+hPanels[i]+"\"" );
-		    }
-		}
-	    }
-	}
-
-	for( String pId : aPanelIds ) {
-	    Component cmp = wndBrowser.getFellowIfAny( pId );
-	    if( cmp != null ) 
-		cmp.setVisible( false ); 
-	}
-
-	for( String pId : panelIds ) {
-	    Component cmp = wndBrowser.getFellowIfAny( pId );
-	    if( cmp != null ) 
-		cmp.setVisible( true ); 
-	}
-	
-    }
 
     public void doAfterCompose(Component comp) throws Exception {
 	super.doAfterCompose(comp);

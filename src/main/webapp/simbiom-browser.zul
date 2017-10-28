@@ -20,10 +20,10 @@
   <tabbox id="tbBrowser" width="100%">
 
     <tabs>
-      <tab label="Browse" />
-      <tab label="Search" />
-      <tab label="Upload" />
-      <tab label="Costs" />
+      <tab id="tabLogistics" label="Browse" />
+      <tab id="tabBrowse" label="Search" />
+      <tab id="tabUpload" label="Upload" />
+      <tab id="tabCost" label="Costs" />
     </tabs>
 
     <tabpanels>
