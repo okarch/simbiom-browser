@@ -90,6 +90,13 @@
              commandName="btCostRemove_0"
              event="onClick" />
 
+    <command config-class="com.emd.simbiom.auth.UserLogin"
+             commandName="btLogin"
+             event="onClick" />
+    <command config-class="com.emd.simbiom.auth.UserLogin"
+             commandName="btLogout"
+             event="onClick" />
+
 
     <result config-class="com.emd.simbiom.search.FilterModel"
             modelName="cbFilterSelector_0">

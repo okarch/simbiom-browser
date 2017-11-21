@@ -22,8 +22,9 @@
     <tabs>
       <tab id="tabLogistics" label="Browse" />
       <tab id="tabBrowse" label="Search" />
-      <tab id="tabUpload" label="Upload" />
+      <tab id="tabUpload" label="Upload" disabled="true" />
       <tab id="tabCost" label="Costs" />
+      <tab id="tabLogin" label="Login" />
     </tabs>
 
     <tabpanels>
@@ -413,6 +414,52 @@
               </columns>
             </grid>
           </groupbox>
+
+      </tabpanel>
+
+      <tabpanel id="pnLogin">
+
+        <grid id="grLogin" fixedLayout="true" span="true">
+          <columns>
+	    <column width="20%" />
+	    <column width="80%" />
+          </columns>
+
+          <rows>
+
+            <row>
+              <cell style="text-align:left">
+	        <label value="User"/>
+              </cell>
+	      <textbox id="txtLoginUser"/>
+            </row>
+
+            <row>
+              <cell style="text-align:left">
+	        <label value="Password or API key"/>
+              </cell>
+	      <textbox id="txtLoginPassword" type="password"/>
+            </row>
+
+            <row>
+              <cell style="text-align:left">
+	        <label value="Remember me"/>
+              </cell>
+              <checkbox id="chkLoginRember" checked="true" />
+            </row>
+
+            <row id="rowMessageLogin"/>
+
+            <row>
+              <cell style="text-align:left"/>
+              <hlayout>
+                <button id="btLogin" label="Login"/>
+                <button id="btLogout" label="Logout"/>
+              </hlayout>
+	    </row>
+
+	  </rows>
+	</grid>
 
       </tabpanel>
 

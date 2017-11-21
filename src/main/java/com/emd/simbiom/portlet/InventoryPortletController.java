@@ -36,14 +36,7 @@ import org.zkoss.zk.ui.metainfo.ComponentInfo;
 import org.zkoss.zk.ui.metainfo.Property;
 
 import org.zkoss.zk.ui.util.GenericForwardComposer;
-import org.zkoss.zul.Checkbox;
-import org.zkoss.zul.Combobox;
-import org.zkoss.zul.Datebox;
-import org.zkoss.zul.Listbox;
-import org.zkoss.zul.Listitem;
-import org.zkoss.zul.ListModelList;
-import org.zkoss.zul.ListModelList;
-import org.zkoss.zul.Longbox;
+import org.zkoss.zul.Label;
 import org.zkoss.zul.Tab;
 import org.zkoss.zul.Tabbox;
 import org.zkoss.zul.Tabpanel;
@@ -51,12 +44,18 @@ import org.zkoss.zul.Tabpanels;
 import org.zkoss.zul.Tabs;
 import org.zkoss.zul.Window;
 
+import com.emd.zk.CookieUtil;
 import com.emd.zk.ZKContext;
+
+import com.emd.simbiom.auth.UserLogin;
 
 import com.emd.simbiom.command.InventoryCommand;
 import com.emd.simbiom.config.InventoryPreferences;
 
 import com.emd.simbiom.dao.SampleInventoryDAO;
+
+import com.emd.simbiom.model.Roles;
+import com.emd.simbiom.model.User;
 
 import com.emd.simbiom.util.DataHasher;
 
@@ -222,91 +221,39 @@ public class InventoryPortletController extends GenericForwardComposer {
 	
     }
 
-    // private void initTabs() {
-    // 	String showPanels = Stringx.getDefault(Executions.getCurrent().getParameter("show"),"all");
-    // 	String hidePanels = Stringx.getDefault(Executions.getCurrent().getParameter("hide"),""); 
-    // 	Tabbox tb = (Tabbox)wndBrowser.getFellowIfAny( TABBOX_ID );
-    // 	List<String> aPanels = new ArrayList<String>();
-    // 	if( tb != null ) {
-    // 	    Tabs tabs = tb.getTabs();
-    // 	    if( tabs != null ) {
-    // 		List<Component> cmps = tabs.getChildren();
-    // 		for( Component cmp : cmps ) {
-    // 		    if( cmp instanceof Tab ) 
-    // 			aPanels.add( Stringx.getDefault(((Tab)cmp).getLabel(),"") );
-    // 		}
-    // 	    }
-    // 	}
-    // 	String[] panels = new String[ aPanels.size() ];
-    // 	panels = (String[])aPanels.toArray( panels );
-    // 	if( panels.length <= 0 ) {
-    // 	    log.debug( "Using default panel setup" );
-    // 	    return;
-    // 	}
-    // 	String[] sPanels = showPanels.split( "," );
-    // 	List<String> panelIds = new ArrayList<String>();
-    // 	for( int i = 0; i < sPanels.length; i++ ) {
-    // 	    if( "all".equalsIgnoreCase(sPanels[i]) ) {
-    // 		panelIds.addAll(aPanelIds);
-    // 		break;
-    // 	    }
-    // 	    for( int j = 0; j < panels.length; j++ ) {
-    // 		if( panels[j].equalsIgnoreCase(sPanels[i]) ) {
-    // 		    if( j < aPanelIds.size() ) {
-    // 			panelIds.add( aPanelIds.get(j) );
-    // 			break;
-    // 		    }
-    // 		    else {
-    // 			log.debug( "Cannot find panel id of \""+sPanels[i]+"\"" );
-    // 		    }
-    // 		}
-    // 	    }
-    // 	}
-    // 	if( panelIds.size() <= 0 )
-    // 	    panelIds.addAll(aPanelIds);
+    private void initUserSession( String portletId, long userId ) {
+	Session ses = Sessions.getCurrent();
+	if( ses != null ) {
+	    SampleInventoryDAO dao = InventoryPreferences.getInstance( portletId, userId ).getInventory();
+	    try {
+		User usr = dao.findUserById( userId );
+		if( usr != null ) {
+		    ses.setAttribute( UserLogin.USER_KEY, usr );
+		    boolean disable = !usr.hasRole( Roles.INVENTORY_UPLOAD );
+		    Tab tab = (Tab)wndBrowser.getFellowIfAny( UserLogin.TAB_UPLOAD );
+		    if( tab != null ) 
+			tab.setDisabled( disable );
+		    Label lb = (Label)wndBrowser.getFellowIfAny( UserLogin.LABEL_USER );
+		    if( lb != null )
+			lb.setValue( usr.getMuid()+" - "+usr.getUsername() );
+		}
+	    }
+	    catch( SQLException sqe ) {
+		log.error( sqe );
+	    }
+	}
+    }
 
-    // 	log.debug( "panels to show: "+panelIds );
+    private long getUserId() {
+	String uid = CookieUtil.getCookieValue( UserLogin.USER_COOKIE );
+	long userId = zkContext.getUserId();
+	if( uid != null ) {
+	    userId = Stringx.toLong(Stringx.after(uid,":"),userId);
+	    log.info( "Remembering user id "+uid );
+	}
+	return userId;
+    }
 	
-    // 	String[] hPanels = hidePanels.split( "," );
-    // 	for( int i = 0; i < hPanels.length; i++ ) {
-    // 	    for( int j = 0; j < panels.length; j++ ) {
-    // 		if( panels[j].equalsIgnoreCase(hPanels[i]) ) {
-    // 		    if( j < aPanelIds.size() ) {
-    // 			String dPanelId = aPanelIds.get(j);
-    // 			int delIdx = 0;
-    // 			boolean foundIt = false;
-    // 			for( String sId : panelIds ) {
-    // 			    if( sId.equals( dPanelId ) ) {
-    // 				foundIt = true;
-    // 				break;
-    // 			    }
-    // 			    delIdx++;
-    // 			}
-    // 			if( foundIt )
-    // 			    panelIds.remove( delIdx );
-    // 			break;
-    // 		    }
-    // 		    else {
-    // 			log.debug( "Cannot find panel id of \""+hPanels[i]+"\"" );
-    // 		    }
-    // 		}
-    // 	    }
-    // 	}
-
-    // 	for( String pId : aPanelIds ) {
-    // 	    Component cmp = wndBrowser.getFellowIfAny( pId );
-    // 	    if( cmp != null ) 
-    // 		cmp.setVisible( false ); 
-    // 	}
-
-    // 	for( String pId : panelIds ) {
-    // 	    Component cmp = wndBrowser.getFellowIfAny( pId );
-    // 	    if( cmp != null ) 
-    // 		cmp.setVisible( true ); 
-    // 	}
-	
-    // }
-
     public void doAfterCompose(Component comp) throws Exception {
 	super.doAfterCompose(comp);
 	
@@ -317,7 +264,9 @@ public class InventoryPortletController extends GenericForwardComposer {
 	log.debug( "Portlet id: "+portletId );
 
 	// long userId = mapUser( zkContext.getUserId() );
-	long userId = zkContext.getUserId();
+	// long userId = zkContext.getUserId();
+
+	long userId = getUserId();
 	log.debug( "User id: "+userId );
 
 	initButtonCommands( portletId, userId );
@@ -327,6 +276,8 @@ public class InventoryPortletController extends GenericForwardComposer {
 	initInventory( portletId, userId );
 
 	initTabs();
+
+	initUserSession( portletId, userId );
     }
 
 }

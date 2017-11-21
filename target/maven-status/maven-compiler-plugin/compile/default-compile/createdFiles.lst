@@ -38,7 +38,6 @@ com/emd/simbiom/template/EditTemplate.class
 com/emd/simbiom/cost/VolumeSelector.class
 com/emd/simbiom/category/CategoryView.class
 com/emd/simbiom/view/BarChartEngine.class
-ar/gfritz/TestService.class
 com/emd/simbiom/search/AgeInputChange.class
 com/emd/simbiom/search/TextFilter.class
 com/emd/simbiom/template/OpenResultLog.class
@@ -61,7 +60,7 @@ com/emd/simbiom/portlet/SampleInventoryApplication.class
 com/emd/simbiom/search/FilterMatcher.class
 com/emd/simbiom/template/BatchEntry$1.class
 com/emd/simbiom/search/FilterModel.class
-ar/gfritz/TestVM.class
+com/emd/simbiom/auth/UserLogin.class
 com/emd/simbiom/command/InventoryViewAction.class
 com/emd/simbiom/search/AgeFilter.class
 com/emd/simbiom/category/BrowseSamples.class
