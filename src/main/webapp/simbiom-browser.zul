@@ -226,6 +226,13 @@
 
             <row>
               <cell style="text-align:left">
+	        <label value="Current user"/>
+              </cell>
+	      <label id="lbCurrentUser_2" style="font-weight: bold;"/>
+            </row>
+
+            <row>
+              <cell style="text-align:left">
 	        <label value="Template"/>
               </cell>
               <combobox id="cbTemplate" autodrop="true" width="200px" mold="rounded" buttonVisible="true"/>
@@ -426,6 +433,13 @@
           </columns>
 
           <rows>
+
+            <row>
+              <cell style="text-align:left">
+	        <label value="Current user"/>
+              </cell>
+	      <label id="lbCurrentUser_1" style="font-weight: bold;"/>
+            </row>
 
             <row>
               <cell style="text-align:left">

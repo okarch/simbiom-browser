@@ -59,7 +59,7 @@ public class UserLogin extends InventoryCommand {
     public static final String USER_KEY     = "simbiom.login.user";
     public static final String USER_COOKIE  = "simbiomMUID";
     public static final String TAB_UPLOAD   = "tabUpload";
-    public static final String LABEL_USER   = "lbCurrentUser";
+    public static final String LABEL_USER   = "lbCurrentUser_";
 
 
     /**
@@ -143,9 +143,13 @@ public class UserLogin extends InventoryCommand {
 		log.debug( "Cookie "+USER_COOKIE+" has been set to "+cValue );
 	    }
 	}
-	Label lb = (Label)wnd.getFellowIfAny( LABEL_USER );
-	if( lb != null )
-	    lb.setValue( usr.getMuid()+" - "+usr.getUsername() );
+	for( int i = 1; i < Integer.MAX_VALUE; i++ ) {
+	    Label lb = (Label)wnd.getFellowIfAny( LABEL_USER+String.valueOf(i) );
+	    if( lb != null )
+		lb.setValue( usr.getMuid()+" - "+usr.getUsername() );
+	    else
+		break;
+	}
     }
 
     /**

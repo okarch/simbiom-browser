@@ -8,6 +8,7 @@ com/emd/simbiom/search/SelectFilterOperator.class
 com/emd/simbiom/category/BrowseLogisticsSamples.class
 com/emd/simbiom/view/CategoryTreeNode.class
 com/emd/simbiom/template/UploadSamples.class
+com/emd/simbiom/template/EditTemplate$3.class
 com/emd/simbiom/template/SelectResultLog.class
 com/emd/simbiom/search/SearchFilter.class
 com/emd/simbiom/cost/AddSampleItem.class
@@ -22,6 +23,7 @@ com/emd/simbiom/template/ParseState.class
 com/emd/simbiom/template/LogLevelFilter.class
 com/emd/simbiom/portlet/InventoryPortletController.class
 com/emd/simbiom/view/DefaultModelProducer.class
+com/emd/simbiom/template/EditTemplate$2.class
 com/emd/simbiom/view/UIUtils.class
 com/emd/simbiom/cost/RemoveSampleItem.class
 com/emd/simbiom/command/InventoryCommand.class
@@ -49,6 +51,7 @@ com/emd/simbiom/view/AbstractCategoryTreeNode.class
 com/emd/simbiom/view/SwitchTab.class
 com/emd/simbiom/search/ContentOperatorChange.class
 com/emd/simbiom/search/SampleResult.class
+com/emd/simbiom/template/EditTemplate$1.class
 com/emd/simbiom/search/SearchSamples.class
 com/emd/simbiom/search/SampleRow.class
 com/emd/simbiom/template/UploadSelector.class

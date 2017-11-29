@@ -233,9 +233,13 @@ public class InventoryPortletController extends GenericForwardComposer {
 		    Tab tab = (Tab)wndBrowser.getFellowIfAny( UserLogin.TAB_UPLOAD );
 		    if( tab != null ) 
 			tab.setDisabled( disable );
-		    Label lb = (Label)wndBrowser.getFellowIfAny( UserLogin.LABEL_USER );
-		    if( lb != null )
-			lb.setValue( usr.getMuid()+" - "+usr.getUsername() );
+		    for( int i = 1; i < Integer.MAX_VALUE; i++ ) {
+			Label lb = (Label)wndBrowser.getFellowIfAny( UserLogin.LABEL_USER+String.valueOf(i) );
+			if( lb != null )
+			    lb.setValue( usr.getMuid()+" - "+usr.getUsername() );
+			else
+			    break;
+		    }
 		}
 	    }
 	    catch( SQLException sqe ) {

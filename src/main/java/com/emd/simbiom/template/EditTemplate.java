@@ -16,6 +16,9 @@ import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.CharSetUtils;
 // import org.apache.commons.lang.StringUtils;
 
+import org.zkoss.zk.ui.event.Event;
+import org.zkoss.zk.ui.event.EventListener; 
+
 import org.zkoss.zul.Label;
 import org.zkoss.zul.Messagebox;
 import org.zkoss.zul.Textbox;
@@ -111,44 +114,70 @@ public class EditTemplate extends InventoryCommand {
 	return ((templs.length > 0)?templs[0]:null);
     }
 
-    private InventoryUploadTemplate loadTemplate( Window wnd ) {
+    private void loadTemplate( Window wnd ) {
 	String st = getTemplateName( wnd, UNTITLED );
 	InventoryUploadTemplate templ = retrieveTemplate( wnd, st );
 	if( templ == null ) {
 	    log.debug( "Template "+st+" does not exist." );
 	    templ = new InventoryUploadTemplate();
 	    templ.setTemplatename( st );
-	    return templ;
+	    saveTemplate( wnd, templ );
 	}
+	else {
+	    log.debug( "Template exists: "+st );
 
-	int answer = Messagebox.show( "Template \""+st+"\" exists already.\nDo you want to overwrite it?",
-				      "Overwrite Template", Messagebox.YES|Messagebox.NO, Messagebox.EXCLAMATION );
-	return (( answer != Messagebox.YES )?null:templ);
+	    final InventoryUploadTemplate saveTempl = templ;
+	    final Window targetWnd = wnd;
+	    Messagebox.show( "Template \""+st+"\" exists already.\nDo you want to overwrite it?",
+			     "Overwrite Template", 
+			     Messagebox.YES+Messagebox.NO, 
+			     Messagebox.QUESTION,
+			     new EventListener() {
+				 public void onEvent(Event event) {
+				     if( (Messagebox.ON_YES.equals(event.getName()))) {
+					 log.debug( "Template "+saveTempl+" about to be saved." );
+					 saveTemplate( targetWnd, saveTempl );
+				     }
+				 }
+			     });
+	}
     }
 
-    private InventoryUploadTemplate renameTemplate( Window wnd ) {
+    private void renameTemplate( Window wnd ) {
 	InventoryUploadTemplate templ = getSelectedTemplate( wnd );
 	if( templ == null ) {
 	    log.error( "Cannot determine selected template" );
-	    return null;
+	    return;
 	}
 	String st = getTemplateName( wnd, UNTITLED );
 	if( templ.getTemplatename().equals( st ) ) {
 	    log.warn( "No change in template name. Rename ignored." );
-	    return null;
+	    return;
 	}
 
 	InventoryUploadTemplate destTempl = retrieveTemplate( wnd, st );
+
 	if( destTempl != null ) {
-	    int answer = Messagebox.show( "Template \""+st+"\" exists already.\nDo you want to overwrite it?",
-					  "Overwrite Template", Messagebox.YES|Messagebox.NO, Messagebox.EXCLAMATION );
-	    if( answer != Messagebox.YES )
-		return null;
-	    templ = destTempl;
+	    final Window targetWnd = wnd;
+	    final InventoryUploadTemplate saveTempl = destTempl;
+	    saveTempl.setTemplatename( st );
+	    Messagebox.show( "Template \""+st+"\" exists already.\nDo you want to overwrite it?",
+			     "Overwrite Template", 
+			     Messagebox.YES+Messagebox.NO, 
+			     Messagebox.QUESTION,
+			     new EventListener() {
+				 public void onEvent(Event event) {
+				     if( (Messagebox.ON_YES.equals(event.getName()))) {
+					 log.debug( "Template "+saveTempl+" about to be overwritten." );
+					 saveTemplate( targetWnd, saveTempl );
+				     }
+				 }
+			     });
 	}
-	templ.setTemplatename( st );
-	templ = saveTemplate( wnd, templ );
-	return templ;
+	else {
+	    templ.setTemplatename( st );
+	    saveTemplate( wnd, templ );
+	}
     }
 
     private boolean deleteTemplate( Window wnd ) {
@@ -230,35 +259,49 @@ public class EditTemplate extends InventoryCommand {
 	return parseOk;
     }
 
-    private InventoryUploadTemplate saveTemplate( Window wnd, InventoryUploadTemplate templ ) {
-	String tName = getTemplateName( wnd, UNTITLED );
-	Textbox txtTempl = (Textbox)wnd.getFellowIfAny( TemplateModel.TXT_TEMPLATE );
-	if( txtTempl != null ) {
-	    String st = txtTempl.getValue().trim();
-	    if( !parseText( wnd, st ) ) {
-		int answer = Messagebox.show( "Template \""+tName+"\" might cause problems.\nDo you want to save it anyway?",
-					      "Save Template", Messagebox.YES|Messagebox.NO, Messagebox.EXCLAMATION );
-
-		if( answer != Messagebox.YES )
-		    return null;
-	    }
-	    templ.setTemplate( fromEditText(st) );
-	}
-
+    private void storeTemplate( Window wnd, InventoryUploadTemplate templ ) {
 	SampleInventoryDAO inv = getSampleInventory();
 	if( inv == null ) 
-	    return null;
+	    return;
 	try {
+	    // templ = inv.storeTemplate( this.getUserId(), templ );
 	    templ = inv.storeTemplate( templ );
 	}
 	catch( SQLException sqe ) {
 	    showMessage( wnd, "rowMessageUpload", "lbMessageUpload", "Error: "+
 			 Stringx.getDefault( sqe.getMessage(), "General database error" ) );
 	    log.error( sqe );
-	    return null;
+	    return;
 	}
-	showMessage( wnd, "rowMessageUpload", "lbMessageUpload", "Template \""+tName+"\" stored successfully." );
-	return templ;
+	showMessage( wnd, "rowMessageUpload", "lbMessageUpload", "Template \""+templ+"\" stored successfully." );
+	updateTemplateList( wnd, templ );
+    }
+
+    private void saveTemplate( final Window wnd, final InventoryUploadTemplate templ ) {
+	String tName = getTemplateName( wnd, UNTITLED );
+	Textbox txtTempl = (Textbox)wnd.getFellowIfAny( TemplateModel.TXT_TEMPLATE );
+	if( txtTempl != null ) {
+	    String st = txtTempl.getValue().trim();
+	    if( !parseText( wnd, st ) ) {
+		final String editText = fromEditText(st);
+		Messagebox.show( "Template \""+tName+"\" might cause problems.\nDo you want to save it anyway?",
+				 "Save Template", 
+				 Messagebox.YES+Messagebox.NO, 
+				 Messagebox.QUESTION,
+				 new EventListener() {
+				     public void onEvent(Event event) {
+					 if( (Messagebox.ON_YES.equals(event.getName()))) {
+					     templ.setTemplate( editText );
+					     storeTemplate( wnd, templ );
+					 }
+				     }
+				 });
+	    }
+	    else {
+		templ.setTemplate( fromEditText(st) );
+		storeTemplate( wnd, templ );
+	    }
+	}
     }
 
     private void updateTemplateList( Window wnd, InventoryUploadTemplate tSel ) {
@@ -268,15 +311,6 @@ public class EditTemplate extends InventoryCommand {
 	if( tList != null )
 	    tList.reloadTemplates( wnd, tSel );
     }
-
-    // private void updateTemplateText( Window wnd, InventoryUploadTemplate templ ) {
-    // 	Textbox txtTempl = (Textbox)wnd.getFellowIfAny( TemplateModel.TXT_TEMPLATE );
-    // 	if( txtTempl != null )
-    // 	    txtTempl.setValue( toEditText(templ.getTemplate()) );
-    // 	Label lbTempl = (Label)wnd.getFellowIfAny( TemplateModel.LB_TEMPLATE );
-    // 	if( lbTempl != null )
-    // 	    lbTempl.setValue( templ.getTemplatename() );
-    // }
 
     /**
      * Executes the <code>Command</code>
@@ -292,17 +326,23 @@ public class EditTemplate extends InventoryCommand {
 
 	InventoryUploadTemplate templ = null;
 	boolean renameIt = false;
-	if( getCommandName().endsWith( SAVE ) && ((templ = loadTemplate( wnd )) != null) ) {
-	    templ = saveTemplate( wnd, templ );
-	    if( templ != null )
-		updateTemplateList( wnd, templ );
+	if( getCommandName().endsWith( SAVE ) ) {
+	    loadTemplate( wnd );
 	}
+	// if( getCommandName().endsWith( SAVE ) && ((templ = loadTemplate( wnd )) != null) ) {
+	//     templ = saveTemplate( wnd, templ );
+	//     if( templ != null )
+	// 	updateTemplateList( wnd, templ );
+	// }
 	else if( getCommandName().endsWith( DELETE ) && (deleteTemplate( wnd )) ) {
 	    updateTemplateList( wnd, null );
 	}
-	else if( getCommandName().endsWith( RENAME ) && ((templ = renameTemplate( wnd )) != null) ) {
-	    updateTemplateList( wnd, templ );
+	else if( getCommandName().endsWith( RENAME ) ) {
+	    renameTemplate( wnd );
 	}
+	// else if( getCommandName().endsWith( RENAME ) && ((templ = renameTemplate( wnd )) != null) ) {
+	//     updateTemplateList( wnd, templ );
+	// }
 	else if( getCommandName().endsWith( NEW ) ) {
 	    clearEditArea( wnd );
 	    setTemplateName( wnd, UNTITLED );
