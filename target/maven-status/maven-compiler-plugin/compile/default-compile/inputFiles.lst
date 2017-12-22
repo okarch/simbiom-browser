@@ -1,5 +1,5 @@
-/home/okarch/classes/simbiom-browser/src/main/java/com/emd/simbiom/template/TemplateModel.java
 /home/okarch/classes/simbiom-browser/src/main/java/com/emd/simbiom/view/AbstractCategoryTreeNode.java
+/home/okarch/classes/simbiom-browser/src/main/java/com/emd/simbiom/template/TemplateModel.java
 /home/okarch/classes/simbiom-browser/src/main/java/com/emd/simbiom/view/RowComparator.java
 /home/okarch/classes/simbiom-browser/src/main/java/com/emd/simbiom/command/InventoryViewAction.java
 /home/okarch/classes/simbiom-browser/src/main/java/com/emd/simbiom/template/UploadLogRenderer.java
@@ -7,8 +7,8 @@
 /home/okarch/classes/simbiom-browser/src/main/java/com/emd/simbiom/template/UploadSelector.java
 /home/okarch/classes/simbiom-browser/src/main/java/com/emd/simbiom/view/DefaultModelProducer.java
 /home/okarch/classes/simbiom-browser/src/main/java/com/emd/simbiom/view/BarChartEngine.java
-/home/okarch/classes/simbiom-browser/src/main/java/com/emd/simbiom/search/FilterRemove.java
 /home/okarch/classes/simbiom-browser/src/main/java/com/emd/simbiom/cost/AddSampleItem.java
+/home/okarch/classes/simbiom-browser/src/main/java/com/emd/simbiom/search/FilterRemove.java
 /home/okarch/classes/simbiom-browser/src/main/java/com/emd/simbiom/template/UploadSamples.java
 /home/okarch/classes/simbiom-browser/src/main/java/com/emd/simbiom/search/FilterModel.java
 /home/okarch/classes/simbiom-browser/src/main/java/com/emd/simbiom/search/TextFilter.java
@@ -21,10 +21,10 @@
 /home/okarch/classes/simbiom-browser/src/main/java/com/emd/simbiom/search/SelectFilterOperator.java
 /home/okarch/classes/simbiom-browser/src/main/java/com/emd/simbiom/view/ChartColors.java
 /home/okarch/classes/simbiom-browser/src/main/java/com/emd/simbiom/cost/RemoveSampleItem.java
-/home/okarch/classes/simbiom-browser/src/main/java/com/emd/simbiom/search/AgeFilter.java
-/home/okarch/classes/simbiom-browser/src/main/java/com/emd/simbiom/portlet/InventoryCleanup.java
-/home/okarch/classes/simbiom-browser/src/main/java/com/emd/simbiom/portlet/SampleInventoryApplication.java
 /home/okarch/classes/simbiom-browser/src/main/java/com/emd/simbiom/template/SelectResultLog.java
+/home/okarch/classes/simbiom-browser/src/main/java/com/emd/simbiom/portlet/SampleInventoryApplication.java
+/home/okarch/classes/simbiom-browser/src/main/java/com/emd/simbiom/portlet/InventoryCleanup.java
+/home/okarch/classes/simbiom-browser/src/main/java/com/emd/simbiom/search/AgeFilter.java
 /home/okarch/classes/simbiom-browser/src/main/java/com/emd/simbiom/category/CategoryView.java
 /home/okarch/classes/simbiom-browser/src/main/java/com/emd/simbiom/cost/SampleTypeModel.java
 /home/okarch/classes/simbiom-browser/src/main/java/com/emd/simbiom/category/BrowseSamples.java
@@ -35,10 +35,11 @@
 /home/okarch/classes/simbiom-browser/src/main/java/com/emd/simbiom/cost/CostItemRenderer.java
 /home/okarch/classes/simbiom-browser/src/main/java/com/emd/simbiom/cost/RegistrationModel.java
 /home/okarch/classes/simbiom-browser/src/main/java/com/emd/simbiom/auth/UserLogin.java
-/home/okarch/classes/simbiom-browser/src/main/java/com/emd/simbiom/portlet/ServletInitializer.java
 /home/okarch/classes/simbiom-browser/src/main/java/com/emd/simbiom/template/EditTemplate.java
+/home/okarch/classes/simbiom-browser/src/main/java/com/emd/simbiom/portlet/ServletInitializer.java
 /home/okarch/classes/simbiom-browser/src/main/java/com/emd/simbiom/search/ResultMenu.java
 /home/okarch/classes/simbiom-browser/src/main/java/com/emd/simbiom/cost/AmountChange.java
+/home/okarch/classes/simbiom-browser/src/main/java/com/emd/simbiom/template/UploadTemplate.java
 /home/okarch/classes/simbiom-browser/src/main/java/com/emd/simbiom/category/BrowseLogisticsSamples.java
 /home/okarch/classes/simbiom-browser/src/main/java/com/emd/simbiom/view/ColumnFormatter.java
 /home/okarch/classes/simbiom-browser/src/main/java/com/emd/simbiom/search/SearchFilter.java
@@ -54,8 +55,8 @@
 /home/okarch/classes/simbiom-browser/src/main/java/com/emd/simbiom/cost/UpdateEstimate.java
 /home/okarch/classes/simbiom-browser/src/main/java/com/emd/simbiom/search/ContentOperatorChange.java
 /home/okarch/classes/simbiom-browser/src/main/java/com/emd/simbiom/view/CategoryTreeNode.java
-/home/okarch/classes/simbiom-browser/src/main/java/com/emd/simbiom/view/CategoryTreeModel.java
 /home/okarch/classes/simbiom-browser/src/main/java/com/emd/simbiom/search/FilterOperator.java
+/home/okarch/classes/simbiom-browser/src/main/java/com/emd/simbiom/view/CategoryTreeModel.java
 /home/okarch/classes/simbiom-browser/src/main/java/com/emd/simbiom/category/BrowseCategoryView.java
 /home/okarch/classes/simbiom-browser/src/main/java/com/emd/simbiom/view/UIUtils.java
 /home/okarch/classes/simbiom-browser/src/main/java/com/emd/simbiom/search/SearchSamples.java
