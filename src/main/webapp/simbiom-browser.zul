@@ -44,6 +44,7 @@
 	        <label value="Category"/>
               </cell>
               <combobox id="cbCategory" autodrop="true" width="150px" mold="rounded" buttonVisible="true">
+                <attribute name="onCreate">self.setSelectedIndex(0);</attribute>
                 <comboitem label="Molecule" value="Molecules" />
                 <comboitem label="Disease" value="Diseases" />
                 <comboitem label="Sample type" value="Sample types" />
@@ -53,19 +54,28 @@
             <row id="rowMessageOverview"/>
 
             <row>
+              <tree id="trCategory"/>
+              <vlayout id="vlCategoryView">
+                <vbox>
+                  <label id="lbNoCategory" width="400px" value="No category view available"/>
+                </vbox>
+              </vlayout>
+            </row>
+<!--
+            <row>
               <cell colspan="2" style="overflow: hidden;">
                 <hbox spacing="0" width="100%" height="100%">
-                  <tree id="trCategory"/>
+                  <tree id="trCategory" width="20%"/>
                   <splitter id="s2" collapse="before"/>
-                  <vlayout id="vlCategoryView">
-                    <vbox width="400px">
+                  <vlayout id="vlCategoryView" width="80%">
+                    <vbox width="500px">
                         <label id="lbNoCategory" width="400px" value="No category view available"/>
                     </vbox>
                   </vlayout>
                 </hbox>
                </cell>
             </row>
-
+-->
 	  </rows>
 	</grid>
 

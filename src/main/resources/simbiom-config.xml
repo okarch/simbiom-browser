@@ -284,7 +284,7 @@
                 component="btBrowseCategory"
                 event="onClick" />
       </category>
-
+<!--
       <category config-class="com.emd.simbiom.category.ChartCategoryView"
                 label="Molecules.Sample_types"
                 engine="com.emd.simbiom.view.BarChartEngine"
@@ -293,6 +293,16 @@
         <action config-class="com.emd.simbiom.category.BrowseSamples"
                 component="chrtCategory"
                 event="onClick" />
+      </category>
+-->
+      <category config-class="com.emd.simbiom.category.GoogleChartCategoryView"
+                label="Molecules.Sample_types"
+                engine="org.zkoss.google.charts.BarChart"
+                parent="vlCategoryView"
+                template="/template/google-barchart-category.zul">
+        <action config-class="com.emd.simbiom.category.BrowseSamples"
+                component="chrtBarChart"
+                event="onSelect" />
       </category>
 
       <category config-class="com.emd.simbiom.category.BrowseCategoryView"

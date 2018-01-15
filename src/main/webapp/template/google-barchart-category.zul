@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<vlayout>
+  <barchart id="chrtBarChart" width="100%" /> 
+  <textbox id="txtBrowseCategoryPath" visible="false"/>
+</vlayout>

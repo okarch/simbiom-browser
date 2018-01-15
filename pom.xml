@@ -168,6 +168,13 @@ The aim of the project is to provide a ui to the sample inventory management.
         <groupId>com.fasterxml.jackson.core</groupId>
         <artifactId>jackson-databind</artifactId>
       </dependency>
+
+    <dependency>
+    	<groupId>org.zkoss</groupId>
+    	<artifactId>zkgooglecharts</artifactId>
+    	<version>0.3.0</version>
+    </dependency>
+
 <!-- 		<dependency> -->
 <!-- 			<groupId>org.springframework.boot</groupId> -->
 <!-- 			<artifactId>spring-boot-starter-security</artifactId> -->

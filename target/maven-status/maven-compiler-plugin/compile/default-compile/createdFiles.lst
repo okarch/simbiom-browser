@@ -53,6 +53,7 @@ com/emd/simbiom/view/SwitchTab.class
 com/emd/simbiom/search/ContentOperatorChange.class
 com/emd/simbiom/search/SampleResult.class
 com/emd/simbiom/template/EditTemplate$1.class
+com/emd/simbiom/category/GoogleChartCategoryView.class
 com/emd/simbiom/search/SearchSamples.class
 com/emd/simbiom/search/SampleRow.class
 com/emd/simbiom/template/UploadSelector.class
