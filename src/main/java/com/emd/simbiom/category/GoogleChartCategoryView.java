@@ -101,22 +101,6 @@ public class GoogleChartCategoryView extends CategoryView {
     }
 
 
-    // private CategoryModel createModel( Map context ) {
-    // 	CategoryModel model = new SimpleCategoryModel();
-    // 	CategoryViewNode node = (CategoryViewNode)context.get( CategoryTreeView.RESULT );
-    // 	if( node != null ) {
-    // 	    List<CategoryTreeNode> chNodes = node.getChildren();
-    // 	    for( CategoryTreeNode ctn : chNodes ) {
-    // 		if( (ctn instanceof CategoryViewNode) &&
-    // 		    (((CategoryViewNode)ctn).getNodeData() != null) &&
-    // 		    (((CategoryViewNode)ctn).getNodeData() instanceof SampleSummary) ) {
-    // 		    SampleSummary sSum = (SampleSummary)((CategoryViewNode)ctn).getNodeData();
-    // 		    model.setValue( sSum.getTerm(), sSum.getTerm(), new Long(sSum.getSamplecount()) );
-    // 		}
-    // 	    }
-    // 	}
-    // 	return model;
-    // }
 
 
     // public DataTable getSimpleDataModel() {
@@ -167,6 +151,7 @@ public class GoogleChartCategoryView extends CategoryView {
 	    data.addNumberColumn("Samples", "count");
 	    data.addColumn(ColumnType.STRING, ColumnRole.TOOLTIP);
 	    data.addColumn(ColumnType.STRING, ColumnRole.STYLE);
+	    // data.addColumn(ColumnType.STRING, ColumnRole.ANNOTATION);
 
 	    List<CategoryTreeNode> chNodes = node.getChildren();
 	    for( CategoryTreeNode ctn : chNodes ) {
@@ -174,7 +159,15 @@ public class GoogleChartCategoryView extends CategoryView {
 		    (((CategoryViewNode)ctn).getNodeData() != null) &&
 		    (((CategoryViewNode)ctn).getNodeData() instanceof SampleSummary) ) {
 		    SampleSummary sSum = (SampleSummary)((CategoryViewNode)ctn).getNodeData();
-		    data.addRow( sSum.getTerm(), new Long(sSum.getSamplecount()), String.valueOf(sSum.getSamplecount()), mapStyle( sSum.getTerm() ) );
+		    data.addRow( sSum.getTerm(), 
+				 new Long(sSum.getSamplecount()), 
+				 sSum.getTerm()+": "+String.valueOf(sSum.getSamplecount())+" samples", 
+				 mapStyle( sSum.getTerm() ) ); 
+		    // data.addRow( sSum.getTerm(), 
+		    // 		 new Long(sSum.getSamplecount()), 
+		    // 		 String.valueOf(sSum.getSamplecount()), 
+		    // 		 mapStyle( sSum.getTerm() ), 
+		    // 		 sSum.getTerm() );
 		}
 	    }
 	}

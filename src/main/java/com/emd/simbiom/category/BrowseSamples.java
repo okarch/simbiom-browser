@@ -8,6 +8,11 @@ import java.util.Map;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import org.zkoss.google.charts.GoogleChart;
+import org.zkoss.google.charts.data.DataTable;
+import org.zkoss.google.charts.event.DataTableSelection;
+import org.zkoss.google.charts.event.DataTableSelectionEvent;
+
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.MouseEvent;
@@ -124,7 +129,7 @@ public class BrowseSamples extends InventoryViewAction {
 	Component cmp = event.getTarget();
 	if( cmp == null ) {
 	    log.error( "Cannot determine event target" );
-	    return;
+	    return; 
 	}
 	Window wnd = ZKContext.findWindow( cmp );
 	String qPath = getNodePath( wnd );
@@ -147,6 +152,24 @@ public class BrowseSamples extends InventoryViewAction {
 		((cmp = ((MouseEvent)event).getAreaComponent()) != null) ) {
 	
 		qPath = qPath + extractTerm(Stringx.getDefault(((Area)cmp).getTooltiptext(),""));
+	    }
+	    else if( (cmp instanceof GoogleChart) &&
+		     (event instanceof DataTableSelectionEvent) ) {
+		DataTableSelection sel = ((DataTableSelectionEvent)event).getSelection();
+		DataTable data = ((GoogleChart)cmp).getData();
+		Integer rowIdx = null;
+		Integer colIdx = null;
+		if( (sel != null) && (data != null) &&
+		    ((rowIdx = sel.getRow()) != null) &&
+		    ((colIdx = sel.getColumn()) != null) ) {
+		    Object val = data.getValue( rowIdx.intValue(), colIdx.intValue() );
+		    log.debug( "Selection: row="+rowIdx+" column="+colIdx+" value="+val );
+		    Object anno = data.getValue( rowIdx.intValue(), colIdx.intValue()+1 );
+		    String term = ","+((anno != null)?Stringx.before(anno.toString().trim(),":"):"")+")"; 
+		    qPath = qPath + extractTerm(term);
+		    log.debug( "Query path: "+qPath );
+		}
+		    
 	    }
 
 	    qPath = modifyQueryPath(qPath)+ "samples";
