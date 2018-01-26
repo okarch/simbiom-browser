@@ -49,6 +49,7 @@ public class CategoryTreeView extends DefaultModelProducer implements EventListe
     public static final String CHART_TITLE      = "chartTitle";
     public static final String SUMMARY          = "summary";
     public static final String PATH             = "path";
+    public static final String MODEL_NAME       = "modelName";
 
     private static Log log = LogFactory.getLog(CategoryTreeView.class);
 
@@ -202,6 +203,7 @@ public class CategoryTreeView extends DefaultModelProducer implements EventListe
 	if( (nd != null) && (nd instanceof SampleSummary) )
 	    ctxt.put( SUMMARY, (SampleSummary)nd );
 	ctxt.put( PATH, cvn.getNodePath() );
+	ctxt.put( MODEL_NAME, getModelName() );
 	return ctxt;
     }
 
@@ -215,7 +217,8 @@ public class CategoryTreeView extends DefaultModelProducer implements EventListe
 
 	if( "onAfterRender".equals( event.getName() ) ) {
 	    Tree tr = (Tree)event.getTarget();
-	    // log.debug( "Combobox items:"+cb.getItemCount() );
+	    log.debug( "Tree items:"+tr.getItemCount() );
+	    log.debug( "Tree model:"+tr.getModel() );
 	    // if( cb.getItemCount() > 0 ) {
 	    // 	cb.setSelectedIndex( 0 );
 	    // 	Map ctxt = new HashMap();

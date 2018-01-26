@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<vlayout>
+  <piechart id="chrtPieChart" width="100%" /> 
+  <textbox id="txtBrowseCategoryPath" visible="false"/>
+</vlayout>

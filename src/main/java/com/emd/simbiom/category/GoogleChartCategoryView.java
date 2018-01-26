@@ -5,9 +5,12 @@ import java.awt.Color;
 import java.sql.SQLException;
 
 import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.SortedSet;
+
+import org.apache.commons.lang.StringUtils;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -21,6 +24,8 @@ import org.zkoss.google.charts.data.FormattedValue;
 import org.zkoss.google.charts.event.DataTableSelectionEvent;
 
 import org.zkoss.zk.ui.Component;
+import org.zkoss.zul.Tree;
+import org.zkoss.zul.TreeModel;
 
 // import org.zkoss.zul.CategoryModel;
 // import org.zkoss.zul.Chart;
@@ -56,7 +61,7 @@ public class GoogleChartCategoryView extends CategoryView {
     private static Log log = LogFactory.getLog(GoogleChartCategoryView.class);
 
     // private static final String CHART_ID = "divChartCategory";
-    private static final String CHART_ID = "chrtBarChart";
+    // private static final String CHART_ID = "chrtBarChart";
 
     public GoogleChartCategoryView() {
 	super();
@@ -80,6 +85,17 @@ public class GoogleChartCategoryView extends CategoryView {
 	this.engine = engine;
     }
 
+    private String getChartId() {
+	StringBuilder stb = new StringBuilder( "chrt" );
+	String eSt = Stringx.getDefault(getEngine(),".BarChart");
+	int k = eSt.lastIndexOf( "." );
+	if( (k >= 0) && (k+1 < eSt.length()) )
+	    stb.append(eSt.substring(k+1));
+	else
+	    stb.append( "BarChart" );
+	return stb.toString();
+    }
+
     // private GoogleChart createChart() {
     // 	if( chart == null ) {
     // 	    String eClass = getEngine();
@@ -97,11 +113,8 @@ public class GoogleChartCategoryView extends CategoryView {
     // }
 
     private GoogleChart createChart( Window wnd ) {
-	return (GoogleChart)wnd.getFellowIfAny( CHART_ID );
+	return (GoogleChart)wnd.getFellowIfAny( getChartId() );
     }
-
-
-
 
     // public DataTable getSimpleDataModel() {
     //     DataTable data = new DataTable();
@@ -142,16 +155,127 @@ public class GoogleChartCategoryView extends CategoryView {
 	return "fill-color: "+ChartColors.toHtmlColor( col );
     }
 
-    private DataTable createModel( Map context ) {
+    private CategoryViewNode findNode( TreeModel tModel, CategoryViewNode parent, String nodePath ) {
+	if( nodePath.equals(parent.getNodePath()) )
+	    return parent;
+	int cCount = tModel.getChildCount( parent );
+	for( int i = 0; i < cCount; i++ ) {
+	    CategoryViewNode node = (CategoryViewNode)tModel.getChild( parent, i );
+	    node = findNode( tModel, node, nodePath );
+	    if( node != null )
+		return node;
+	}
+	return null;
+    }
+
+    private SampleSummary findParentSummary( Window wnd, Map context, CategoryViewNode node ) {
+	SampleSummary parentSummary = null;
+
+	// Extract parent node path
+
+	String nPath = node.getNodePath();
+	log.debug( "Current node path: "+nPath );
+	String[] paths = nPath.split( "[|]" );
+	StringBuilder pPath = new StringBuilder();
+	int pathLen = paths.length-2;
+	for( int i = 0; i < pathLen; i++ ) {
+	    if( i > 0 )
+		pPath.append( "|" );
+	    pPath.append( paths[i] );
+	}
+	log.debug( "Parent node path: "+pPath );
+	
+	// traverse tree to find parent node path
+
+	String mName = (String)context.get( CategoryTreeView.MODEL_NAME );
+	Tree cTree = null;
+	TreeModel tModel = null;
+	if( (mName != null) && 
+	    ((cTree = (Tree)wnd.getFellowIfAny(mName)) != null) && 
+	    ((tModel = cTree.getModel()) != null) ) {
+
+	    CategoryViewNode rootNode = (CategoryViewNode)tModel.getRoot();
+	    CategoryViewNode parentNode = findNode( tModel, rootNode, pPath.toString() );
+	    if( parentNode != null ) {
+		log.debug( "Parent node: "+parentNode+" node path: "+parentNode.getNodePath() );
+		parentSummary = (SampleSummary)parentNode.getNodeData();
+	    }
+	    else
+		log.warn( "Parent node path \""+pPath+"\" could not be found." );
+		
+	    // int[] nIdx = tModel.getPath( node );
+	    // if( (pathLen > 0) && (pathLen < nIdx.length) ) {
+	    // 	int[] pIdx = Arrays.copyOfRange( nIdx, 0, pathLen);
+	    // 	CategoryViewNode pNode = (CategoryViewNode)tModel.getChild( pIdx );
+	    // 	log.debug( "Parent node: "+pNode+" node path: "+pNode.getNodePath() );
+	    // 	parentSummary = (SampleSummary)pNode.getNodeData();
+	    // }
+	}
+	
+	return parentSummary;
+    }
+
+    private SampleSummary[] collectParentSummaries( Window wnd, Map context, CategoryViewNode node ) {
+	String mName = (String)context.get( CategoryTreeView.MODEL_NAME );
+	Tree cTree = null;
+	TreeModel tModel = null;
+	List<SampleSummary> pathNodes = new ArrayList<SampleSummary>();
+	if( (mName != null) && 
+	    ((cTree = (Tree)wnd.getFellowIfAny(mName)) != null) && 
+	    ((tModel = cTree.getModel()) != null) ) {
+
+	    CategoryViewNode rootNode = (CategoryViewNode)tModel.getRoot();
+	    log.debug( "Root node: "+rootNode );
+
+	    int[] pathIds = tModel.getPath( node );
+	    
+	    SampleSummary sSum = null;
+	    for( int i = 0; i < pathIds.length-1; i++ ) {
+		int[] nAccess = Arrays.copyOfRange( pathIds, 0, i);
+		CategoryViewNode pNode = (CategoryViewNode)tModel.getChild( nAccess );
+		if( pNode != null ) {
+		    log.debug( "Parent node: "+pNode+" node path: "+pNode.getNodePath() );
+		    sSum = (SampleSummary)pNode.getNodeData();
+		    if( sSum != null ) {
+			log.debug( "Parent node sample summary: "+sSum+" term: "+sSum.getTerm()+" sample count: "+sSum.getSamplecount() );
+			pathNodes.add( sSum );
+		    }
+		}
+	    }
+	    log.debug( "Current node: "+node+" node path: "+node.getNodePath() );
+	    sSum = (SampleSummary)node.getNodeData();
+	    if( sSum != null ) {
+		log.debug( "Parent node sample summary: "+sSum+" term: "+sSum.getTerm()+" sample count: "+sSum.getSamplecount() );
+		pathNodes.add( sSum );
+	    }
+	}
+	
+	SampleSummary[] sSums = new SampleSummary[ pathNodes.size() ];
+	return (SampleSummary[])pathNodes.toArray( sSums );
+    }
+
+    private DataTable createModel( Window wnd, Map context ) {
         DataTable data = new DataTable();
 
 	CategoryViewNode node = (CategoryViewNode)context.get( CategoryTreeView.RESULT );
 	if( node != null ) {
+
+	    // SampleSummary[] pSums = collectParentSummaries( wnd, context, node );
+	    // log.debug( "Number of parents: "+pSums.length );
+ 
 	    data.addStringColumn("Category", "category");
 	    data.addNumberColumn("Samples", "count");
 	    data.addColumn(ColumnType.STRING, ColumnRole.TOOLTIP);
 	    data.addColumn(ColumnType.STRING, ColumnRole.STYLE);
 	    // data.addColumn(ColumnType.STRING, ColumnRole.ANNOTATION);
+
+	    SampleSummary pSum = findParentSummary( wnd, context, node );
+	    if( pSum != null ) {
+		data.addRow( pSum.getTerm(), 
+			     new Long(pSum.getSamplecount()), 
+			     pSum.getTerm()+": "+String.valueOf(pSum.getSamplecount())+" samples", 
+			     mapStyle( pSum.getTerm() ) ); 
+	    }
 
 	    List<CategoryTreeNode> chNodes = node.getChildren();
 	    for( CategoryTreeNode ctn : chNodes ) {
@@ -185,7 +309,7 @@ public class GoogleChartCategoryView extends CategoryView {
 	    writeMessage( wnd, "Error: Cannot create chart engine" );
 	    return;
 	}
-	DataTable dt = createModel( context );
+	DataTable dt = createModel( wnd, context );
 	ce.setData( dt );
 	ce.setHeight( calculateHeight( dt ) );
 

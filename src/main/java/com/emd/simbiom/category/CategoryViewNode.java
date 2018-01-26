@@ -168,7 +168,7 @@ public class CategoryViewNode extends AbstractCategoryTreeNode {
 	if( children == null ) {
 	    List<CategoryTreeNode> cl = new ArrayList<CategoryTreeNode>();
 	    SampleSummary[] sSums = querySummary();
-	    log.debug( "Category node: "+getNodePath()+" number of sample groups: "+sSums.length+" node path: "+getNodePath() );
+	    // log.debug( "Category node: "+getNodePath()+" number of sample groups: "+sSums.length+" node path: "+getNodePath() );
 	    for( int i = 0; i < sSums.length; i++ ) {
 		// log.debug( "Sample summary: "+sSums[i]+" "+sSums[i].getTerm() );
 		CategoryViewNode cvn = new CategoryViewNode( sampleInventory, getNodePath(), sSums[i].getTerm() );

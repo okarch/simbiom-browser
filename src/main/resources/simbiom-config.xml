@@ -265,6 +265,7 @@
                 event="onClick" />
       </category>
 
+<!--
       <category config-class="com.emd.simbiom.category.ChartCategoryView"
                 label="Molecules.Studies"
                 engine="com.emd.simbiom.view.BarChartEngine"
@@ -273,6 +274,17 @@
         <action config-class="com.emd.simbiom.category.BrowseSamples"
                 component="chrtCategory"
                 event="onClick" />
+      </category>
+-->
+
+      <category config-class="com.emd.simbiom.category.GoogleChartCategoryView"
+                label="Molecules.Studies"
+                engine="org.zkoss.google.charts.BarChart"
+                parent="vlCategoryView"
+                template="/template/google-barchart-category.zul">
+        <action config-class="com.emd.simbiom.category.BrowseSamples"
+                component="chrtBarChart"
+                event="onSelect" />
       </category>
 
       <category config-class="com.emd.simbiom.category.BrowseCategoryView"
@@ -304,7 +316,7 @@
                 component="chrtBarChart"
                 event="onSelect" />
       </category>
-
+<!--
       <category config-class="com.emd.simbiom.category.BrowseCategoryView"
                 label="term_Molecules.Sample_types"
                 parent="vlCategoryView"
@@ -313,15 +325,26 @@
                 component="btBrowseCategory"
                 event="onClick" />
       </category>
+-->
 
-      <category config-class="com.emd.simbiom.category.ChartCategoryView"
-                label="Molecules.Studies.Sample_types"
-                engine="com.emd.simbiom.view.BarChartEngine"
+      <category config-class="com.emd.simbiom.category.GoogleChartCategoryView"
+                label="term_Molecules.Sample_types"
+                engine="org.zkoss.google.charts.PieChart"
                 parent="vlCategoryView"
-                template="/template/barchart-category.zul">
+                template="/template/google-piechart-category.zul">
         <action config-class="com.emd.simbiom.category.BrowseSamples"
-                component="chrtCategory"
-                event="onClick" />
+                component="chrtPieChart"
+                event="onSelect" />
+      </category>
+
+      <category config-class="com.emd.simbiom.category.GoogleChartCategoryView"
+                label="Molecules.Studies.Sample_types"
+                engine="org.zkoss.google.charts.BarChart"
+                parent="vlCategoryView"
+                template="/template/google-barchart-category.zul">
+        <action config-class="com.emd.simbiom.category.BrowseSamples"
+                component="chrtBarChart"
+                event="onSelect" />
       </category>
 
       <category config-class="com.emd.simbiom.category.BrowseCategoryView"
@@ -333,14 +356,14 @@
                 event="onClick" />
       </category>
 
-      <category config-class="com.emd.simbiom.category.ChartCategoryView"
+      <category config-class="com.emd.simbiom.category.GoogleChartCategoryView"
                 label="Molecules.Locations"
-                engine="com.emd.simbiom.view.BarChartEngine"
+                engine="org.zkoss.google.charts.BarChart"
                 parent="vlCategoryView"
-                template="/template/barchart-category.zul">
+                template="/template/google-barchart-category.zul">
         <action config-class="com.emd.simbiom.category.BrowseLogisticsSamples"
-                component="chrtCategory"
-                event="onClick" />
+                component="chrtBarChart"
+                event="onSelect" />
       </category>
 
     </result>
