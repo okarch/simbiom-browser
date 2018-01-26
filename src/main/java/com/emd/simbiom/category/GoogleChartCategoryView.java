@@ -142,10 +142,17 @@ public class GoogleChartCategoryView extends CategoryView {
     //     return data;
     // }
 
+    private int getRowHeight() {
+	if( getEngine().endsWith( "PieChart" ) ) 
+	    return 200;
+	return 120;
+    }
+
     private String calculateHeight( DataTable cm ) {
 	int numSeries = cm.getNumberOfRows();
-	int height = numSeries * 120;
-	String hSt = String.valueOf(Math.max( 120, height ));
+	int rHeight = getRowHeight();
+	int height = numSeries * rHeight;
+	String hSt = String.valueOf(Math.max( rHeight, height ));
 	log.debug( "Calculated chart height: "+hSt );
 	return hSt;
     }
@@ -203,13 +210,6 @@ public class GoogleChartCategoryView extends CategoryView {
 	    else
 		log.warn( "Parent node path \""+pPath+"\" could not be found." );
 		
-	    // int[] nIdx = tModel.getPath( node );
-	    // if( (pathLen > 0) && (pathLen < nIdx.length) ) {
-	    // 	int[] pIdx = Arrays.copyOfRange( nIdx, 0, pathLen);
-	    // 	CategoryViewNode pNode = (CategoryViewNode)tModel.getChild( pIdx );
-	    // 	log.debug( "Parent node: "+pNode+" node path: "+pNode.getNodePath() );
-	    // 	parentSummary = (SampleSummary)pNode.getNodeData();
-	    // }
 	}
 	
 	return parentSummary;
@@ -269,29 +269,41 @@ public class GoogleChartCategoryView extends CategoryView {
 	    data.addColumn(ColumnType.STRING, ColumnRole.STYLE);
 	    // data.addColumn(ColumnType.STRING, ColumnRole.ANNOTATION);
 
-	    SampleSummary pSum = findParentSummary( wnd, context, node );
-	    if( pSum != null ) {
-		data.addRow( pSum.getTerm(), 
-			     new Long(pSum.getSamplecount()), 
-			     pSum.getTerm()+": "+String.valueOf(pSum.getSamplecount())+" samples", 
-			     mapStyle( pSum.getTerm() ) ); 
-	    }
-
-	    List<CategoryTreeNode> chNodes = node.getChildren();
-	    for( CategoryTreeNode ctn : chNodes ) {
-		if( (ctn instanceof CategoryViewNode) &&
-		    (((CategoryViewNode)ctn).getNodeData() != null) &&
-		    (((CategoryViewNode)ctn).getNodeData() instanceof SampleSummary) ) {
-		    SampleSummary sSum = (SampleSummary)((CategoryViewNode)ctn).getNodeData();
+	    if( getEngine().endsWith( "PieChart" ) ) {
+		SampleSummary sSum = (SampleSummary)node.getNodeData();
+		if( sSum != null ) 		    
 		    data.addRow( sSum.getTerm(), 
 				 new Long(sSum.getSamplecount()), 
 				 sSum.getTerm()+": "+String.valueOf(sSum.getSamplecount())+" samples", 
 				 mapStyle( sSum.getTerm() ) ); 
+		else
+		    log.error( "Cannot determine sample summary of "+node );
+
+		SampleSummary pSum = findParentSummary( wnd, context, node );
+		if( pSum != null ) {
+		    long sCount = pSum.getSamplecount()-sSum.getSamplecount();
+		    data.addRow( pSum.getTerm(), new Long(sCount), 
+				 pSum.getTerm()+": "+String.valueOf(pSum.getSamplecount())+" samples", 
+				 mapStyle( pSum.getTerm() ) ); 
+		}
+	    }
+	    else {
+		List<CategoryTreeNode> chNodes = node.getChildren();
+		for( CategoryTreeNode ctn : chNodes ) {
+		    if( (ctn instanceof CategoryViewNode) &&
+			(((CategoryViewNode)ctn).getNodeData() != null) &&
+			(((CategoryViewNode)ctn).getNodeData() instanceof SampleSummary) ) {
+			SampleSummary sSum = (SampleSummary)((CategoryViewNode)ctn).getNodeData();
+			data.addRow( sSum.getTerm(), 
+				     new Long(sSum.getSamplecount()), 
+				     sSum.getTerm()+": "+String.valueOf(sSum.getSamplecount())+" samples", 
+				     mapStyle( sSum.getTerm() ) ); 
 		    // data.addRow( sSum.getTerm(), 
 		    // 		 new Long(sSum.getSamplecount()), 
 		    // 		 String.valueOf(sSum.getSamplecount()), 
 		    // 		 mapStyle( sSum.getTerm() ), 
 		    // 		 sSum.getTerm() );
+		    }
 		}
 	    }
 	}
