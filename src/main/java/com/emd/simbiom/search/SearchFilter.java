@@ -16,7 +16,8 @@ import org.zkoss.zul.Textbox;
 import org.zkoss.zul.Window;
 
 import com.emd.simbiom.command.InventoryViewAction;
-import com.emd.simbiom.dao.SampleInventoryDAO;
+// import com.emd.simbiom.dao.SampleInventoryDAO;
+import com.emd.simbiom.dao.SampleInventory;
 import com.emd.simbiom.model.Sample;
 
 import com.emd.util.Stringx;
@@ -247,7 +248,8 @@ public class SearchFilter extends VelocityView {
      *
      * @param a set of samples matching the filter ordered by sample id. 
      */
-    public SortedSet<Sample> applyFilter( SortedSet<Sample> samples, Window wnd, SampleInventoryDAO dao )
+    // public SortedSet<Sample> applyFilter( SortedSet<Sample> samples, Window wnd, SampleInventoryDAO dao )
+    public SortedSet<Sample> applyFilter( SortedSet<Sample> samples, Window wnd, SampleInventory dao )
 	throws SQLException {
 
 	return samples;

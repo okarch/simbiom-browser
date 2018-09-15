@@ -14,11 +14,15 @@ import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.Events;
 
 import org.zkoss.zul.Combobox;
+import org.zkoss.zul.Comboitem;
 import org.zkoss.zul.ListModelArray;
 import org.zkoss.zul.Window;
 
-import com.emd.simbiom.dao.SampleInventoryDAO;
+// import com.emd.simbiom.dao.SampleInventoryDAO;
+import com.emd.simbiom.dao.SampleInventory;
+import com.emd.simbiom.dao.StorageCost;
 
+import com.emd.simbiom.model.CostEstimate;
 import com.emd.simbiom.model.CostSample;
 
 import com.emd.simbiom.view.DefaultModelProducer;
@@ -38,6 +42,7 @@ public class RegistrationModel extends DefaultModelProducer implements EventList
     private static Log log = LogFactory.getLog(RegistrationModel.class);
 
     public static final String COMPONENT_ID = "cbRegistration";
+    public static final String CMP_REGION = "cbRegion";
     public static final String RESULT = "result";
     
 
@@ -53,14 +58,30 @@ public class RegistrationModel extends DefaultModelProducer implements EventList
      * @param context the execution context.
      */
     public void initModel( Window wnd, Map context ) {
-	SampleInventoryDAO dao = getSampleInventory();
+	// SampleInventoryDAO dao = getSampleInventory();
+	SampleInventory dao = getSampleInventory();
 	if( dao == null ) {
 	    writeMessage( wnd, "Error: No database access configured" );
 	    return;
 	}
 
+	Combobox cbReg = (Combobox)wnd.getFellowIfAny( CMP_REGION );
+	String region = null;
+	if( cbReg != null ) {
+	    Comboitem ci = cbReg.getSelectedItem();
+	    if( (ci != null) && (ci.getValue() != null) ) {
+		region = ci.getValue().toString();
+		log.debug( "Assigning storage region from selection: "+region ); 
+	    }
+	    else
+		log.warn( "No region selected, using default region" );
+	}
+
+	region = Stringx.getDefault( region, CostEstimate.DEFAULT_REGION );
+	log.debug( "Assigning storage region: "+region ); 
+
 	try {
-	    CostSample[] tList = dao.findCostBySampleType( SampleInventoryDAO.SAMPLE_REGISTRATION );
+	    CostSample[] tList = dao.findCostBySampleType( StorageCost.SAMPLE_REGISTRATION, region );
 
 	    Combobox cbTempl = (Combobox)wnd.getFellowIfAny( getModelName() );
 	    if( cbTempl != null ) {
@@ -73,6 +94,24 @@ public class RegistrationModel extends DefaultModelProducer implements EventList
 	catch( SQLException sqe ) {
 	    writeMessage( wnd, "Error: Cannot query database: "+Stringx.getDefault(sqe.getMessage(),"reason unknown") );
 	    log.error( sqe );
+	}
+    }
+
+    /**
+     * Updates the model producer.
+     *
+     * @param wnd the application window.
+     * @param context the execution context.
+     */
+    public void updateModel( Window wnd, Map context ) {
+	Combobox cmp = (Combobox)wnd.getFellowIfAny( this.getModelName() );
+	if( (cmp != null) && (context != null) ) {
+	    // CostSample cs = getSelectedCostSample( cmp );
+	    log.debug( "Updating model "+this.getModelName()+" context: "+context );
+	    this.assignCombobox( cmp, ((context==null)?new HashMap():context) );
+	    // cmp = (Combobox)wnd.getFellowIfAny( this.getModelName() );
+	    // if( cs != null )
+	    // 	selectCostSampleByName( cmp, cs );
 	}
     }
 

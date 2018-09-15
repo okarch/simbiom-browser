@@ -19,7 +19,8 @@ import org.zkoss.zk.ui.util.WebAppCleanup;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import com.emd.simbiom.dao.SampleInventoryDAO;
+// import com.emd.simbiom.dao.SampleInventoryDAO;
+import com.emd.simbiom.dao.SampleInventory;
 import com.emd.simbiom.config.InventoryPreferences;
 
 public class InventoryCleanup implements WebAppCleanup, ServletContextListener {
@@ -78,7 +79,8 @@ public class InventoryCleanup implements WebAppCleanup, ServletContextListener {
 	    String pid = prefs[i].getPortletId();
 	    long uid = prefs[i].getUserId();
 	    log.debug( "Cleaning database access of user "+uid+" portlet id "+pid );
-	    SampleInventoryDAO dao = prefs[i].getInventory();
+	    // SampleInventoryDAO dao = prefs[i].getInventory();
+	    SampleInventory dao = prefs[i].getInventory();
 	    dao.close();
 	}
     }

@@ -28,7 +28,8 @@ import org.zkoss.zul.Window;
 import com.emd.simbiom.command.InventoryViewAction;
 import com.emd.simbiom.config.InventoryPreferences;
 
-import com.emd.simbiom.dao.SampleInventoryDAO;
+// import com.emd.simbiom.dao.SampleInventoryDAO;
+import com.emd.simbiom.dao.SampleInventory;
 import com.emd.simbiom.model.Sample;
 
 import com.emd.simbiom.search.SampleResult;
@@ -70,7 +71,8 @@ public class BrowseSamples extends InventoryViewAction {
     }
 
     private Sample[] querySamples( Window wnd, String nodePath ) {
-	SampleInventoryDAO sampleInventory = getSampleInventory();
+	// SampleInventoryDAO sampleInventory = getSampleInventory();
+	SampleInventory sampleInventory = getSampleInventory();
 	Sample[] samples = null;
 	if( sampleInventory == null ) {
 	    log.error( "Cannot access sample inventory" );

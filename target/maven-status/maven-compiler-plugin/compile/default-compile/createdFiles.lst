@@ -1,6 +1,7 @@
 com/emd/simbiom/template/EditTemplate$3.class
 com/emd/simbiom/template/SelectResultLog.class
 com/emd/simbiom/search/RowCache.class
+com/emd/simbiom/search/UpdateColumns.class
 com/emd/simbiom/view/SwitchTab.class
 com/emd/simbiom/cost/RemoveSampleItem.class
 com/emd/simbiom/view/RowComparator.class
@@ -31,10 +32,13 @@ com/emd/simbiom/search/UseFilter.class
 com/emd/simbiom/search/CategoryFilter.class
 com/emd/simbiom/category/ChartCategoryView.class
 com/emd/simbiom/category/CategoryTreeView.class
+com/emd/simbiom/search/SelectSample.class
 com/emd/simbiom/search/FilterRemove.class
 com/emd/simbiom/search/FilterOperator.class
 com/emd/simbiom/search/SelectFilterOperator.class
+com/emd/simbiom/search/DisplayColumn.class
 com/emd/simbiom/search/ResultMenu.class
+com/emd/simbiom/cost/SelectRegion.class
 com/emd/simbiom/search/AgeFilter.class
 com/emd/simbiom/template/ResultLog.class
 com/emd/simbiom/template/OpenResultLog.class
@@ -49,6 +53,7 @@ com/emd/simbiom/category/GoogleChartCategoryView.class
 com/emd/simbiom/portlet/SampleInventoryApplication.class
 com/emd/simbiom/cost/UpdateEstimate.class
 com/emd/simbiom/search/AgeInputChange.class
+com/emd/simbiom/view/DateComparator.class
 com/emd/simbiom/search/SearchSamples.class
 com/emd/simbiom/config/InventoryPreferences.class
 com/emd/simbiom/template/UploadSamples.class
@@ -57,6 +62,7 @@ com/emd/simbiom/template/BatchEntry$1.class
 com/emd/simbiom/cost/CostItemRenderer.class
 com/emd/simbiom/category/BrowseSamples.class
 com/emd/simbiom/view/BarChartEngine.class
+com/emd/simbiom/search/ColumnSelect.class
 com/emd/simbiom/cost/AddSampleItem.class
 com/emd/simbiom/template/UploadLogRenderer.class
 com/emd/simbiom/category/CategoryView.class
@@ -64,8 +70,11 @@ com/emd/simbiom/category/BrowseLogisticsSamples.class
 com/emd/simbiom/template/EditTemplate$2.class
 com/emd/simbiom/view/AbstractCategoryTreeNode.class
 com/emd/simbiom/template/UploadTemplate.class
+com/emd/simbiom/search/ColumnSetup.class
+com/emd/simbiom/search/SelectSample$1.class
 com/emd/simbiom/search/SampleResult.class
 com/emd/simbiom/category/CategoryViewNode.class
+com/emd/simbiom/search/SampleDetailsView.class
 com/emd/simbiom/view/UIUtils.class
 com/emd/simbiom/search/TextFilter.class
 com/emd/simbiom/view/CategoryTreeModel.class

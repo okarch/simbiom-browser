@@ -191,7 +191,12 @@ public class GoogleChartCategoryView extends CategoryView {
 	    pPath.append( paths[i] );
 	}
 	log.debug( "Parent node path: "+pPath );
-	
+
+	if( (pPath.length() <= 0) && (context.containsKey(CategoryTreeView.ALL_SAMPLES)) ) {
+	    parentSummary = (SampleSummary)context.get(CategoryTreeView.ALL_SAMPLES);
+	    return parentSummary;
+	}
+	    
 	// traverse tree to find parent node path
 
 	String mName = (String)context.get( CategoryTreeView.MODEL_NAME );
@@ -213,45 +218,6 @@ public class GoogleChartCategoryView extends CategoryView {
 	}
 	
 	return parentSummary;
-    }
-
-    private SampleSummary[] collectParentSummaries( Window wnd, Map context, CategoryViewNode node ) {
-	String mName = (String)context.get( CategoryTreeView.MODEL_NAME );
-	Tree cTree = null;
-	TreeModel tModel = null;
-	List<SampleSummary> pathNodes = new ArrayList<SampleSummary>();
-	if( (mName != null) && 
-	    ((cTree = (Tree)wnd.getFellowIfAny(mName)) != null) && 
-	    ((tModel = cTree.getModel()) != null) ) {
-
-	    CategoryViewNode rootNode = (CategoryViewNode)tModel.getRoot();
-	    log.debug( "Root node: "+rootNode );
-
-	    int[] pathIds = tModel.getPath( node );
-	    
-	    SampleSummary sSum = null;
-	    for( int i = 0; i < pathIds.length-1; i++ ) {
-		int[] nAccess = Arrays.copyOfRange( pathIds, 0, i);
-		CategoryViewNode pNode = (CategoryViewNode)tModel.getChild( nAccess );
-		if( pNode != null ) {
-		    log.debug( "Parent node: "+pNode+" node path: "+pNode.getNodePath() );
-		    sSum = (SampleSummary)pNode.getNodeData();
-		    if( sSum != null ) {
-			log.debug( "Parent node sample summary: "+sSum+" term: "+sSum.getTerm()+" sample count: "+sSum.getSamplecount() );
-			pathNodes.add( sSum );
-		    }
-		}
-	    }
-	    log.debug( "Current node: "+node+" node path: "+node.getNodePath() );
-	    sSum = (SampleSummary)node.getNodeData();
-	    if( sSum != null ) {
-		log.debug( "Parent node sample summary: "+sSum+" term: "+sSum.getTerm()+" sample count: "+sSum.getSamplecount() );
-		pathNodes.add( sSum );
-	    }
-	}
-	
-	SampleSummary[] sSums = new SampleSummary[ pathNodes.size() ];
-	return (SampleSummary[])pathNodes.toArray( sSums );
     }
 
     private DataTable createModel( Window wnd, Map context ) {
@@ -367,4 +333,43 @@ public class GoogleChartCategoryView extends CategoryView {
     //     });
     //     chartArea.getChildren().clear();
     //     chartArea.appendChild(chart);
+    // }
+
+    // private SampleSummary[] collectParentSummaries( Window wnd, Map context, CategoryViewNode node ) {
+    // 	String mName = (String)context.get( CategoryTreeView.MODEL_NAME );
+    // 	Tree cTree = null;
+    // 	TreeModel tModel = null;
+    // 	List<SampleSummary> pathNodes = new ArrayList<SampleSummary>();
+    // 	if( (mName != null) && 
+    // 	    ((cTree = (Tree)wnd.getFellowIfAny(mName)) != null) && 
+    // 	    ((tModel = cTree.getModel()) != null) ) {
+
+    // 	    CategoryViewNode rootNode = (CategoryViewNode)tModel.getRoot();
+    // 	    log.debug( "Root node: "+rootNode );
+
+    // 	    int[] pathIds = tModel.getPath( node );
+	    
+    // 	    SampleSummary sSum = null;
+    // 	    for( int i = 0; i < pathIds.length-1; i++ ) {
+    // 		int[] nAccess = Arrays.copyOfRange( pathIds, 0, i);
+    // 		CategoryViewNode pNode = (CategoryViewNode)tModel.getChild( nAccess );
+    // 		if( pNode != null ) {
+    // 		    log.debug( "Parent node: "+pNode+" node path: "+pNode.getNodePath() );
+    // 		    sSum = (SampleSummary)pNode.getNodeData();
+    // 		    if( sSum != null ) {
+    // 			log.debug( "Parent node sample summary: "+sSum+" term: "+sSum.getTerm()+" sample count: "+sSum.getSamplecount() );
+    // 			pathNodes.add( sSum );
+    // 		    }
+    // 		}
+    // 	    }
+    // 	    log.debug( "Current node: "+node+" node path: "+node.getNodePath() );
+    // 	    sSum = (SampleSummary)node.getNodeData();
+    // 	    if( sSum != null ) {
+    // 		log.debug( "Parent node sample summary: "+sSum+" term: "+sSum.getTerm()+" sample count: "+sSum.getSamplecount() );
+    // 		pathNodes.add( sSum );
+    // 	    }
+    // 	}
+	
+    // 	SampleSummary[] sSums = new SampleSummary[ pathNodes.size() ];
+    // 	return (SampleSummary[])pathNodes.toArray( sSums );
     // }

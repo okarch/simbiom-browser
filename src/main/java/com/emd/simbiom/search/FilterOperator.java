@@ -9,7 +9,8 @@ import org.apache.commons.logging.LogFactory;
 
 import org.zkoss.zul.Window;
 
-import com.emd.simbiom.dao.SampleInventoryDAO;
+// import com.emd.simbiom.dao.SampleInventoryDAO;
+import com.emd.simbiom.dao.SampleInventory;
 import com.emd.simbiom.model.Sample;
 
 /**
@@ -106,7 +107,8 @@ public class FilterOperator {
      * @param wnd the application window.
      * @param dao the database.
      */
-    public void applyFilter( SortedSet<Sample> samples, Window wnd, SampleInventoryDAO dao )
+    // public void applyFilter( SortedSet<Sample> samples, Window wnd, SampleInventoryDAO dao )
+    public void applyFilter( SortedSet<Sample> samples, Window wnd, SampleInventory dao )
 	throws SQLException {
 
 	if( (combineSets == SET_INTERSECTION) && (samples.size() <= 0) ) {

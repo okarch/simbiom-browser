@@ -13,7 +13,8 @@ import org.apache.commons.logging.LogFactory;
 
 import org.zkoss.zul.Window;
 
-import com.emd.simbiom.dao.SampleInventoryDAO;
+// import com.emd.simbiom.dao.SampleInventoryDAO;
+import com.emd.simbiom.dao.SampleInventory;
 import com.emd.simbiom.model.Sample;
 
 /**
@@ -54,7 +55,8 @@ public class FilterMatcher {
      * Evaluate the filter chain.
      *
      */
-    public Sample[] evaluateFilters( Window wnd, SampleInventoryDAO db ) 
+    public Sample[] evaluateFilters( Window wnd, SampleInventory db ) 
+    // public Sample[] evaluateFilters( Window wnd, SampleInventoryDAO db ) 
 	throws SQLException {
 
 	log.debug( "Evaluate filter chain, length "+operators.size() );

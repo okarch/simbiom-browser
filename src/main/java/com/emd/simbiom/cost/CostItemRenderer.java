@@ -20,7 +20,8 @@ import org.zkoss.zul.Label;
 import org.zkoss.zul.Row;
 import org.zkoss.zul.RowRenderer;
 
-import com.emd.simbiom.dao.SampleInventoryDAO;
+// import com.emd.simbiom.dao.SampleInventoryDAO;
+import com.emd.simbiom.dao.SampleInventory;
 
 import com.emd.simbiom.model.Cost;
 import com.emd.simbiom.model.CostItem;
@@ -36,14 +37,17 @@ import com.emd.util.Stringx;
  * @version 1.0
  */
 public class CostItemRenderer implements RowRenderer {
-    private SampleInventoryDAO sampleInventory;
+    // private SampleInventoryDAO sampleInventory;
+    private SampleInventory sampleInventory;
 
     private static Map<Long,String[]> costItems = new HashMap<Long,String[]>();
     private static Log log = LogFactory.getLog(CostItemRenderer.class);
 
     private static final int NUM_COLS = 4;
 
-    public CostItemRenderer( SampleInventoryDAO sampleInventory ) {
+    // public CostItemRenderer( SampleInventoryDAO sampleInventory ) {
+
+    public CostItemRenderer( SampleInventory sampleInventory ) {
 	this.sampleInventory = sampleInventory;
     }
 

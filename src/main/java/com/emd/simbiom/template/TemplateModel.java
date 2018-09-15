@@ -24,7 +24,8 @@ import org.zkoss.zul.ListModelArray;
 import org.zkoss.zul.Textbox;
 import org.zkoss.zul.Window;
 
-import com.emd.simbiom.dao.SampleInventoryDAO;
+// import com.emd.simbiom.dao.SampleInventoryDAO;
+import com.emd.simbiom.dao.SampleInventory;
 
 import com.emd.simbiom.upload.InventoryUploadTemplate;
 
@@ -75,7 +76,8 @@ public class TemplateModel extends DefaultModelProducer implements EventListener
      * @param context the execution context.
      */
     public void initModel( Window wnd, Map context ) {
-	SampleInventoryDAO dao = getSampleInventory();
+	// SampleInventoryDAO dao = getSampleInventory();
+	SampleInventory dao = getSampleInventory();
 	if( dao == null ) {
 	    writeMessage( wnd, "Error: No database access configured" );
 	    return;
@@ -141,7 +143,8 @@ public class TemplateModel extends DefaultModelProducer implements EventListener
      * @param selTemplate the upload template currently selected (or null).
      */ 
     public void reloadTemplates( Window wnd, InventoryUploadTemplate selTemplate ) {
-	SampleInventoryDAO dao = getSampleInventory();
+	// SampleInventoryDAO dao = getSampleInventory();
+	SampleInventory dao = getSampleInventory();
 	if( dao == null ) {
 	    writeMessage( wnd, "Error: No database access configured" );
 	    return;

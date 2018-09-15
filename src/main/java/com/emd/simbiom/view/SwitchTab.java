@@ -31,7 +31,8 @@ import org.zkoss.zk.ui.Sessions;
 
 import com.emd.simbiom.command.InventoryCommand;
 import com.emd.simbiom.config.InventoryPreferences;
-import com.emd.simbiom.dao.SampleInventoryDAO;
+// import com.emd.simbiom.dao.SampleInventoryDAO;
+import com.emd.simbiom.dao.SampleInventory;
 import com.emd.simbiom.model.CostEstimate;
 
 import com.emd.util.Stringx;
@@ -77,6 +78,47 @@ public class SwitchTab extends InventoryCommand {
     }
 
     /**
+     * Returns the selected storage region.
+     *
+     * @param wnd the app window.
+     *
+     * @return cost estimate or null if not available.
+     */
+    public String getSelectedRegion( Window wnd ) {
+	Combobox cb = (Combobox)wnd.getFellowIfAny( "cbRegion" );
+	String region = null;
+	if( cb != null ) {
+	    Comboitem ci = cb.getSelectedItem();
+	    if( (ci != null) && (ci.getValue() != null) ) {
+		region = ci.getValue().toString();
+		log.debug( "Selected storage region: "+region ); 
+	    }
+	    else
+		log.warn( "No region selected, using default region" );
+	}
+
+	return Stringx.getDefault( region, CostEstimate.DEFAULT_REGION );
+    }
+
+    private void selectRegion( Window wnd, String region ) {
+	Combobox cb = (Combobox)wnd.getFellowIfAny( "cbRegion" );
+	if( cb != null ) {
+	    List<Comboitem> items = cb.getItems();
+	    int idx = 0;
+	    boolean foundIt = false;
+	    for( Comboitem ci : items ) {
+		if( (ci.getValue() != null) && (ci.getValue().toString().equals( region ))  ) {
+		    foundIt = true;
+		    break;
+		}
+		idx++;
+	    }
+	    if( foundIt )
+		cb.setSelectedIndex( idx );
+	}
+    }
+
+    /**
      * Returns the current sessions cost estimate.
      *
      * @return cost estimate or null if not available.
@@ -86,7 +128,8 @@ public class SwitchTab extends InventoryCommand {
 	log.debug( "Session identified: "+sessionId );
 	CostEstimate ce = estimates.get( sessionId );
 	if( ce == null ) {
-	    SampleInventoryDAO dao = getSampleInventory();
+	    // SampleInventoryDAO dao = getSampleInventory();
+	    SampleInventory dao = getSampleInventory();
 	    if( dao == null ) {
 		log.error( "No database access configured" );
 		return null;
@@ -104,6 +147,7 @@ public class SwitchTab extends InventoryCommand {
 	    Textbox txt = (Textbox)wnd.getFellowIfAny( "txtCostProject" );
 	    if( txt != null )
 		txt.setValue( ce.getProjectname() );
+	    // selectRegion( wnd, ce.getRegion() );
 	}
 	return ce;
     }

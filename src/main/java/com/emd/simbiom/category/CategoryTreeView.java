@@ -1,5 +1,7 @@
 package com.emd.simbiom.category;
 
+import java.sql.SQLException;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -21,7 +23,8 @@ import org.zkoss.zul.TreeModel;
 import org.zkoss.zul.ext.TreeSelectableModel;
 import org.zkoss.zul.Window;
 
-import com.emd.simbiom.dao.SampleInventoryDAO;
+// import com.emd.simbiom.dao.SampleInventoryDAO;
+import com.emd.simbiom.dao.SampleInventory;
 import com.emd.simbiom.model.SampleSummary;
 
 import com.emd.simbiom.view.CategoryTreeModel;
@@ -50,6 +53,7 @@ public class CategoryTreeView extends DefaultModelProducer implements EventListe
     public static final String SUMMARY          = "summary";
     public static final String PATH             = "path";
     public static final String MODEL_NAME       = "modelName";
+    public static final String ALL_SAMPLES      = "allSamples";
 
     private static Log log = LogFactory.getLog(CategoryTreeView.class);
 
@@ -195,6 +199,23 @@ public class CategoryTreeView extends DefaultModelProducer implements EventListe
 	return stb.toString();
     }
 
+    private SampleSummary countAllSamples() {
+	// SampleInventoryDAO dao = getSampleInventory();
+	SampleInventory dao = getSampleInventory();
+	if( dao != null ) {
+	    try {
+		SampleSummary[] sSums = dao.createSampleSummary( "" );
+		log.debug( "All samples query: "+sSums.length );
+		if( sSums.length > 0 )
+		    return sSums[0];
+	    }
+	    catch( SQLException sqe ) {
+		log.error( sqe );
+	    }
+	}
+	return null;
+    }
+
     private Map createContext( CategoryView cv, CategoryViewNode cvn ) {
 	Map ctxt = new HashMap();
 	ctxt.put( RESULT, cvn );
@@ -204,6 +225,9 @@ public class CategoryTreeView extends DefaultModelProducer implements EventListe
 	    ctxt.put( SUMMARY, (SampleSummary)nd );
 	ctxt.put( PATH, cvn.getNodePath() );
 	ctxt.put( MODEL_NAME, getModelName() );
+	SampleSummary sSum = countAllSamples();
+	if( sSum != null )
+	    ctxt.put( ALL_SAMPLES, sSum );
 	return ctxt;
     }
 

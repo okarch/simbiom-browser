@@ -81,6 +81,7 @@ public class SelectFilterOperator extends InventoryCommand {
 	    return -1;
 	}
 	int suff = Stringx.toInt(toks[1],0);
+	log.debug( "Selected suffix: "+String.valueOf(suff) );
 
 	int maxSuffix = 0;
      	ModelProducer[] filters = (ModelProducer[])getPreferences().getResult( FilterModel.class );
@@ -89,6 +90,7 @@ public class SelectFilterOperator extends InventoryCommand {
 	    if( idx > maxSuffix )
 		maxSuffix = idx;
 	}
+	log.debug( "Maximum suffix: "+String.valueOf(maxSuffix) );
 
 	if( suff < maxSuffix )
 	    return -1;

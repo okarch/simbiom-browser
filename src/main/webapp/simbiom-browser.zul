@@ -24,6 +24,7 @@
       <tab id="tabBrowse" label="Search" />
       <tab id="tabUpload" label="Upload" disabled="true" />
       <tab id="tabCost" label="Costs" />
+      <tab id="tabBudget" label="Budget" />
       <tab id="tabLogin" label="Login" />
     </tabs>
 
@@ -47,6 +48,7 @@
                 <attribute name="onCreate">self.setSelectedIndex(0);</attribute>
                 <comboitem label="Molecule" value="Molecules" />
                 <comboitem label="Disease" value="Diseases" />
+                <comboitem label="Indication" value="Indications" />
                 <comboitem label="Sample type" value="Sample types" />
               </combobox>
             </row>
@@ -203,14 +205,14 @@
                     </auxheader>
                   </auxhead> 
                   <columns id="colsSearchResult" menupopup="auto" sizable="true">
-                    <column width="30px"/>
-                    <column id="colStudy" label="Study"/>
-                    <column id="colSampleType" label="Type"/>
-                    <column id="colSampleId" label="Accession"/>
-                    <column id="colSubject" label="Subject"/>
-                    <column id="colVisit" label="Visit"/>
-                    <column id="colCollection" label="Collected"/>
-                    <column id="colImport" label="Imported"/>
+                    <column id="colSelect" width="80px"/>
+                    <column id="colSearch_0" label="Study"/>
+                    <column id="colSearch_1" label="Type"/>
+                    <column id="colSearch_2" label="Accession"/>
+                    <column id="colSearch_3" label="Subject"/>
+                    <column id="colSearch_4" label="Visit"/>
+                    <column id="colSearch_5" label="Collected"/>
+                    <column id="colSearch_6" label="Imported"/>
                   </columns>
                 </grid>
 <!--
@@ -349,6 +351,19 @@
 
               <row>
                 <cell style="text-align:left">
+                  <label value="Storage region"/>
+                </cell>
+                <combobox id="cbRegion" autodrop="true" width="250px" mold="rounded" buttonVisible="true">
+                  <attribute name="onCreate">self.setSelectedIndex(1);</attribute>
+                  <comboitem label="China" value="CN"/>
+                  <comboitem label="Europe" value="EU" />
+                  <comboitem label="South-East Asia" value="SG" />
+                  <comboitem label="United States" value="US" />
+                </combobox>
+              </row>
+
+              <row>
+                <cell style="text-align:left">
                   <label value="Registration mode"/>
                 </cell>
                 <combobox id="cbRegistration" autodrop="true" width="250px" mold="rounded" buttonVisible="true"/>
@@ -431,6 +446,65 @@
               </columns>
             </grid>
           </groupbox>
+
+      </tabpanel>
+
+      <tabpanel id="pnBudget">
+        
+        <groupbox id="gBudgetOverview" mold="3d" open="true">
+          <caption label="Budget overview" />  
+          <vlayout>
+            <hlayout>
+              <label value="Period"/>
+              <combobox id="cbBudgetYear" autodrop="true" width="200px" mold="rounded" buttonVisible="true"/>
+              <label value="Program"/>
+              <combobox id="cbBudgetProgram" autodrop="true" width="200px" mold="rounded" buttonVisible="true"/>
+            </hlayout>
+            <vlayout id="vlBudgetVisual">
+              <label id="lbNoBudget" width="400px" value="Budget overview is not available"/>
+            </vlayout>
+          </vlayout>
+        </groupbox>
+
+        <groupbox id="gInvoices" mold="3d" open="false">
+          <caption label="Invoices" />  
+
+	  <grid id="grInvoices" fixedLayout="true" span="true" mold="paging" pageSize="20">
+            <auxhead>
+              <auxheader colspan="2">
+                <menubar autodrop="true">
+                  <menu label="Edit">
+                    <menupopup>
+                      <menuitem label="New Invoice" image="/images/add-icon.png"/>
+                      <menuitem label="Delete Invoice" image="/images/delete-icon.png"/>
+                    </menupopup>
+                  </menu>
+                  <menu label="Export">
+                    <menupopup>
+                      <menuitem label="Excel" image="/images/excel-24.png"/>
+                      <menuitem label="PDF" image="/images/pdf2-24.png"/>
+                    </menupopup>
+                  </menu>
+                </menubar>
+              </auxheader>
+              <auxheader colspan="3">		      
+                <textbox id="txtInvoiceSearch" width="200px"/>
+                <button id="btInvoiceSearch" label="Search"/>
+                <combobox id="cbInvoicePeriod" autodrop="true" width="200px" mold="rounded" buttonVisible="true"/>		      
+              </auxheader>
+            </auxhead> 
+            <columns id="colInvoices" menupopup="auto" sizable="true">
+              <column id="colInvoiceSelect" width="80px"/>
+              <column id="colInvoice_0" label="Period"/>
+              <column id="colInvoice_1" label="PO Number"/>
+              <column id="colInvoice_2" label="Invoice"/>
+              <column id="colInvoice_3" label="Value"/>
+              <column id="colInvoice_4" label="Samples"/>
+              <column id="colInvoice_5" label="Status"/>
+              <column id="colInvoice_6" label="Project"/>
+            </columns>
+          </grid>
+        </groupbox>
 
       </tabpanel>
 

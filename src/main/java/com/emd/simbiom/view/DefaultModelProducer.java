@@ -20,7 +20,8 @@ import org.zkoss.zul.Window;
 
 import com.emd.simbiom.config.InventoryPreferences;
 
-import com.emd.simbiom.dao.SampleInventoryDAO;
+// import com.emd.simbiom.dao.SampleInventoryDAO;
+import com.emd.simbiom.dao.SampleInventory;
 
 import com.emd.util.BidirectionalComparator;
 import com.emd.util.Stringx;
@@ -89,9 +90,12 @@ public class DefaultModelProducer implements ModelProducer {
      * Convenience method to return the dossier database.
      * @return dossier preferences
      */
-    public SampleInventoryDAO getSampleInventory() {
+    public SampleInventory getSampleInventory() {
 	return InventoryPreferences.getInstance( portletId, userId ).getInventory();	
     }
+    // public SampleInventoryDAO getSampleInventory() {
+    // 	return InventoryPreferences.getInstance( portletId, userId ).getInventory();	
+    // }
 
     /**
      * Convenience method to return the preferences.

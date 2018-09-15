@@ -11,7 +11,8 @@ import java.sql.SQLException;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import com.emd.simbiom.dao.SampleInventoryDAO;
+// import com.emd.simbiom.dao.SampleInventoryDAO;
+import com.emd.simbiom.dao.SampleInventory;
 import com.emd.simbiom.model.SampleSummary;
 
 import com.emd.simbiom.view.AbstractCategoryTreeNode;
@@ -26,7 +27,8 @@ import com.emd.simbiom.view.CategoryTreeNode;
  * @version 1.0
  */
 public class CategoryViewNode extends AbstractCategoryTreeNode {
-    private SampleInventoryDAO sampleInventory;
+    // private SampleInventoryDAO sampleInventory;
+    private SampleInventory sampleInventory;
     private List<CategoryTreeNode> children;
     private String parentPath;
     private Object nodeData;
@@ -39,7 +41,8 @@ public class CategoryViewNode extends AbstractCategoryTreeNode {
 	"Locations",
 	"Molecules",
 	"Sample types",
-	"Studies"
+	"Studies",
+	"Indications"
     };
 
     /**
@@ -49,7 +52,8 @@ public class CategoryViewNode extends AbstractCategoryTreeNode {
      * @param parentPath the full parent node path (e.g. root|xyz|child1).
      * @param category the node name.
      */
-    public CategoryViewNode( SampleInventoryDAO dao, String parentPath, String category ) {
+    public CategoryViewNode( SampleInventory dao, String parentPath, String category ) {
+    // public CategoryViewNode( SampleInventoryDAO dao, String parentPath, String category ) {
 	super( category );
 	this.sampleInventory = dao;
 	this.children = null;
@@ -62,7 +66,8 @@ public class CategoryViewNode extends AbstractCategoryTreeNode {
      * @param dao the sample inventory database.
      * @param category the node name.
      */
-    public CategoryViewNode( SampleInventoryDAO dao, String category ) {
+    public CategoryViewNode( SampleInventory dao, String category ) {
+    // public CategoryViewNode( SampleInventoryDAO dao, String category ) {
 	this( dao, "", category );
     }
 
@@ -168,9 +173,9 @@ public class CategoryViewNode extends AbstractCategoryTreeNode {
 	if( children == null ) {
 	    List<CategoryTreeNode> cl = new ArrayList<CategoryTreeNode>();
 	    SampleSummary[] sSums = querySummary();
-	    // log.debug( "Category node: "+getNodePath()+" number of sample groups: "+sSums.length+" node path: "+getNodePath() );
+	    log.debug( "Category node: "+getNodePath()+" number of sample groups: "+sSums.length+" node path: "+getNodePath() );
 	    for( int i = 0; i < sSums.length; i++ ) {
-		// log.debug( "Sample summary: "+sSums[i]+" "+sSums[i].getTerm() );
+		log.debug( "Sample summary: "+sSums[i]+" "+sSums[i].getTerm() );
 		CategoryViewNode cvn = new CategoryViewNode( sampleInventory, getNodePath(), sSums[i].getTerm() );
 		cvn.setNodeData( sSums[i] );
 		cvn.setTermNode( true );

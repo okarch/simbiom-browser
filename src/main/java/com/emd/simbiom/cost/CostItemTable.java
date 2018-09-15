@@ -15,7 +15,8 @@ import org.zkoss.zul.Grid;
 import org.zkoss.zul.ListModelArray;
 import org.zkoss.zul.Window;
 
-import com.emd.simbiom.dao.SampleInventoryDAO;
+// import com.emd.simbiom.dao.SampleInventoryDAO;
+import com.emd.simbiom.dao.SampleInventory;
 
 import com.emd.simbiom.model.CostItem;
 
@@ -90,7 +91,8 @@ public class CostItemTable extends DefaultModelProducer {
     protected void assignGrid( Grid grid, Map context ) {
 	log.debug( "Cost item table context: "+context );
 
-	SampleInventoryDAO dao = getSampleInventory();
+	// SampleInventoryDAO dao = getSampleInventory();
+	SampleInventory dao = getSampleInventory();
 	if( dao == null ) {
 	    writeMessage( grid, "Error: No database access configured" );
 	    return;

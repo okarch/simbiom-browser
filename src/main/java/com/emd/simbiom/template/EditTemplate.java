@@ -26,7 +26,8 @@ import org.zkoss.zul.Window;
 
 import com.emd.simbiom.command.InventoryCommand;
 import com.emd.simbiom.config.InventoryPreferences;
-import com.emd.simbiom.dao.SampleInventoryDAO;
+// import com.emd.simbiom.dao.SampleInventoryDAO;
+import com.emd.simbiom.dao.SampleInventory;
 import com.emd.simbiom.upload.InventoryUploadTemplate;
 
 import com.emd.util.Stringx;
@@ -98,7 +99,8 @@ public class EditTemplate extends InventoryCommand {
     }
 
     private InventoryUploadTemplate retrieveTemplate( Window wnd, String st ) {
-	SampleInventoryDAO inv = getSampleInventory();
+	// SampleInventoryDAO inv = getSampleInventory();
+	SampleInventory inv = getSampleInventory();
 	if( inv == null )
 	    return null;
 	InventoryUploadTemplate[] templs = null;
@@ -187,7 +189,8 @@ public class EditTemplate extends InventoryCommand {
 	    showMessage( wnd, "rowMessageUpload", "lbMessageUpload", "Warning: \""+st+"\" does not exist. Nothing to delete." );
 	    return false;
 	}	
-	SampleInventoryDAO inv = getSampleInventory();
+	// SampleInventoryDAO inv = getSampleInventory();
+	SampleInventory inv = getSampleInventory();
 	if( inv == null )
 	    return false;
 	boolean del = false;
@@ -260,7 +263,8 @@ public class EditTemplate extends InventoryCommand {
     }
 
     private void storeTemplate( Window wnd, InventoryUploadTemplate templ ) {
-	SampleInventoryDAO inv = getSampleInventory();
+	// SampleInventoryDAO inv = getSampleInventory();
+	SampleInventory inv = getSampleInventory();
 	if( inv == null ) 
 	    return;
 	try {

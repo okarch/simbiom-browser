@@ -52,7 +52,8 @@ import com.emd.simbiom.auth.UserLogin;
 import com.emd.simbiom.command.InventoryCommand;
 import com.emd.simbiom.config.InventoryPreferences;
 
-import com.emd.simbiom.dao.SampleInventoryDAO;
+// import com.emd.simbiom.dao.SampleInventoryDAO;
+import com.emd.simbiom.dao.SampleInventory;
 
 import com.emd.simbiom.model.Roles;
 import com.emd.simbiom.model.User;
@@ -224,7 +225,8 @@ public class InventoryPortletController extends GenericForwardComposer {
     private void initUserSession( String portletId, long userId ) {
 	Session ses = Sessions.getCurrent();
 	if( ses != null ) {
-	    SampleInventoryDAO dao = InventoryPreferences.getInstance( portletId, userId ).getInventory();
+	    // SampleInventoryDAO dao = InventoryPreferences.getInstance( portletId, userId ).getInventory();
+	    SampleInventory dao = InventoryPreferences.getInstance( portletId, userId ).getInventory();
 	    try {
 		User usr = dao.findUserById( userId );
 		if( usr != null ) {

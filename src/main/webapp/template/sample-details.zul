@@ -1,0 +1,295 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<vlayout>
+#if( !$sampleDetails )
+  <label value="No sample details available!"/>
+#else
+#set( $xmlDetails = $xml.parse( $sampleDetails.getDetails() ) )
+#if( !$xmlDetails )
+  <label value="Failed to parse sample details!"/>
+#else
+#set( $sample = ${sampleDetails.getSample()} )
+  <groupbox id="gbInfoGeneral" mold="3d" open="true">
+    <caption image="/images/status.png" label="General" />                  
+    <grid id="grInfoGeneral" fixedLayout="true" span="true">
+      <columns>
+        <column label="Show" width="30px" hflex="1"/>
+        <column label="Filter" width="30px" hflex="1"/>
+        <column label="Property" hflex="min"/>
+        <column label="Value" hflex="min"/>
+      </columns>
+      <rows>
+        <row>
+          <checkbox id="chkShow_sampleid" checked="${columnSetup.getChecked('Internal ID')}" />
+          <checkbox id="chkFilter_sampleid" checked="false" />
+          <label id="lbProperty_sampleid" value="Internal ID" />
+#set( $xmlNode = ${xmlDetails.find("//sample-details/sampleid")} )
+#if( $xmlNode )
+#set( $xmlVal = ${xmlNode.text} )
+#end
+          <label id="lbValue_sampleid" value="$xmlVal" />
+        </row>
+        <row>
+          <checkbox id="chkShow_sampletype" 
+                    checked="${columnSetup.getChecked('Sample type')}" 
+                    value="typename"/>
+          <checkbox id="chkFilter_sampletype" checked="false" />
+          <label id="lbProperty_sampletype" value="Sample type" />
+#set( $xmlNode = ${xmlDetails.find("//sample-details/sampletype")} )
+#set( $xmlVal = "" )
+#if( $xmlNode )
+#set( $xmlVal = "${xmlNode.text}" )
+#end
+          <label id="lbValue_sampletype" value="$xmlVal" />
+        </row>
+        <row>
+          <checkbox id="chkShow_samplename" 
+                    checked="${columnSetup.getChecked('Sample type')}" 
+                    value="samplename" />
+          <checkbox id="chkFilter_samplename" checked="false" />
+          <label id="lbProperty_samplename" value="Sample name" />
+          <label id="lbValue_samplename" value="$sample" />
+        </row>
+        <row>
+          <checkbox id="chkShow_created" disabled="true" checked="false" />
+          <checkbox id="chkFilter_created" disabled="true" checked="false" />
+          <label id="lbProperty_created" value="Report created" />
+#set( $xmlNode = ${xmlDetails.find("//sample-details/created")} )
+#if( $xmlNode )
+#set( $xmlVal = ${xmlNode.text} )
+#end
+          <label id="lbValue_created" value="$xmlVal" />
+        </row>
+<!--
+#set( $xmlNodes = ${xmlDetails.find("//sample-details/accessions/accession")} )
+#set( $accessions = "" )
+#foreach( $xmlNode in $xmlNodes )
+#set( $acc = ${xmlNode.find( "./property[@name='accession']" )} )
+#if( $acc )
+#if( $velocityCount <= 1 )
+#set( $accessions = "$acc.text" )
+#else
+#set( $accessions = "$accessions, $acc.text" )
+#end
+#set( $org = ${xmlNode.find( "./organization/property[@name='orgname']" )} )
+#if( $org )
+#set( $accessions = "$accessions (at $org.text)" )
+#end
+#end
+#end
+-->
+        <row>
+          <checkbox id="chkShow_accessions" 
+                    checked="${columnSetup.getChecked('Known as')}" 
+                    value="accessions" />
+          <checkbox id="chkFilter_accessions" checked="false" />
+          <label id="lbProperty_accessions" value="Known as" />
+          <label id="lbValue_accessions" value="$accessions" />
+        </row>
+      </rows>
+    </grid>
+  </groupbox>
+  <groupbox id="gbInfoStudyDonor" mold="3d" open="true">
+    <caption image="/images/status.png" label="Study and Donor" />                  
+    <grid id="grInfoStudyDonor" fixedLayout="true" span="true">
+      <columns>
+        <column label="Keep" width="30px" hflex="1"/>
+        <column label="Filter" width="30px" hflex="1"/>
+        <column label="Property" hflex="min"/>
+        <column label="Value" hflex="min"/>
+      </columns>
+      <rows>
+#set( $xmlNodes = ${xmlDetails.find("//studies/study")} )
+#foreach( $xmlNode in $xmlNodes )
+#set( $study = ${xmlNode.find( "./property[@name='studyname']" )} )
+#if( $study )
+#set( $sname = "$study.text" )
+#else
+#set( $sname = "Unknown" )
+#end
+        <row>
+          <checkbox id="chkShow_study" 
+                    checked="${columnSetup.getChecked('Study')}" 
+                    value="studyname"/>
+          <checkbox id="chkFilter_study" checked="false" />
+          <label id="lbProperty_study" value="Study" />
+          <label id="lbValue_study" value="$sname" />
+        </row>
+#set( $reloc = ${xmlNode.find( "./property[@name='started']" )} )
+#if( $reloc )
+#set( $sname = "$reloc.text" )
+#else
+#set( $sname = "Unknown" )
+#end
+        <row>
+          <checkbox id="chkShow_reloc" checked="false" />
+          <checkbox id="chkFilter_reloc" checked="false" />
+          <label id="lbProperty_reloc" value="Relocation date" />
+          <label id="lbValue_reloc" value="$sname" />
+        </row>
+#set( $expire = ${xmlNode.find( "./property[@name='expire']" )} )
+#if( $expire )
+#set( $sname = "$expire.text" )
+#else
+#set( $sname = "Unknown" )
+#end
+        <row>
+          <checkbox id="chkShow_expire" 
+                    checked="${columnSetup.getChecked('Storage duration end')}" 
+                    value="//studies/study/property[@name='expire']"/>
+          <checkbox id="chkFilter_expire" checked="false" />
+          <label id="lbProperty_expire" value="Storage duration end" />
+          <label id="lbValue_expire" value="$sname" />
+        </row>
+#set( $subject = ${xmlNode.find( "./subject" )} )
+#set( $sname = "Unknown" )
+#if( $subject )
+#set( $subjid = ${subject.find( "./property[@name='subjectid']" )} )
+#if( $subjid )
+#set( $sname = "$subjid.text" )
+#end
+#end
+        <row>
+          <checkbox id="chkShow_subjid" 
+                    checked="${columnSetup.getChecked('Subject ID')}" 
+                    value="subjectid"/>
+          <checkbox id="chkFilter_subjid" checked="false" />
+          <label id="lbProperty_subjid" value="Subject ID" />
+          <label id="lbValue_subjid" value="$sname" />
+        </row>
+#set( $pNames = [ "enrolled", "ethnicity", "gender", "age" ] )
+#foreach( $pName in $pNames )
+#set( $sname = "Unknown" )
+#if( $subject )
+#set( $sattr = ${subject.find( "./property[@name='$pName']" )} )
+#if( $sattr )
+#set( $sname = "$sattr.text" )
+#end
+#end
+#set( $pAttrName = ${strings.capitalize($pName)} )
+        <row>
+          <checkbox id="chkShow_$pName" 
+                    checked="${columnSetup.getChecked($pAttrName)}" 
+                    value="//studies/study/subject/property[@name='$pName']"/>
+          <checkbox id="chkFilter_$pName" checked="false" />
+          <label id="lbProperty_$pName" value="$pAttrName" />
+          <label id="lbValue_$pName" value="$sname" />
+        </row>
+#end
+#if( $subject )
+#set( $sattrs = ${subject.find( "./subject-attr" )} )
+#end
+#if( $sattrs )
+#foreach( $sattr in $sattrs )
+#set( $pNode = ${sattr.find( "./property[@name='propertyname']" )} )
+#set( $pName = "" )
+#set( $sname = "" )
+#if( $pNode )
+#set( $pName = "$pNode.text" )
+#end
+#set( $pNode = ${sattr.find( "./property[@name='charvalue']" )} )
+#if( $pNode )
+#set( $sname = "$pNode.text" )
+#end
+        <row>
+          <checkbox id="chkShow_sa_${pName}_$velocityCount" 
+                    checked="${columnSetup.getChecked($pName)}" 
+                    value="//studies/study/subject/subject-attr/property[@name='propertyname' and text()='$pName']/../property[@name='charvalue']" />
+          <checkbox id="chkFilter_sa_${pName}_$velocityCount" checked="false" />
+          <label id="lbProperty_sa_${pName}_$velocityCount" value="$pName" />
+          <label id="lbValue_sattr_$velocityCount" value="$sname" />
+        </row>
+#end
+#end
+#end
+      </rows>
+    </grid>
+  </groupbox>
+  <groupbox id="gbInfoProcessing" mold="3d" open="false">
+    <caption image="/images/status.png" label="Sample processing" />                  
+    <grid id="grInfoProcessing" fixedLayout="true" span="true">
+      <columns>
+        <column label="Keep" width="30px" hflex="1"/>
+        <column label="Filter" width="30px" hflex="1"/>
+        <column label="Property" hflex="min"/>
+        <column label="Value" hflex="min"/>
+      </columns>
+      <rows>
+#set( $xmlNodes = ${xmlDetails.find("//sample-details/processing/visit/property[@name='visit']")} )
+#set( $sname = "" )
+#foreach( $xmlNode in $xmlNodes )
+#if( $velocityCount <= 1 )
+#set( $sname = "$xmlNode.text" )
+#else
+#set( $sname = "$sname, $xmlNode.text" )
+#end
+#end
+        <row>
+          <checkbox id="chkShow_visit" 
+                    checked="${columnSetup.getChecked('Visit')}" 
+                    value="visit.visit"/>
+          <checkbox id="chkFilter_visit" checked="false" />
+          <label id="lbProperty_visit" value="Visit" />
+          <label id="lbValue_visit" value="$sname" />
+        </row>
+#set( $pNode = ${xmlDetails.find( "//sample-details/processing/visit/property[@name='processed']" )} )
+#set( $sname = "" )
+#if( $pNode )
+#set( $sname = "${pNode.text}" )
+#end
+        <row>
+          <checkbox id="chkShow_collected" 
+                    checked="${columnSetup.getChecked('Collected')}" 
+                    value="visit.processed"/>
+          <checkbox id="chkFilter_collected" checked="false" />
+          <label id="lbProperty_collected" value="Collected" />
+          <label id="lbValue_collected" value="$sname" />
+        </row>
+      </rows>
+    </grid>
+  </groupbox>
+  <groupbox id="gbInfoRestriction" mold="3d" open="false">
+    <caption image="/images/status.png" label="Compliance information (applicable to study)" />                  
+    <grid id="grInfoRestriction" fixedLayout="true" span="true">
+      <columns>
+        <column label="Keep" width="30px" hflex="1"/>
+        <column label="Filter" width="30px" hflex="1"/>
+        <column label="Property" hflex="min"/>
+        <column label="Value" hflex="min"/>
+      </columns>
+      <rows>
+#set( $srules = ${xmlDetails.find("//sample-details/compliance/studylevel")} )
+#if( $srules )
+#foreach( $srule in $srules )
+#set( $pNode = ${srule.find( "./property[@name='property']" )} )
+#set( $rval = "" )
+#if( $pNode )
+#set( $rval = "${esc.xml( $pNode.text )}" )
+#end
+#set( $pNode = ${srule.find( "./rule/property[@name='restriction']" )} )
+#set( $rname = "" )
+#if( $pNode )
+#set( $rname = "${esc.xml( $pNode.text )}" )
+#end
+        <row>
+          <checkbox id="chkShow_rr_study_$velocityCount" 
+                    checked="${columnSetup.getChecked('$rname')}" 
+                    value="//compliance/study-level/property[@name='property' and text()='$pName']/../property[@name='charvalue']" />
+          <checkbox id="chkFilter_rr_study_$velocityCount" checked="false" />
+          <label id="lbProperty_rr_study_$velocityCount" value="$rname" />
+          <label id="lbValue_rr_study_$velocityCount" value="$rval" />
+        </row>
+#end
+#end
+      </rows>
+    </grid>
+  </groupbox>
+  <hbox>
+    <cell align="center">
+    <button id="btDetailsKeep" label="Update list" />
+    <button id="btDetailsClose" label="Close" />
+    </cell>
+  </hbox>
+#end
+#end
+</vlayout>

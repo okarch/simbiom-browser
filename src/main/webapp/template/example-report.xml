@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<sample-details>   
+  <sampleid>096d7e4d-c4ab-4684-ba69-ba4480a04987</sampleid>
+   <created>2018-02-13 16:37:20.115</created> 
+   <accessions> 
+    <accession>
+      <property name="sampleid">096d7e4d-c4ab-4684-ba69-ba4480a04987</property> 
+      <property name="accession">P170032</property> 
+      <property name="acctype">primary</property> 
+      <property name="trackid">4876445705544853592</property> 
+      <property name="item">accession</property> 
+      <property name="class">class com.emd.simbiom.model.Accession</property> 
+      <property name="orgid">1076794399835004400</property> 
+      <organization>
+        <property name="orgtype">central laboratory</property> 
+        <property name="countryid">0</property> 
+        <property name="class">class com.emd.simbiom.model.Organization</property>
+        <property name="orgname">Covance</property> 
+        <property name="orgid">1076794399835004400</property> 
+      </organization> 
+    </accession> 
+   </accessions>
+   <studies>
+     <study>
+       <property name="started">2015-05-15 18:17:37.0</property>
+       <property name="expire">2025-05-12 18:17:37.0</property>
+       <property name="studyname">EMR62242-004</property>
+       <property name="class">class com.emd.simbiom.model.Study</property>
+       <property name="studyid">-250964784920164086</property>
+       <subject>
+         <property name="usubjid">006224200405061002</property>
+         <property name="orgid">-3108191044375697143</property>
+         <property name="ethnicity">White (Eastern Europe)</property>
+         <property name="studyid">-250964784920164086</property>
+         <property name="subjectid">05061002</property>
+         <property name="class">class com.emd.simbiom.model.Subject</property>
+         <property name="taxon">9606</property>
+         <property name="propertyid">-5873550372630094444</property>
+         <property name="attributes">[]</property>
+         <property name="enrolled">2012-02-03 00:00:00.0</property>
+         <property name="donorid">-172679603121804960</property>
+         <property name="properties">[Lcom.emd.simbiom.model.Property;@1fdffcfe</property>
+         <property name="gender">F</property>
+         <property name="age">68</property>
+         <property name="species">human</property>
+         <subject-attr>
+           <property name="valueid">-3271834272551373582</property>
+           <property name="trackid">-493032478347752851</property>
+           <property name="numvalue">0.0</property>
+           <property name="digits">0</property>
+           <property name="propertyname">group</property>
+           <property name="class">class com.emd.simbiom.model.Property</property>
+           <property name="parentid">0</property>
+           <property name="maxoccurs">0</property>
+           <property name="propertyid">-5873550372630094444</property>
+           <property name="minoccurs">0</property>
+           <property name="typename">string</property>
+           <property name="charvalue">EMD525797 1000 mg q2w</property>
+           <property name="columnsize">0</property> 
+           <property name="label">group</property>
+           <property name="typeid">4</property>
+           <property name="columnid">0</property>
+           <property name="item">property</property> 
+         </subject-attr> 
+         <subject-attr>
+           <property name="valueid">7973706872114126758</property> <property name="trackid">-4550420967208742141</property> <property name="numvalue">0.0</property> <property name="digits">0</property> <property name="propertyname">First diagnosed</property> <property name="class">class com.emd.simbiom.model.Property</property> <property name="parentid">0</property> <property name="maxoccurs">0</property> <property name="propertyid">8861272951948222268</property> <property name="minoccurs">0</property> <property name="typename">string</property> <property name="charvalue">2005-09-01</property> <property name="columnsize">0</property> <property name="label">First diagnosed</property> <property name="typeid">4</property> <property name="columnid">0</property> <property name="item">property</property> </subject-attr> <subject-attr><property name="valueid">-6857599512472082411</property> <property name="trackid">51398362331039151</property> <property name="numvalue">0.0</property> <property name="digits">0</property> <property name="propertyname">Histology</property> <property name="class">class com.emd.simbiom.model.Property</property> <property name="parentid">0</property> <property name="maxoccurs">0</property> <property name="propertyid">5941345092330830147</property> <property name="minoccurs">0</property> <property name="typename">string</property> <property name="charvalue">Adenocarcinoma</property> <property name="columnsize">0</property> <property name="label">Histology</property> <property name="typeid">4</property> <property name="columnid">0</property> <property name="item">property</property> </subject-attr> <subject-attr><property name="valueid">-237319687374266140</property> <property name="trackid">3980088814378850238</property> <property name="numvalue">0.0</property> <property name="digits">0</property> <property name="propertyname">Primary tumor localization</property> <property name="class">class com.emd.simbiom.model.Property</property> <property name="parentid">0</property> <property name="maxoccurs">0</property> <property name="propertyid">-5292266739329036953</property> <property name="minoccurs">0</property> <property name="typename">string</property> <property name="charvalue">Rectum</property> <property name="columnsize">0</property> <property name="label">Primary tumor localization</property> <property name="typeid">4</property> <property name="columnid">0</property> <property name="item">property</property> </subject-attr> <subject-attr><property name="valueid">1654042881834874748</property> <property name="trackid">-7161642140732687094</property> <property name="numvalue">0.0</property> <property name="digits">0</property> <property name="propertyname">TNM stage</property> <property name="class">class com.emd.simbiom.model.Property</property> <property name="parentid">0</property> <property name="maxoccurs">0</property> <property name="propertyid">6691017476752730421</property> <property name="minoccurs">0</property> <property name="typename">string</property> <property name="charvalue">T3N0M0</property> <property name="columnsize">0</property> <property name="label">TNM stage</property> <property name="typeid">4</property> <property name="columnid">0</property> <property name="item">property</property> </subject-attr> <subject-attr><property name="valueid">6803396573873081447</property> <property name="trackid">-1258339989919812958</property> <property name="numvalue">0.0</property> <property name="digits">0</property> <property name="propertyname">Grade</property> <property name="class">class com.emd.simbiom.model.Property</property> <property name="parentid">0</property> <property name="maxoccurs">0</property> <property name="propertyid">4144422897619290328</property> <property name="minoccurs">0</property> <property name="typename">string</property> <property name="charvalue">Moderately differentiated</property> <property name="columnsize">0</property> <property name="label">Grade</property> <property name="typeid">4</property> <property name="columnid">0</property> <property name="item">property</property> </subject-attr> </subject> </study> </studies> </sample-details>

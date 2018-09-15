@@ -90,12 +90,16 @@ public class CategoryFilter extends SearchFilter implements EventListener {
 	    return new String[0];
 	}
 	String[] terms = null;
+	String catSt = Stringx.getDefault( getCategory(), "" );
 	try {
-	    if( "study".equals(getCategory()) ) {
+	    if( "study".equals(catSt) ) {
 		terms = dao.findStudyTerms();
 	    }
-	    else if( "sampletype".equals(getCategory()) ) {
+	    else if( "sampletype".equals(catSt) ) {
 		terms = dao.findSampleTypeTerms();
+	    }
+	    else if( catSt.startsWith( "donor:" ) ) {
+		terms = dao.findDonorPropertyTerms( Stringx.after( catSt, ":" ) );
 	    }
 	}
 	catch(SQLException sqe ) {
@@ -162,11 +166,15 @@ public class CategoryFilter extends SearchFilter implements EventListener {
 
 	String querySt = getTerm( wnd );
 	Sample[] samps = null;
-	if( "study".equals(getCategory()) ) {
+	String catSt = Stringx.getDefault( getCategory(), "" );
+	if( "study".equals(catSt) ) {
 	    samps = dao.findSampleByStudy( querySt );
 	}
-	else if( "sampletype".equals(getCategory()) ) {
+	else if( "sampletype".equals(catSt) ) {
 	    samps = dao.findSampleByType( querySt );
+	}
+	else if( catSt.startsWith( "donor:" ) ) {
+	    samps = dao.findSampleByDonorProperty( Stringx.after(catSt,":"), querySt );
 	}
 
 	return new TreeSet( (List<Sample>)Arrays.asList( ((samps!=null)?samps:new Sample[0]) ) );

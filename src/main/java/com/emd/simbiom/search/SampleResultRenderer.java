@@ -1,11 +1,5 @@
 package com.emd.simbiom.search;
 
-import java.util.Date;
-
-import java.sql.Timestamp;
-
-import org.apache.commons.lang.time.DateFormatUtils;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -17,17 +11,14 @@ import org.zkoss.zul.Cell;
 import org.zkoss.zul.Checkbox;
 import org.zkoss.zul.Hlayout;
 import org.zkoss.zul.Label;
-import org.zkoss.zul.Progressmeter;
 import org.zkoss.zul.Row;
 import org.zkoss.zul.RowRenderer;
 
-import com.emd.simbiom.dao.SampleInventoryDAO;
+import com.emd.simbiom.config.InventoryPreferences;
 
-import com.emd.simbiom.model.Accession;
+// import com.emd.simbiom.dao.SampleInventoryDAO;
+import com.emd.simbiom.dao.SampleInventory;
 import com.emd.simbiom.model.Sample;
-import com.emd.simbiom.model.SampleProcess;
-
-import com.emd.simbiom.view.ColumnFormatter;
 
 import com.emd.util.Stringx;
 
@@ -39,42 +30,53 @@ import com.emd.util.Stringx;
  * @author <a href="mailto:">Oliver</a>
  * @version 1.0
  */
-public class SampleResultRenderer implements RowRenderer, ColumnFormatter {
-    private SampleInventoryDAO sampleInventory;
+public class SampleResultRenderer implements RowRenderer {
+    // private SampleInventoryDAO sampleInventory;
+    private SampleInventory sampleInventory;
+    private InventoryPreferences preferences;
+    private ColumnSetup columnSetup;
 
     private static Log log = LogFactory.getLog(SampleResultRenderer.class);
 
-    private static final String[] columnNames = {
-	"colStudy",
-	"colSampleType",
-	"colSampleId",
-	"colSubject",
-	"colVisit",
-	"colCollection",
-	"colImport"
-    };
+    /**
+     * Creates a new <code>SampleResultRenderer</code>.
+     * 
+     * @param sampleInventory The sample database.
+     * @param preferences The inventory preferences.
+     * @param cSetup The current column setup.
+     */
+    public SampleResultRenderer( SampleInventory sampleInventory, 
+				 InventoryPreferences preferences, 
+				 ColumnSetup cSetup ) {
+    // public SampleResultRenderer( SampleInventoryDAO sampleInventory, 
+    // 				 InventoryPreferences preferences, 
+    // 				 ColumnSetup cSetup ) {
 
-    public SampleResultRenderer( SampleInventoryDAO sampleInventory ) {
 	this.sampleInventory = sampleInventory;
+	this.preferences = preferences;
+	this.columnSetup = cSetup;
     }
 
     private void appendCheckmark( Row row, Sample sample ) {
-// 	Hlayout hl = new Hlayout();
+ 	Hlayout hl = new Hlayout();
 
 	Checkbox chk = new Checkbox();
 	chk.setId( "chk_"+sample.getSampleid() );
-// 	chk.setParent( hl );
-	 chk.setParent( row );
+ 	chk.setParent( hl );
 
- 	// Button bt = new Button();
- 	// bt.setId( "btEditRow_"+listRow.getContentid()+"_"+listRow.getRowindex() );
-// 	EditEntry editEntry = (EditEntry)preferences.getViewAction( EditEntry.class );
-// 	if( editEntry != null )
-// 	    bt.addEventListener( Events.ON_CLICK, editEntry );
+ 	Button bt = new Button();
+ 	bt.setId( "btInfoRow_"+sample.getSampleid() );
+	bt.setIconSclass( "z-icon-info" );
+	bt.setWidth( "20px" );
+	bt.setHeight( "20px" );
+ 	bt.setParent( hl );
+
+ 	SelectSample selectSample = (SelectSample)preferences.getCommand( SelectSample.class );
+
+	if( selectSample != null )
+ 	    bt.addEventListener( Events.ON_CLICK, selectSample );
+
  	// bt.setImage( "/images/info.png" );
- 	// bt.setWidth( "20px" );
- 	// bt.setHeight( "20px" );
- 	// bt.setParent( row );
 
 // 	Button btr = new Button();
 // 	btr.setId( "btDeleteRow_"+listRow.getContentid()+"_"+listRow.getRowindex() );
@@ -86,58 +88,7 @@ public class SampleResultRenderer implements RowRenderer, ColumnFormatter {
 // 	btr.setHeight( "20px" );
 // 	btr.setParent( hl );
 
-// 	hl.setParent( row );
-    }
-
-    /**
-     * Formats a column's content.
-     *
-     * @param colName the column name.
-     * @param data the data object.
-     * @return a string representing the content.
-     */
-    public String formatColumn( String colName, Object data ) {
-	SampleRow sr = getSampleRow( (Sample)data );
-	return formatSampleRow( colName, sr );
-    }
-
-    private String formatSampleRow( String colName, SampleRow sr ) {
-	if( "colStudy".equals( colName ) ) {
-	    return Stringx.getDefault(sr.getStudyname(), "" );
-	}
-	else if( "colSampleType".equals( colName ) ) {
-	    return Stringx.getDefault(sr.getTypename(), "");
-	}
-	else if( "colSampleId".equals( colName ) ) {
-	    Accession[] accs = sr.getAccessions();
-	    String st = null;
-	    if( accs != null )
-		st = Stringx.toStringList( accs, ", " );
-	    else
-		st = Stringx.getDefault(sr.getSample().getSamplename(), "" );
-	    return st;
-	}
-	else if( "colSubject".equals( colName ) ) {
-	    return Stringx.getDefault(sr.getSubjectid(), "");
-	}
-	else if( "colVisit".equals( colName ) ) {
-	    SampleProcess procs = sr.getVisit();
-	    String st = null;
-	    if( procs != null )
-		st = procs.getVisit();
-	    return Stringx.getDefault( st, "" );
-	}
-	else if( "colCollection".equals( colName ) ) {
-	    SampleProcess procs = sr.getVisit();
-	    String st = null;
-	    if( procs != null )
-		st = formatDate(procs.getProcessed(),"dd-MMM-yyyy hh:mm");
-	    return Stringx.getDefault( st, "" );
-	}
-	else if( "colImport".equals( colName ) ) {
-	    return formatDate( sr.getSample().getCreated(), "dd-MMM-yyyy" );
-	}
-	return "";
+ 	hl.setParent( row );
     }
 
     private SampleRow getSampleRow( Sample sample ) {
@@ -148,10 +99,6 @@ public class SampleResultRenderer implements RowRenderer, ColumnFormatter {
 	    sr = cache.putSampleRow( sr );
 	}
 	return sr;
-    }
-
-    private String formatDate( Date dt, String fmt ) {
-	return DateFormatUtils.format( dt, fmt );
     }
 
     /**
@@ -170,8 +117,10 @@ public class SampleResultRenderer implements RowRenderer, ColumnFormatter {
 
 	    SampleRow sr = getSampleRow( sample );
 
-	    for( int i = 0; i < columnNames.length; i++ ) 
-		(new Label( formatSampleRow( columnNames[i], sr ) )).setParent( row );
+	    DisplayColumn[] cols = columnSetup.getDisplayColumns();
+	    for( int i = 0; i < cols.length; i++ ) {
+		(new Label( cols[i].formatColumn( "", sr ) )).setParent( row );
+	    }
 	}
     }
 

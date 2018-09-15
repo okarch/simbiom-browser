@@ -17,12 +17,15 @@ import org.zkoss.zul.Combobox;
 import org.zkoss.zul.ListModelArray;
 import org.zkoss.zul.Window;
 
-import com.emd.simbiom.dao.SampleInventoryDAO;
+// import com.emd.simbiom.dao.SampleInventoryDAO;
+import com.emd.simbiom.dao.SampleInventory;
 
+import com.emd.simbiom.model.CostEstimate;
 import com.emd.simbiom.model.CostSample;
 
 import com.emd.simbiom.view.DefaultModelProducer;
 import com.emd.simbiom.view.ModelProducer;
+import com.emd.simbiom.view.SwitchTab;
 
 import com.emd.util.Stringx;
 
@@ -56,7 +59,8 @@ public class SampleTypeModel extends DefaultModelProducer implements EventListen
      * @param context the execution context.
      */
     public void initModel( Window wnd, Map context ) {
-	SampleInventoryDAO dao = getSampleInventory();
+	// SampleInventoryDAO dao = getSampleInventory();
+	SampleInventory dao = getSampleInventory();
 	if( dao == null ) {
 	    writeMessage( wnd, "Error: No database access configured" );
 	    return;
@@ -111,6 +115,13 @@ public class SampleTypeModel extends DefaultModelProducer implements EventListen
 	}
     }
 
+    private String getRegion( Window wnd ) {
+     	SwitchTab sTab = (SwitchTab)getPreferences().getCommand( SwitchTab.class );
+     	if( sTab == null )
+     	    return CostEstimate.DEFAULT_REGION;
+	return sTab.getSelectedRegion( wnd );
+    }
+
     private VolumeSelector getVolumeSelector() {
      	ModelProducer[] mp = getPreferences().getResult( VolumeSelector.class );
      	if( mp.length <= 0 )
@@ -131,7 +142,8 @@ public class SampleTypeModel extends DefaultModelProducer implements EventListen
     }
 
     private void selectVolume( Window wnd, CostSample sampleType ) {
-	SampleInventoryDAO dao = getSampleInventory();
+	// SampleInventoryDAO dao = getSampleInventory();
+	SampleInventory dao = getSampleInventory();
 	if( dao == null ) {
 	    writeMessage( wnd, "Error: No database access configured" );
 	    return;
@@ -149,8 +161,10 @@ public class SampleTypeModel extends DefaultModelProducer implements EventListen
 	}
 	log.debug( "Volume selection model: "+vs.getModelName() );
 
+	String region = getRegion( wnd );
+
 	try {
-	    CostSample[] tList = dao.findCostBySampleType( sampleType.getTypename() );
+	    CostSample[] tList = dao.findCostBySampleType( sampleType.getTypename(), region );
 
 	    Map context = new HashMap();
 	    context.put( RESULT, tList );

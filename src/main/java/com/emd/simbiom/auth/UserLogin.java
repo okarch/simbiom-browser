@@ -25,7 +25,8 @@ import org.zkoss.zul.Window;
 import com.emd.simbiom.command.InventoryCommand;
 import com.emd.simbiom.config.InventoryPreferences;
 
-import com.emd.simbiom.dao.SampleInventoryDAO;
+// import com.emd.simbiom.dao.SampleInventoryDAO;
+import com.emd.simbiom.dao.SampleInventory;
 
 import com.emd.simbiom.model.Roles;
 import com.emd.simbiom.model.User;
@@ -95,7 +96,8 @@ public class UserLogin extends InventoryCommand {
 
     private User validateUser( Window wnd, String usrName, String pwd ) {
 	User usr = null;
-	SampleInventoryDAO dao = getSampleInventory();
+	SampleInventory dao = getSampleInventory();
+	// SampleInventoryDAO dao = getSampleInventory();
 	try {
 	    usr = dao.findUserByMuid( usrName );
 	}

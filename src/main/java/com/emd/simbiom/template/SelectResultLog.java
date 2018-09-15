@@ -30,7 +30,8 @@ import org.zkoss.zul.Window;
 
 import com.emd.simbiom.command.InventoryCommand;
 import com.emd.simbiom.config.InventoryPreferences;
-import com.emd.simbiom.dao.SampleInventoryDAO;
+// import com.emd.simbiom.dao.SampleInventoryDAO;
+import com.emd.simbiom.dao.SampleInventory;
 import com.emd.simbiom.view.ModelProducer;
 
 // import com.emd.simbiom.upload.InventoryUploadTemplate;
@@ -130,7 +131,8 @@ public class SelectResultLog extends InventoryCommand {
 	if( ub == null )
 	    throw new SQLException( "Cannot determine upload batch" );
 
-	SampleInventoryDAO dao = getSampleInventory();
+	// SampleInventoryDAO dao = getSampleInventory();
+	SampleInventory dao = getSampleInventory();
 	return dao.findLogByUpload( ub, levels );
     }
 

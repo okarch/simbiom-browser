@@ -24,7 +24,8 @@ import org.zkoss.zul.Window;
 import com.emd.simbiom.command.InventoryCommand;
 import com.emd.simbiom.config.InventoryPreferences;
 
-import com.emd.simbiom.dao.SampleInventoryDAO;
+// import com.emd.simbiom.dao.SampleInventoryDAO;
+import com.emd.simbiom.dao.SampleInventory;
 
 import com.emd.simbiom.model.CostEstimate;
 import com.emd.simbiom.model.CostItem;
@@ -54,6 +55,17 @@ public class UpdateEstimate extends InventoryCommand {
     private static final String COST_ADD    = "btCostAdd";
     private static final String COST_REMOVE = "btCostRemove";
 
+    private static final Map<String, String> CURRENCY = currencyLookup();
+    private static Map<String, String> currencyLookup() {
+        Map<String,String> m = new HashMap<String,String>();
+	m.put( "EU", "EUR" );
+	m.put( "US", "USD" );
+	m.put( "CN", "USD" );
+	m.put( "SG", "SGD" );
+        return m;
+    }
+
+
     public UpdateEstimate() {
 	super();
     }
@@ -76,6 +88,21 @@ public class UpdateEstimate extends InventoryCommand {
     // 	}
     // }
 
+    private String getSelectedRegion( Window wnd ) {
+	Combobox cb = (Combobox)wnd.getFellowIfAny( "cbRegion" );
+	String reg = null;
+	if( cb != null ) {
+	    Comboitem ci = cb.getSelectedItem();
+	    if( ci != null ) {
+		reg = ci.getValue();
+		log.debug( "Selected region: "+reg );		
+	    }
+	    else
+		log.warn( "No region selected. Using default" );
+	}
+	return Stringx.getDefault( reg, CostEstimate.DEFAULT_REGION );
+    }
+
     private CostEstimate getCostEstimate( Window wnd ) {
 	SwitchTab sw = (SwitchTab)InventoryPreferences.getInstance( getPortletId(), getUserId() ).getCommand( SwitchTab.class );
 	CostEstimate ce = null;
@@ -83,7 +110,8 @@ public class UpdateEstimate extends InventoryCommand {
 	    ce = sw.getCostEstimate( wnd );
 	if( ce == null ) {
 	    log.debug( "Creating cost estimate" );
-	    SampleInventoryDAO dao = getSampleInventory();
+	    // SampleInventoryDAO dao = getSampleInventory();
+	    SampleInventory dao = getSampleInventory();
 	    try {
 		ce = dao.createCostEstimate( null );
 	    }
@@ -91,9 +119,11 @@ public class UpdateEstimate extends InventoryCommand {
 		String msg = "Error: "+Stringx.getDefault( sqe.getMessage(), "" );
 		showMessage( wnd, "rowMessageCost", "lbMessageCost", msg );
 		log.error( sqe );
-	    }
-	    if( (ce != null) && (sw != null) )
+	    }		
+	    if( (ce != null) && (sw != null) ) {
+		ce.setRegion( getSelectedRegion( wnd) );
 		sw.setCostEstimate( wnd, ce );
+	    }
 	}
 	return ce;
     }
@@ -112,6 +142,8 @@ public class UpdateEstimate extends InventoryCommand {
 	    if( st.length() > 0 )
 		ce.setDuration( Stringx.toInt(st,0) );
 	}
+
+	ce.setRegion( getSelectedRegion( wnd ) );
 	
 	cb = (Combobox)wnd.getFellowIfAny( "cbRegistration" );
 	int idx = -1;
@@ -150,7 +182,8 @@ public class UpdateEstimate extends InventoryCommand {
 
 	// update inventory.
 
-	SampleInventoryDAO dao = getSampleInventory();
+	// SampleInventoryDAO dao = getSampleInventory();
+	SampleInventory dao = getSampleInventory();
 	try {
 	    ce = dao.updateCostEstimate( ce );
 	}
@@ -190,7 +223,10 @@ public class UpdateEstimate extends InventoryCommand {
 	}
 	Label lb = (Label)wnd.getFellowIfAny( "lbEstimateTotal" );
 	if( lb != null ) 
-	    lb.setValue( String.format( "Sample storage for %d month(s): %8.2f EUR", ce.getDuration(), ce.getTotal() ) );
+	    lb.setValue( String.format( "Sample storage for %d month(s): %8.2f %s", 
+					ce.getDuration(), 
+					ce.getTotal(), 
+					Stringx.getDefault(CURRENCY.get(ce.getRegion()),"EUR") ) );
 
 	CostItemTable ciTab = getCostItemTable();
 	if( ciTab != null ) {

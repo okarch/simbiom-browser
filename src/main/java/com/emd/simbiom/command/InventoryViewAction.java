@@ -15,7 +15,8 @@ import org.zkoss.zul.Window;
 
 import com.emd.simbiom.config.InventoryPreferences;
 
-import com.emd.simbiom.dao.SampleInventoryDAO;
+// import com.emd.simbiom.dao.SampleInventoryDAO;
+import com.emd.simbiom.dao.SampleInventory;
 
 import com.emd.simbiom.view.UIUtils;
 
@@ -98,9 +99,12 @@ public class InventoryViewAction extends ViewAction {
      * Convenience method to return the dossier database.
      * @return dossier preferences
      */
-    public SampleInventoryDAO getSampleInventory() {
+    public SampleInventory getSampleInventory() {
 	return InventoryPreferences.getInstance( portletId, userId ).getInventory();	
     }
+    // public SampleInventoryDAO getSampleInventory() {
+    // 	return InventoryPreferences.getInstance( portletId, userId ).getInventory();	
+    // }
 
     /**
      * Registers this event handler if the component

@@ -30,7 +30,8 @@ import org.zkoss.zul.Window;
 
 import com.emd.simbiom.command.InventoryCommand;
 import com.emd.simbiom.config.InventoryPreferences;
-import com.emd.simbiom.dao.SampleInventoryDAO;
+// import com.emd.simbiom.dao.SampleInventoryDAO;
+import com.emd.simbiom.dao.SampleInventory;
 import com.emd.simbiom.view.ModelProducer;
 
 import com.emd.simbiom.upload.InventoryUploadTemplate;
@@ -99,7 +100,8 @@ public class OpenResultLog extends InventoryCommand {
     public void initLogs( Window wnd, InventoryUploadTemplate templ ) 
 	throws SQLException {
 
-	SampleInventoryDAO dao = getSampleInventory();
+	// SampleInventoryDAO dao = getSampleInventory();
+	SampleInventory dao = getSampleInventory();
 
 	UploadBatch[] latestLogs = dao.findLatestLogs();
 	log.debug( "Found "+latestLogs.length+" log entries, template upload batches: "+templ.getUploadBatches().length );

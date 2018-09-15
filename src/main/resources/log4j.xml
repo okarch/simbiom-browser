@@ -12,11 +12,11 @@
 		<priority value="DEBUG" />
 	</category>
 
-<!--
-	<category name="com.emd.portal.liferay">
+	<category name="com.emd.zk">
 		<priority value="DEBUG" />
 	</category>
-	<category name="com.emd.zk">
+<!--
+	<category name="com.emd.portal.liferay">
 		<priority value="DEBUG" />
 	</category>
 -->

@@ -47,7 +47,9 @@ import org.zkoss.zul.Window;
 
 import com.emd.simbiom.command.InventoryCommand;
 
-import com.emd.simbiom.dao.SampleInventoryDAO;
+// import com.emd.simbiom.dao.SampleInventoryDAO;
+import com.emd.simbiom.dao.InventoryFactory;
+import com.emd.simbiom.dao.SampleInventory;
 
 import com.emd.simbiom.view.ModelProducer;
 import com.emd.simbiom.view.DefaultModelProducer;
@@ -61,7 +63,9 @@ import com.emd.zk.ZKContext;
 import com.emd.zk.ZKUtil;
 
 public class InventoryPreferences implements EventListener {
-    private SampleInventoryDAO      sampleInventoryDAO;
+    // private SampleInventoryDAO      sampleInventoryDAO;
+    private InventoryFactory        datafactory;
+    private SampleInventory         sampleInventory;
     private String                  portletId;
     private long                    userId;
     private List<InventoryCommand>  commands;
@@ -73,6 +77,7 @@ public class InventoryPreferences implements EventListener {
     private static final long   DEFAULT_REFRESH = 6L * 60L * 1000L; // 6 minutes
 
     private static Log log = LogFactory.getLog(InventoryPreferences.class);
+
 
     public InventoryPreferences() {
 	this.commands = new ArrayList<InventoryCommand>();
@@ -224,16 +229,46 @@ public class InventoryPreferences implements EventListener {
      *
      * @param dao database access object
      */
-    public void setInventory( SampleInventoryDAO dao ) {
-	this.sampleInventoryDAO = dao;
-    }
+    // public void setInventory( SampleInventoryDAO dao ) {
+    // 	this.sampleInventoryDAO = dao;
+    // }
 
     /**
      * Get the SampleInventoryDAO value.
      * @return the SampleInventoryDAO value.
      */
-    public SampleInventoryDAO getInventory() {
-	return this.sampleInventoryDAO;
+    // public SampleInventoryDAO getInventory() {
+    // 	return this.sampleInventoryDAO;
+    // }
+
+    /**
+     * Get the SampleInventory API.
+     * @return the SampleInventory API.
+     */
+    public SampleInventory getInventory() {
+	if( sampleInventory != null )
+	    return sampleInventory;
+	if( datafactory != null)
+	    return datafactory.createSampleInventory();
+	return null;
+    }
+
+    /**
+     * Get the <code>Datafactory</code> value.
+     *
+     * @return an <code>InventoryFactory</code> value
+     */
+    public final InventoryFactory getDatafactory() {
+	return datafactory;
+    }
+
+    /**
+     * Set the <code>Datafactory</code> value.
+     *
+     * @param datafactory The new Datafactory value.
+     */
+    public final void setDatafactory(final InventoryFactory datafactory) {
+	this.datafactory = datafactory;
     }
 
     /**

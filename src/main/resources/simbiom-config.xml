@@ -17,6 +17,14 @@
     <command config-class="com.emd.simbiom.search.SelectFilterOperator"
              commandName="cbFilterOperator_0"
              event="onSelect" />
+    <command config-class="com.emd.simbiom.search.FilterRemove"
+             commandName="btFilterRemove_0"
+             event="onClick" />
+    <command config-class="com.emd.simbiom.search.SelectSample"
+             commandName="__grSearchResult"
+             detailsLayout="vlSampleDetailsView"
+             event="onClick" />
+
     <command config-class="com.emd.simbiom.template.OpenResultLog"
              commandName="gbResultLog"
              event="onOpen" 
@@ -55,9 +63,6 @@
              commandName="btTemplateUpload"
              event="onUpload" />
 
-    <command config-class="com.emd.simbiom.search.FilterRemove"
-             commandName="btFilterRemove_0"
-             event="onClick" />
 
 <!--
     <command config-class="com.emd.simbiom.category.CategorySelect"
@@ -71,24 +76,19 @@
     <command config-class="com.emd.simbiom.view.SwitchTab"
              commandName="tbBrowser"
              event="onSelect" /> 
-<!--
-    <command config-class="com.emd.simbiom.view.SwitchTab"
-             commandName="tbBrowser"
-             event="onAfterRender" /> 
--->
 
+    <command config-class="com.emd.simbiom.cost.SelectRegion"
+             commandName="cbRegion"
+             event="onSelect" /> 
     <command config-class="com.emd.simbiom.cost.AmountChange"
              commandName="intCostCount_0"
              event="onChanging" /> 
-
     <command config-class="com.emd.simbiom.cost.UpdateEstimate"
              commandName="btCostUpdate"
              event="onClick" />
-
     <command config-class="com.emd.simbiom.cost.AddSampleItem"
              commandName="btCostAdd_0"
              event="onClick" />
-
     <command config-class="com.emd.simbiom.cost.RemoveSampleItem"
              commandName="btCostRemove_0"
              event="onClick" />
@@ -98,6 +98,10 @@
              event="onClick" />
     <command config-class="com.emd.simbiom.auth.UserLogin"
              commandName="btLogout"
+             event="onClick" />
+
+    <command config-class="com.emd.simbiom.search.ColumnSelect"
+             commandName="colSelect"
              event="onClick" />
 
 
@@ -200,6 +204,54 @@
               message="${cbFilterSelector_0} ${cbFilterCategory_0}" 
               template="/template/category-filter.zul" />
 
+      <filter config-class="com.emd.simbiom.search.CategoryFilter"
+              label="Indication is"
+              parent="hlFilter_0"
+              initValue=""
+              category="donor:Indication"
+              message="${cbFilterSelector_0} ${cbFilterCategory_0}" 
+              template="/template/category-filter.zul" />
+
+      <filter config-class="com.emd.simbiom.search.CategoryFilter"
+              label="Primary tumor is"
+              parent="hlFilter_0"
+              initValue=""
+              category="donor:Primary tumor localization"
+              message="${cbFilterSelector_0} ${cbFilterCategory_0}" 
+              template="/template/category-filter.zul" />
+
+      <filter config-class="com.emd.simbiom.search.CategoryFilter"
+              label="Grade is"
+              parent="hlFilter_0"
+              initValue=""
+              category="donor:Grade"
+              message="${cbFilterSelector_0} ${cbFilterCategory_0}" 
+              template="/template/category-filter.zul" />
+
+      <filter config-class="com.emd.simbiom.search.CategoryFilter"
+              label="Metastasis is"
+              parent="hlFilter_0"
+              initValue=""
+              category="donor:Metastasis"
+              message="${cbFilterSelector_0} ${cbFilterCategory_0}" 
+              template="/template/category-filter.zul" />
+
+      <filter config-class="com.emd.simbiom.search.CategoryFilter"
+              label="Histology is"
+              parent="hlFilter_0"
+              initValue=""
+              category="donor:Histology"
+              message="${cbFilterSelector_0} ${cbFilterCategory_0}" 
+              template="/template/category-filter.zul" />
+
+      <filter config-class="com.emd.simbiom.search.CategoryFilter"
+              label="TNM stage is"
+              parent="hlFilter_0"
+              initValue=""
+              category="donor:TNM stage"
+              message="${cbFilterSelector_0} ${cbFilterCategory_0}" 
+              template="/template/category-filter.zul" />
+
       <filter config-class="com.emd.simbiom.search.TextFilter"
               label="Any content"
               parent="hlFilter_0"
@@ -226,7 +278,64 @@
     </result>
 
     <result config-class="com.emd.simbiom.search.SampleResult"
-            modelName="grSearchResult" />
+            modelName="grSearchResult">
+
+      <columns config-class="com.emd.simbiom.search.ColumnSetup">
+        <column config-class="com.emd.simbiom.search.DisplayColumn"
+                columnId="colSearch_0"
+                label="Study"
+                contentField="studyname"
+                sort="string"
+                caseInsensitive="true" />
+        <column config-class="com.emd.simbiom.search.DisplayColumn"
+                columnId="colSearch_1"
+                label="Sample type"
+                contentField="typename"
+                sort="string"
+                caseInsensitive="true" />
+        <column config-class="com.emd.simbiom.search.DisplayColumn"
+                columnId="colSearch_2"
+                label="Known as"
+                contentField="accessions"
+                sort="string"
+                caseInsensitive="true" />
+        <column config-class="com.emd.simbiom.search.DisplayColumn"
+                columnId="colSearch_3"
+                label="Subject ID"
+                contentField="subjectid"
+                sort="string"
+                caseInsensitive="true" />
+        <column config-class="com.emd.simbiom.search.DisplayColumn"
+                columnId="colSearch_4"
+                label="Visit"
+                contentField="visit.visit"
+                sort="string"
+                caseInsensitive="true" />
+        <column config-class="com.emd.simbiom.search.DisplayColumn"
+                columnId="colSearch_5"
+                label="Collected"
+                contentField="visit.processed"
+                sort="date"
+                dateFormat="dd-MMM-yyyy hh:mm" />
+        <column config-class="com.emd.simbiom.search.DisplayColumn"
+                columnId="colSearch_6"
+                label="Imported"
+                contentField="sample.created"
+                sort="date"
+                dateFormat="dd-MMM-yyyy" />
+      </columns>
+
+      <details config-class="com.emd.simbiom.search.SampleDetailsView"
+               template="/template/sample-details.zul"
+               detailsLayout="vlSampleDetailsView"
+               width="1000px">
+
+        <action config-class="com.emd.simbiom.search.UpdateColumns"
+                component="btDetailsKeep"
+                event="onClick" />
+      </details>
+
+    </result>
 
     <result config-class="com.emd.simbiom.template.TemplateModel"
             modelName="cbTemplate"
@@ -369,6 +478,36 @@
                 event="onSelect" />
       </category>
 
+      <category config-class="com.emd.simbiom.category.GoogleChartCategoryView"
+                label="term_Indications"
+                engine="org.zkoss.google.charts.PieChart"
+                parent="vlCategoryView"
+                template="/template/google-piechart-category.zul">
+        <action config-class="com.emd.simbiom.category.BrowseSamples"
+                component="chrtPieChart"
+                event="onSelect" />
+      </category>
+
+      <category config-class="com.emd.simbiom.category.GoogleChartCategoryView"
+                label="Indications.Sample_types"
+                engine="org.zkoss.google.charts.BarChart"
+                parent="vlCategoryView"
+                template="/template/google-barchart-category.zul">
+        <action config-class="com.emd.simbiom.category.BrowseLogisticsSamples"
+                component="chrtBarChart"
+                event="onSelect" />
+      </category>
+
+      <category config-class="com.emd.simbiom.category.GoogleChartCategoryView"
+                label="Indications.Studies"
+                engine="org.zkoss.google.charts.BarChart"
+                parent="vlCategoryView"
+                template="/template/google-barchart-category.zul">
+        <action config-class="com.emd.simbiom.category.BrowseLogisticsSamples"
+                component="chrtBarChart"
+                event="onSelect" />
+      </category>
+
     </result>
 
     <result config-class="com.emd.simbiom.cost.RegistrationModel"
@@ -393,12 +532,30 @@
               username="biobank"
               password="biobank"
               schema="biobank"
+              pooled="true"
               template="biobank-mysql.properties">
 
       <contentSearch config-class="com.emd.simbiom.dao.FullContentSearch"
                      url="http://localhost:7272/solr/biobank" />
 
     </inventory>
+
+    <datafactory config-class="com.emd.simbiom.dao.InventoryFactory">
+
+      <database config-class="com.emd.simbiom.dao.DatabaseDAO"
+                url="jdbc:mysql://localhost/biobank"
+                driver="com.mysql.jdbc.Driver"
+                username="biobank"
+                password="biobank"
+                schema="biobank"
+                pooled="true"
+                template="biobank-mysql.properties">
+
+        <contentSearch config-class="com.emd.simbiom.dao.FullContentSearch"
+                       url="http://localhost:7272/solr/biobank" />
+      </database>
+
+    </datafactory>
 
   </simbiom>
 

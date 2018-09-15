@@ -43,7 +43,8 @@ import org.zkoss.zul.Window;
 
 import com.emd.simbiom.command.InventoryCommand;
 import com.emd.simbiom.config.InventoryPreferences;
-import com.emd.simbiom.dao.SampleInventoryDAO;
+// import com.emd.simbiom.dao.SampleInventoryDAO;
+import com.emd.simbiom.dao.SampleInventory;
 import com.emd.simbiom.view.ModelProducer;
 import com.emd.simbiom.view.UIUtils;
 
@@ -140,7 +141,8 @@ public class UploadSamples extends InventoryCommand {
     private User validateUser( Window wnd, long reqRole ) {
 	User user = null;
 	try {
-	    SampleInventoryDAO dao = getSampleInventory();
+	    // SampleInventoryDAO dao = getSampleInventory();
+	    SampleInventory dao = getSampleInventory();
 	    user = dao.findUserById( getUserId() );
 	}
 	catch( SQLException sqe ) {
@@ -243,7 +245,8 @@ public class UploadSamples extends InventoryCommand {
 	log.info( "Upload batch registered: "+uBatch.getUploadid()+" content length: "+updContent.length() );
 
 	try {
-	    SampleInventoryDAO dao = getSampleInventory();
+	    // SampleInventoryDAO dao = getSampleInventory();
+	    SampleInventory dao = getSampleInventory();
 	    templ = dao.storeTemplate( templ );
 	}
 	catch( SQLException sqe ) {

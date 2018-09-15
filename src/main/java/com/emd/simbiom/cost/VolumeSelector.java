@@ -14,6 +14,7 @@ import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.Events;
 
 import org.zkoss.zul.Combobox;
+import org.zkoss.zul.ListModel;
 import org.zkoss.zul.ListModelArray;
 import org.zkoss.zul.Window;
 
@@ -53,6 +54,54 @@ public class VolumeSelector extends DefaultModelProducer implements EventListene
      * @param context the execution context.
      */
     public void initModel( Window wnd, Map context ) {
+    }
+
+    private CostSample getSelectedCostSample( Combobox cmp ) {
+	int idx = -1; 
+	ListModel model = null;
+	CostSample cs = null;
+	if( ((idx = cmp.getSelectedIndex()) >= 0) &&
+	    ((model = cmp.getModel()) != null) ) {
+	    return (CostSample)model.getElementAt( idx );
+	}
+	return null;
+    }
+
+    private void selectCostSampleByName( Combobox cmp, CostSample cs ) {
+	if( cmp != null ) {
+	    ListModel model = cmp.getModel();
+	    int idx = -1;
+	    int nn = model.getSize();
+	    for( int i = 0; i < nn; i++ ) {
+		CostSample sm = (CostSample)model.getElementAt(i);
+		if( sm.getServiceitem().equals( cs.getServiceitem() ) ) {
+		    idx = i;
+		    break;
+		}
+	    }
+	    if( idx >= 0 ) 
+		cmp.setSelectedIndex( idx );
+	    else
+		log.warn( "Cannot update cost item. Cost item missing: "+cs );
+	}
+    }
+
+    /**
+     * Updates the model producer.
+     *
+     * @param wnd the application window.
+     * @param context the execution context.
+     */
+    public void updateModel( Window wnd, Map context ) {
+	Combobox cmp = (Combobox)wnd.getFellowIfAny( this.getModelName() );
+	if( cmp != null ) {
+	    CostSample cs = getSelectedCostSample( cmp );
+	    log.debug( "Updating model "+this.getModelName()+" context: "+context );
+	    this.assignCombobox( cmp, ((context==null)?new HashMap():context) );
+	    cmp = (Combobox)wnd.getFellowIfAny( this.getModelName() );
+	    // if( cs != null )
+	    // 	selectCostSampleByName( cmp, cs );
+	}
     }
 
     /**

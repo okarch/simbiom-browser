@@ -8,11 +8,13 @@ import java.sql.SQLException;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import com.emd.simbiom.dao.SampleInventoryDAO;
+// import com.emd.simbiom.dao.SampleInventoryDAO;
+import com.emd.simbiom.dao.SampleInventory;
 
 import com.emd.simbiom.model.Accession;
 import com.emd.simbiom.model.Sample;
 import com.emd.simbiom.model.SampleType;
+import com.emd.simbiom.model.SampleDetails;
 import com.emd.simbiom.model.SampleProcess;
 import com.emd.simbiom.model.Study;
 import com.emd.simbiom.model.Subject;
@@ -31,10 +33,12 @@ public class RowCache {
     private Map<String,Subject>         subjects;
     private Map<String,Accession[]>     accessions;
     private Map<String,SampleProcess>   processes;
+    private Map<String,SampleDetails>   details;
 
     private Map<String,SampleRow>   rows;
 
-    private SampleInventoryDAO sampleInventory;
+    // private SampleInventoryDAO sampleInventory;
+    private SampleInventory sampleInventory;
 
     private static RowCache cache;
 
@@ -46,6 +50,7 @@ public class RowCache {
 	this.subjects = new HashMap<String,Subject>();
 	this.accessions = new HashMap<String,Accession[]>();
 	this.processes = new HashMap<String,SampleProcess>();
+	this.details = new HashMap<String,SampleDetails>();
 	this.rows = new HashMap<String,SampleRow>();
     }
 
@@ -55,7 +60,8 @@ public class RowCache {
      * @param inventory the DAO of the sample inventory.
      * @return the <code>RowCache</code> instance.
      */
-    public static synchronized RowCache getInstance( SampleInventoryDAO inventory ) {
+    public static synchronized RowCache getInstance( SampleInventory inventory ) {
+    // public static synchronized RowCache getInstance( SampleInventoryDAO inventory ) {
 	if( cache == null ) 
 	    cache = new RowCache();
 	cache.setSampleInventory( inventory );
@@ -67,18 +73,24 @@ public class RowCache {
      *
      * @return a <code>SampleInventoryDAO</code> value
      */
-    public final SampleInventoryDAO getSampleInventory() {
+    public final SampleInventory getSampleInventory() {
 	return sampleInventory;
     }
+    // public final SampleInventoryDAO getSampleInventory() {
+    // 	return sampleInventory;
+    // }
 
     /**
      * Set the <code>SampleInventory</code> value.
      *
      * @param sampleInventory The new SampleInventory value.
      */
-    public final void setSampleInventory(final SampleInventoryDAO sampleInventory) {
+    public final void setSampleInventory(final SampleInventory sampleInventory) {
 	this.sampleInventory = sampleInventory;
     }
+    // public final void setSampleInventory(final SampleInventoryDAO sampleInventory) {
+    // 	this.sampleInventory = sampleInventory;
+    // }
 
     /**
      * Get the <code>SampleRow</code> value.
@@ -91,7 +103,8 @@ public class RowCache {
 
     
     private void decorateType( SampleRow sr, Sample sample ) {
-	SampleInventoryDAO inv = getSampleInventory();
+	// SampleInventoryDAO inv = getSampleInventory();
+	SampleInventory inv = getSampleInventory();
 	if( inv == null ) {
 	    log.error( "Inventory access is invalid" );
 	    return;
@@ -115,7 +128,8 @@ public class RowCache {
     }
 
     private Study decorateStudy( SampleRow sr, Sample sample ) {
-	SampleInventoryDAO inv = getSampleInventory();
+	// SampleInventoryDAO inv = getSampleInventory();
+	SampleInventory inv = getSampleInventory();
 	if( inv == null ) {
 	    log.error( "Inventory access is invalid" );
 	    return null;
@@ -143,7 +157,8 @@ public class RowCache {
     }
 
     private void decorateSubject( SampleRow sr, Sample sample, Study study ) {
-	SampleInventoryDAO inv = getSampleInventory();
+	// SampleInventoryDAO inv = getSampleInventory();
+	SampleInventory inv = getSampleInventory();
 	if( inv == null ) {
 	    log.error( "Inventory access is invalid" );
 	    return;
@@ -167,7 +182,8 @@ public class RowCache {
     }
 
     private void decorateAccessions( SampleRow sr, Sample sample ) {
-	SampleInventoryDAO inv = getSampleInventory();
+	// SampleInventoryDAO inv = getSampleInventory();
+	SampleInventory inv = getSampleInventory();
 	if( inv == null ) {
 	    log.error( "Inventory access is invalid" );
 	    return;
@@ -190,7 +206,8 @@ public class RowCache {
     }
 
     private void decorateVisit( SampleRow sr, Sample sample ) {
-	SampleInventoryDAO inv = getSampleInventory();
+	// SampleInventoryDAO inv = getSampleInventory();
+	SampleInventory inv = getSampleInventory();
 	if( inv == null ) {
 	    log.error( "Inventory access is invalid" );
 	    return;
@@ -212,8 +229,33 @@ public class RowCache {
 	}
     }
 
+    private void decorateDetails( SampleRow sr, Sample sample ) {
+	// SampleInventoryDAO inv = getSampleInventory();
+	SampleInventory inv = getSampleInventory();
+	if( inv == null ) {
+	    log.error( "Inventory access is invalid" );
+	    return;
+	}
+	if( sr.getSampleDetails() == null ) {
+	    SampleDetails det = details.get( sample.getSampleid() );
+	    if( det == null ) {
+	 	try {
+	 	    det = inv.createSampleDetails( sample );
+	 	    if( det != null ) 
+	 		details.put( sample.getSampleid(), det );
+	 	}
+	 	catch( SQLException sqe ) {
+	 	    log.error( sqe );
+	 	}
+	    }
+	    if( det != null ) 
+	 	sr.setSampleDetails( det );
+	}
+    }
+
     private void decorateRow( SampleRow sr ) {
-	SampleInventoryDAO inv = getSampleInventory();
+	// SampleInventoryDAO inv = getSampleInventory();
+	SampleInventory inv = getSampleInventory();
 	if( inv == null ) {
 	    log.error( "Inventory access is invalid" );
 	    return;
@@ -226,6 +268,8 @@ public class RowCache {
 
 	decorateAccessions( sr, sample );
 	decorateVisit( sr, sample );
+
+	decorateDetails( sr, sample );
     }
 
     /**

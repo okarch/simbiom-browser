@@ -1,0 +1,814 @@
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+ :: Spring Boot ::       (v1.1.10.RELEASE)
+
+09:44:51,604 INFO  [SampleInventoryApplication:52] Starting SampleInventoryApplication with PID 19275 (/home/okarch/classes/simbiom-browser/target/simbiom-browser-1.0.jar started by okarch in /home/okarch/classes/simbiom-browser)
+09:44:51,647 DEBUG [SampleInventoryApplication:55] Running with Spring Boot v1.1.10.RELEASE, Spring v4.0.8.RELEASE
+09:44:51,777 INFO  [AnnotationConfigEmbeddedWebApplicationContext:515] Refreshing org.springframework.boot.context.embedded.AnnotationConfigEmbeddedWebApplicationContext@ca245bd: startup date [Sun Mar 04 09:44:51 CET 2018]; root of context hierarchy
+09:44:53,700 INFO  [DefaultListableBeanFactory:754] Overriding bean definition for bean 'beanNameViewResolver': replacing [Root bean: class [null]; scope=; abstract=false; lazyInit=false; autowireMode=3; dependencyCheck=0; autowireCandidate=true; primary=false; factoryBeanName=org.springframework.boot.autoconfigure.web.ErrorMvcAutoConfiguration$WhitelabelErrorViewConfiguration; factoryMethodName=beanNameViewResolver; initMethodName=null; destroyMethodName=(inferred); defined in class path resource [org/springframework/boot/autoconfigure/web/ErrorMvcAutoConfiguration$WhitelabelErrorViewConfiguration.class]] with [Root bean: class [null]; scope=; abstract=false; lazyInit=false; autowireMode=3; dependencyCheck=0; autowireCandidate=true; primary=false; factoryBeanName=org.springframework.boot.autoconfigure.web.WebMvcAutoConfiguration$WebMvcAutoConfigurationAdapter; factoryMethodName=beanNameViewResolver; initMethodName=null; destroyMethodName=(inferred); defined in class path resource [org/springframework/boot/autoconfigure/web/WebMvcAutoConfiguration$WebMvcAutoConfigurationAdapter.class]]
+09:44:55,101 INFO  [PostProcessorRegistrationDelegate$BeanPostProcessorChecker:309] Bean 'org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration' of type [class org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration$$EnhancerBySpringCGLIB$$b6f4ccf5] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+09:44:55,155 INFO  [PostProcessorRegistrationDelegate$BeanPostProcessorChecker:309] Bean 'transactionAttributeSource' of type [class org.springframework.transaction.annotation.AnnotationTransactionAttributeSource] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+09:44:55,194 INFO  [PostProcessorRegistrationDelegate$BeanPostProcessorChecker:309] Bean 'transactionInterceptor' of type [class org.springframework.transaction.interceptor.TransactionInterceptor] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+09:44:55,220 INFO  [PostProcessorRegistrationDelegate$BeanPostProcessorChecker:309] Bean 'org.springframework.transaction.config.internalTransactionAdvisor' of type [class org.springframework.transaction.interceptor.BeanFactoryTransactionAttributeSourceAdvisor] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+09:44:56,057 INFO  [TomcatEmbeddedServletContainerFactory:152] Server initialized with port: 9090
+09:44:56,482 INFO  [StandardService:183] Starting service Tomcat
+09:44:56,483 INFO  [StandardEngine:183] Starting Servlet Engine: Apache Tomcat/7.0.57
+09:44:56,854 INFO  [[/]:183] Initializing Spring embedded WebApplicationContext
+09:44:56,854 INFO  [ContextLoader:252] Root WebApplicationContext: initialization completed in 5083 ms
+09:44:58,914 INFO  [ServletRegistrationBean:165] Mapping servlet: 'DHtmlLayoutServlet' to [*.zul]
+09:44:58,922 INFO  [ServletRegistrationBean:165] Mapping servlet: 'DHtmlUpdateServlet' to [/zkau/*]
+09:44:58,923 INFO  [ServletRegistrationBean:165] Mapping servlet: 'dispatcherServlet' to [/]
+09:44:58,929 INFO  [FilterRegistrationBean:283] Mapping filter: 'metricFilter' to: [/*]
+09:44:58,930 INFO  [FilterRegistrationBean:283] Mapping filter: 'hiddenHttpMethodFilter' to: [/*]
+09:44:58,931 INFO  [FilterRegistrationBean:283] Mapping filter: 'applicationContextIdFilter' to: [/*]
+09:44:58,931 INFO  [FilterRegistrationBean:283] Mapping filter: 'webRequestLoggingFilter' to: [/*]
+09:44:59,279 INFO  [WebManager:114] Starting ZK 7.0.2 PE (build: 2014052709)
+09:44:59,318 INFO  [ConfigParser:164] Loading system default
+09:44:59,551 INFO  [ConfigParser:271] Parsing jar:file:/home/okarch/classes/simbiom-browser/target/simbiom-browser-1.0.jar!/lib/zul-7.0.2-Eval.jar!/metainfo/zk/zk.xml
+09:44:59,585 INFO  [ConfigParser:271] Parsing jar:file:/home/okarch/classes/simbiom-browser/target/simbiom-browser-1.0.jar!/lib/zkex-7.0.2-Eval.jar!/metainfo/zk/zk.xml
+09:44:59,637 INFO  [ConfigParser:271] Parsing jndi:/localhost/WEB-INF/zk.xml
+09:44:59,817 ERROR [global:?] This is an evaluation copy of ZK PE and will terminate after sixty days from the first date of installation. Should you require an open source license or commercial license for ZK PE please contact us at info@zkoss.org for more information. Alternatively you can download ZK CE which is licensed under the LGPL.
+09:45:00,867 INFO  [SimpleUrlHandlerMapping:315] Mapped URL path [/**/favicon.ico] onto handler of type [class org.springframework.web.servlet.resource.ResourceHttpRequestHandler]
+09:45:01,104 INFO  [RequestMappingHandlerMapping:197] Mapped "{[/error],methods=[],params=[],headers=[],consumes=[],produces=[text/html],custom=[]}" onto public org.springframework.web.servlet.ModelAndView org.springframework.boot.autoconfigure.web.BasicErrorController.errorHtml(javax.servlet.http.HttpServletRequest)
+09:45:01,105 INFO  [RequestMappingHandlerMapping:197] Mapped "{[/error],methods=[],params=[],headers=[],consumes=[],produces=[],custom=[]}" onto public org.springframework.http.ResponseEntity<java.util.Map<java.lang.String, java.lang.Object>> org.springframework.boot.autoconfigure.web.BasicErrorController.error(javax.servlet.http.HttpServletRequest)
+09:45:01,191 INFO  [SimpleUrlHandlerMapping:315] Mapped URL path [/webjars/**] onto handler of type [class org.springframework.web.servlet.resource.ResourceHttpRequestHandler]
+09:45:01,191 INFO  [SimpleUrlHandlerMapping:315] Mapped URL path [/**] onto handler of type [class org.springframework.web.servlet.resource.ResourceHttpRequestHandler]
+09:45:01,574 INFO  [EmbeddedDatabaseFactory:147] Creating embedded database 'testdb'
+09:45:03,232 INFO  [AnnotationMBeanExporter:414] Registering beans for JMX exposure on startup
+09:45:03,318 INFO  [EndpointMBeanExporter:414] Registering beans for JMX exposure on startup
+09:45:03,489 INFO  [EndpointHandlerMapping:197] Mapped "{[/health],methods=[],params=[],headers=[],consumes=[],produces=[],custom=[]}" onto public java.lang.Object org.springframework.boot.actuate.endpoint.mvc.HealthMvcEndpoint.invoke()
+09:45:03,489 INFO  [EndpointHandlerMapping:197] Mapped "{[/configprops],methods=[GET],params=[],headers=[],consumes=[],produces=[],custom=[]}" onto public java.lang.Object org.springframework.boot.actuate.endpoint.mvc.EndpointMvcAdapter.invoke()
+09:45:03,490 INFO  [EndpointHandlerMapping:197] Mapped "{[/metrics/{name:.*}],methods=[GET],params=[],headers=[],consumes=[],produces=[],custom=[]}" onto public java.lang.Object org.springframework.boot.actuate.endpoint.mvc.MetricsMvcEndpoint.value(java.lang.String)
+09:45:03,490 INFO  [EndpointHandlerMapping:197] Mapped "{[/metrics],methods=[GET],params=[],headers=[],consumes=[],produces=[],custom=[]}" onto public java.lang.Object org.springframework.boot.actuate.endpoint.mvc.EndpointMvcAdapter.invoke()
+09:45:03,490 INFO  [EndpointHandlerMapping:197] Mapped "{[/dump],methods=[GET],params=[],headers=[],consumes=[],produces=[],custom=[]}" onto public java.lang.Object org.springframework.boot.actuate.endpoint.mvc.EndpointMvcAdapter.invoke()
+09:45:03,491 INFO  [EndpointHandlerMapping:197] Mapped "{[/beans],methods=[GET],params=[],headers=[],consumes=[],produces=[],custom=[]}" onto public java.lang.Object org.springframework.boot.actuate.endpoint.mvc.EndpointMvcAdapter.invoke()
+09:45:03,491 INFO  [EndpointHandlerMapping:197] Mapped "{[/mappings],methods=[GET],params=[],headers=[],consumes=[],produces=[],custom=[]}" onto public java.lang.Object org.springframework.boot.actuate.endpoint.mvc.EndpointMvcAdapter.invoke()
+09:45:03,491 INFO  [EndpointHandlerMapping:197] Mapped "{[/autoconfig],methods=[GET],params=[],headers=[],consumes=[],produces=[],custom=[]}" onto public java.lang.Object org.springframework.boot.actuate.endpoint.mvc.EndpointMvcAdapter.invoke()
+09:45:03,491 INFO  [EndpointHandlerMapping:197] Mapped "{[/env/{name:.*}],methods=[GET],params=[],headers=[],consumes=[],produces=[],custom=[]}" onto public java.lang.Object org.springframework.boot.actuate.endpoint.mvc.EnvironmentMvcEndpoint.value(java.lang.String)
+09:45:03,492 INFO  [EndpointHandlerMapping:197] Mapped "{[/env],methods=[GET],params=[],headers=[],consumes=[],produces=[],custom=[]}" onto public java.lang.Object org.springframework.boot.actuate.endpoint.mvc.EndpointMvcAdapter.invoke()
+09:45:03,492 INFO  [EndpointHandlerMapping:197] Mapped "{[/info],methods=[GET],params=[],headers=[],consumes=[],produces=[],custom=[]}" onto public java.lang.Object org.springframework.boot.actuate.endpoint.mvc.EndpointMvcAdapter.invoke()
+09:45:03,492 INFO  [EndpointHandlerMapping:197] Mapped "{[/trace],methods=[GET],params=[],headers=[],consumes=[],produces=[],custom=[]}" onto public java.lang.Object org.springframework.boot.actuate.endpoint.mvc.EndpointMvcAdapter.invoke()
+09:45:03,618 INFO  [DefaultLifecycleProcessor:341] Starting beans in phase 0
+09:45:03,621 INFO  [EndpointMBeanExporter:657] Located managed bean 'requestMappingEndpoint': registering with JMX server as MBean [org.springframework.boot:type=Endpoint,name=requestMappingEndpoint]
+09:45:03,713 INFO  [EndpointMBeanExporter:657] Located managed bean 'environmentEndpoint': registering with JMX server as MBean [org.springframework.boot:type=Endpoint,name=environmentEndpoint]
+09:45:03,725 INFO  [EndpointMBeanExporter:657] Located managed bean 'healthEndpoint': registering with JMX server as MBean [org.springframework.boot:type=Endpoint,name=healthEndpoint]
+09:45:03,728 INFO  [EndpointMBeanExporter:657] Located managed bean 'beansEndpoint': registering with JMX server as MBean [org.springframework.boot:type=Endpoint,name=beansEndpoint]
+09:45:03,731 INFO  [EndpointMBeanExporter:657] Located managed bean 'infoEndpoint': registering with JMX server as MBean [org.springframework.boot:type=Endpoint,name=infoEndpoint]
+09:45:03,734 INFO  [EndpointMBeanExporter:657] Located managed bean 'metricsEndpoint': registering with JMX server as MBean [org.springframework.boot:type=Endpoint,name=metricsEndpoint]
+09:45:03,737 INFO  [EndpointMBeanExporter:657] Located managed bean 'traceEndpoint': registering with JMX server as MBean [org.springframework.boot:type=Endpoint,name=traceEndpoint]
+09:45:03,741 INFO  [EndpointMBeanExporter:657] Located managed bean 'dumpEndpoint': registering with JMX server as MBean [org.springframework.boot:type=Endpoint,name=dumpEndpoint]
+09:45:03,786 INFO  [EndpointMBeanExporter:657] Located managed bean 'autoConfigurationAuditEndpoint': registering with JMX server as MBean [org.springframework.boot:type=Endpoint,name=autoConfigurationAuditEndpoint]
+09:45:03,789 INFO  [EndpointMBeanExporter:657] Located managed bean 'shutdownEndpoint': registering with JMX server as MBean [org.springframework.boot:type=Endpoint,name=shutdownEndpoint]
+09:45:03,839 INFO  [EndpointMBeanExporter:657] Located managed bean 'configurationPropertiesReportEndpoint': registering with JMX server as MBean [org.springframework.boot:type=Endpoint,name=configurationPropertiesReportEndpoint]
+09:45:03,992 INFO  [TomcatEmbeddedServletContainer:227] Tomcat started on port(s): 9090/http
+09:45:04,001 INFO  [SampleInventoryApplication:61] Started SampleInventoryApplication in 15.069 seconds (JVM running for 16.12)
+09:48:01,470 INFO  [LabelLoaderImpl:239] Loading labels for us
+09:48:01,475 INFO  [LabelLoaderImpl:380] Opening jndi:/localhost/WEB-INF/labels.properties
+09:48:01,746 DEBUG [InventoryPortletController:268] Portlet id: zk boot
+09:48:01,749 INFO  [InventoryPortletController:256] Remembering user id m01061:0
+09:48:01,749 DEBUG [InventoryPortletController:274] User id: 0
+09:48:01,792 DEBUG [InventoryPreferences:138] Cannot find preferences for zk boot.0
+09:48:01,793 ERROR [InventoryPreferences:146] Reading dossier configuration from jar:file:/home/okarch/classes/simbiom-browser/target/simbiom-browser-1.0.jar!/simbiom-config.xml
+09:48:02,341 DEBUG [InventoryPreferences:100] Inventory configuration loaded: com.emd.simbiom.config.InventoryPreferences@7fded4e
+09:48:02,342 DEBUG [InventoryPortletController:104] Wiring component btSampleSearch to action com.emd.simbiom.search.SearchSamples
+09:48:02,342 DEBUG [InventoryPortletController:104] Wiring component btFilterApply to action com.emd.simbiom.search.SearchSamples
+09:48:02,342 DEBUG [InventoryPortletController:104] Wiring component chkFilterUse to action com.emd.simbiom.search.UseFilter
+09:48:02,343 DEBUG [InventoryPortletController:104] Wiring component cbFilterOperator_0 to action com.emd.simbiom.search.SelectFilterOperator
+09:48:02,344 DEBUG [InventoryPortletController:104] Wiring component btFilterRemove_0 to action com.emd.simbiom.search.FilterRemove
+09:48:02,345 DEBUG [InventoryPortletController:104] Wiring component gbResultLog to action com.emd.simbiom.template.OpenResultLog
+09:48:02,346 DEBUG [InventoryPortletController:104] Wiring component cbBatchSelector to action com.emd.simbiom.template.SelectResultLog
+09:48:02,346 DEBUG [InventoryPortletController:104] Wiring component chkResultError to action com.emd.simbiom.template.LogLevelFilter
+09:48:02,346 DEBUG [InventoryPortletController:104] Wiring component chkResultWarn to action com.emd.simbiom.template.LogLevelFilter
+09:48:02,348 DEBUG [InventoryPortletController:104] Wiring component chkResultInfo to action com.emd.simbiom.template.LogLevelFilter
+09:48:02,348 DEBUG [InventoryPortletController:104] Wiring component btSampleUpload to action com.emd.simbiom.template.UploadSamples
+09:48:02,348 DEBUG [InventoryPortletController:104] Wiring component btTemplateNew to action com.emd.simbiom.template.EditTemplate
+09:48:02,348 DEBUG [InventoryPortletController:104] Wiring component btTemplateCopy to action com.emd.simbiom.template.EditTemplate
+09:48:02,349 DEBUG [InventoryPortletController:104] Wiring component btTemplateSave to action com.emd.simbiom.template.EditTemplate
+09:48:02,350 DEBUG [InventoryPortletController:104] Wiring component btTemplateDelete to action com.emd.simbiom.template.EditTemplate
+09:48:02,351 DEBUG [InventoryPortletController:104] Wiring component btTemplateRename to action com.emd.simbiom.template.EditTemplate
+09:48:02,351 DEBUG [InventoryPortletController:104] Wiring component btTemplateUpload to action com.emd.simbiom.template.UploadTemplate
+09:48:02,351 DEBUG [InventoryPortletController:104] Wiring component cbCategory to action com.emd.simbiom.category.CategorySelect
+09:48:02,388 DEBUG [InventoryPortletController:104] Wiring component tbBrowser to action com.emd.simbiom.view.SwitchTab
+09:48:02,388 DEBUG [InventoryPortletController:104] Wiring component intCostCount_0 to action com.emd.simbiom.cost.AmountChange
+09:48:02,389 DEBUG [InventoryPortletController:104] Wiring component btCostUpdate to action com.emd.simbiom.cost.UpdateEstimate
+09:48:02,389 DEBUG [InventoryPortletController:104] Wiring component btCostAdd_0 to action com.emd.simbiom.cost.AddSampleItem
+09:48:02,389 DEBUG [InventoryPortletController:104] Wiring component btCostRemove_0 to action com.emd.simbiom.cost.RemoveSampleItem
+09:48:02,389 DEBUG [InventoryPortletController:104] Wiring component btLogin to action com.emd.simbiom.auth.UserLogin
+09:48:02,389 DEBUG [InventoryPortletController:104] Wiring component btLogout to action com.emd.simbiom.auth.UserLogin
+09:48:02,390 DEBUG [InventoryPortletController:108] Inventory actions wired
+09:48:02,390 DEBUG [InventoryPortletController:92] Initializing inventory view
+09:48:02,390 DEBUG [InventoryPreferences:433] Initialize 10 result models
+09:48:02,390 DEBUG [FilterModel:178] Filter model context: {filterNum=0}
+09:48:02,395 DEBUG [InventoryPreferences:436] Model cbFilterSelector_0 initialized
+09:48:02,395 DEBUG [SampleInventoryDAO:567] Initialize sample inventory database
+09:48:02,462 DEBUG [SampleInventoryDAO:537] Sample inventory database template read from jar:file:/home/okarch/classes/simbiom-browser/target/simbiom-browser-1.0.jar!/lib/simbiom-dao-1.0.jar!/biobank-mysql.properties
+09:48:02,463 DEBUG [SampleInventoryDAO:485] Creating sample inventory datasource
+09:48:02,465 DEBUG [SampleInventoryDAO:489] Database driver loaded: com.mysql.jdbc.Driver
+09:48:03,316 DEBUG [SampleInventoryDAO:548] Verify table t_sample_accession
+09:48:03,400 DEBUG [SampleInventoryDAO:548] Verify table t_sample_donor
+09:48:03,405 DEBUG [SampleInventoryDAO:548] Verify table t_donor_property
+09:48:03,407 DEBUG [SampleInventoryDAO:548] Verify table t_sample_time
+09:48:03,409 DEBUG [SampleInventoryDAO:548] Verify table t_sample_organization
+09:48:03,410 DEBUG [SampleInventoryDAO:548] Verify table t_sample
+09:48:03,414 DEBUG [SampleInventoryDAO:548] Verify table t_sample_type
+09:48:03,415 DEBUG [SampleInventoryDAO:548] Verify table t_sample_study
+09:48:03,415 DEBUG [SampleInventoryDAO:548] Verify table t_sample_studymember
+09:48:03,462 DEBUG [SampleInventoryDAO:548] Verify table t_sample_subject
+09:48:03,463 DEBUG [SampleInventoryDAO:548] Verify table t_sample_treatment
+09:48:03,464 DEBUG [SampleInventoryDAO:548] Verify table t_sample_tracker
+09:48:03,494 DEBUG [SampleInventoryDAO:548] Verify table t_sample_user
+09:48:03,495 DEBUG [SampleInventoryDAO:548] Verify table t_inventory_template
+09:48:03,497 DEBUG [SampleInventoryDAO:548] Verify table t_inventory_upload
+09:48:03,498 DEBUG [SampleInventoryDAO:548] Verify table t_inventory_raw
+09:48:03,500 DEBUG [SampleInventoryDAO:548] Verify table t_inventory_log
+09:48:03,596 DEBUG [SampleInventoryDAO:548] Verify table t_storage_cost
+09:48:03,597 DEBUG [SampleInventoryDAO:548] Verify table t_storage_cost_preference
+09:48:03,598 DEBUG [SampleInventoryDAO:548] Verify table t_storage_cost_item
+09:48:03,599 DEBUG [SampleInventoryDAO:548] Verify table t_storage_costestimate
+09:48:03,600 DEBUG [SampleInventoryDAO:548] Verify table t_property_column
+09:48:03,601 DEBUG [SampleInventoryDAO:548] Verify table t_property_member
+09:48:03,602 DEBUG [SampleInventoryDAO:548] Verify table t_property
+09:48:03,604 DEBUG [SampleInventoryDAO:548] Verify table t_property_type
+09:48:03,605 DEBUG [SampleInventoryDAO:548] Verify table t_property_list
+09:48:03,611 DEBUG [SampleInventoryDAO:548] Verify table t_property_value
+09:48:03,612 DEBUG [SampleInventoryDAO:548] Verify table t_restrict_rule
+09:48:03,613 DEBUG [SampleInventoryDAO:548] Verify table t_restrict_apply
+09:48:03,615 DEBUG [SampleInventoryDAO:548] Verify table t_sample_report
+09:48:03,616 DEBUG [SampleInventoryDAO:622] Initialize sample inventory database done
+09:48:03,616 WARN  [SampleInventoryDAO:676] Cannot find statement "biobank.sample.findByLastCreated". Need to create it
+09:48:03,616 DEBUG [SampleInventoryDAO:680] Preparing named statement "biobank.sample.findByLastCreated": select s.*,stud.studyid from t_sample s, t_sample_studymember stud where date(s.created) >= date((select created from t_sample order by created desc limit 1)) and s.sampleid = stud.sampleid order by s.created desc
+09:48:03,617 DEBUG [SampleInventoryDAO:684] Named statement "biobank.sample.findByLastCreated" registered
+09:48:03,682 DEBUG [SampleResult:121] Last created days: 691
+09:48:03,682 DEBUG [SampleResult:189] Sample result model context: {result=[Lcom.emd.simbiom.model.Sample;@6718ce43}
+09:48:03,683 DEBUG [InventoryPreferences:138] Cannot find preferences for zk boot.-1
+09:48:03,683 ERROR [InventoryPreferences:146] Reading dossier configuration from jar:file:/home/okarch/classes/simbiom-browser/target/simbiom-browser-1.0.jar!/simbiom-config.xml
+09:48:03,813 DEBUG [InventoryPreferences:100] Inventory configuration loaded: com.emd.simbiom.config.InventoryPreferences@60c2220f
+09:48:03,814 DEBUG [SampleResult:212] Assigning model, number of samples: 1
+09:48:03,818 DEBUG [InventoryPreferences:436] Model grSearchResult initialized
+09:48:03,819 WARN  [SampleInventoryDAO:676] Cannot find statement "biobank.template.findByName". Need to create it
+09:48:03,819 DEBUG [SampleInventoryDAO:680] Preparing named statement "biobank.template.findByName": select t.*, u.uploadid, u.userid, u.uploaded, u.md5sum, u.upload from t_inventory_template t left join t_inventory_upload u on (t.templateid = u.templateid) where lower(t.templatename) like ? order by t.templateid
+09:48:03,820 DEBUG [SampleInventoryDAO:684] Named statement "biobank.template.findByName" registered
+09:48:04,077 DEBUG [TemplateModel:213] Template result model context: {result=[Lcom.emd.simbiom.upload.InventoryUploadTemplate;@2960337f}
+09:48:04,077 DEBUG [TemplateModel:224] Assigning model, number of templates: 11
+09:48:04,078 DEBUG [InventoryPreferences:436] Model cbTemplate initialized
+09:48:04,078 DEBUG [InventoryPreferences:436] Model cbBatchSelector initialized
+09:48:04,078 DEBUG [InventoryPreferences:436] Model grResultLog initialized
+09:48:04,078 DEBUG [CategoryTreeView:139] Category tree model context: {category=Molecules}
+09:48:04,082 DEBUG [InventoryPreferences:436] Model trCategory initialized
+09:48:04,083 WARN  [SampleInventoryDAO:676] Cannot find statement "biobank.costsample.findByType". Need to create it
+09:48:04,083 DEBUG [SampleInventoryDAO:680] Preparing named statement "biobank.costsample.findByType": select p.*,c.region,c.servicegroup,c.serviceitem,c.unit,c.frequency,c.price,c.currency from t_storage_cost_preference p, t_storage_cost c where p.costid = c.costid and p.typename = ? order by p.rank
+09:48:04,083 DEBUG [SampleInventoryDAO:684] Named statement "biobank.costsample.findByType" registered
+09:48:04,118 DEBUG [RegistrationModel:97] Registration result model context: {result=[Lcom.emd.simbiom.model.CostSample;@26d731e9}
+09:48:04,119 DEBUG [RegistrationModel:106] Assigning model, number of cost items: 3
+09:48:04,121 DEBUG [InventoryPreferences:436] Model cbRegistration initialized
+09:48:04,121 DEBUG [InventoryPreferences:436] Model cbCostSample_0 initialized
+09:48:04,122 WARN  [SampleInventoryDAO:676] Cannot find statement "biobank.costsample.findAllTypes". Need to create it
+09:48:04,122 DEBUG [SampleInventoryDAO:680] Preparing named statement "biobank.costsample.findAllTypes": select p.* from t_storage_cost_preference p where p.costtype = 'sample' group by p.typename
+09:48:04,123 DEBUG [SampleInventoryDAO:684] Named statement "biobank.costsample.findAllTypes" registered
+09:48:04,125 DEBUG [SampleTypeModel:100] Sample type result model context: {result=[Lcom.emd.simbiom.model.CostSample;@59822caa}
+09:48:04,126 DEBUG [SampleTypeModel:109] Assigning model, number of cost items: 6
+09:48:04,126 DEBUG [InventoryPreferences:436] Model cbSampleType_0 initialized
+09:48:04,127 DEBUG [InventoryPreferences:436] Model grCostItems initialized
+09:48:04,127 DEBUG [FilterModel:92] Updating filter model
+09:48:04,127 DEBUG [FilterModel:99] Set days to last created sample date: 1
+09:48:04,128 DEBUG [AgeFilter:197] Initialize components: intFilterCriteria_0
+09:48:04,128 ERROR [AgeFilter:203] Cannot find component: intFilterCriteria_0
+09:48:04,128 DEBUG [InventoryPreferences:440] Model cbFilterSelector_0 updated
+09:48:04,129 DEBUG [InventoryPreferences:440] Model grSearchResult updated
+09:48:04,129 DEBUG [InventoryPreferences:440] Model cbTemplate updated
+09:48:04,129 DEBUG [InventoryPreferences:440] Model cbBatchSelector updated
+09:48:04,129 DEBUG [InventoryPreferences:440] Model grResultLog updated
+09:48:04,130 DEBUG [InventoryPreferences:440] Model trCategory updated
+09:48:04,130 DEBUG [InventoryPreferences:440] Model cbRegistration updated
+09:48:04,130 DEBUG [InventoryPreferences:440] Model cbCostSample_0 updated
+09:48:04,131 DEBUG [InventoryPreferences:440] Model cbSampleType_0 updated
+09:48:04,131 DEBUG [InventoryPreferences:440] Model grCostItems updated
+09:48:04,131 DEBUG [InventoryPortletController:95] Inventory view initialized
+09:48:04,132 DEBUG [InventoryPortletController:163] panels to show: [pnLogistics, pnBrowse, pnUpload, pnCost, pnLogin]
+09:48:04,132 DEBUG [InventoryPortletController:216] Set selected panel: pnLogistics
+09:48:04,132 WARN  [SampleInventoryDAO:676] Cannot find statement "biobank.user.findById". Need to create it
+09:48:04,133 DEBUG [SampleInventoryDAO:680] Preparing named statement "biobank.user.findById": select * from t_sample_user where userid = ?
+09:48:04,133 DEBUG [SampleInventoryDAO:684] Named statement "biobank.user.findById" registered
+09:48:04,474 DEBUG [SampleInventoryDAO:567] Initialize sample inventory database
+09:48:04,553 DEBUG [SampleInventoryDAO:537] Sample inventory database template read from jar:file:/home/okarch/classes/simbiom-browser/target/simbiom-browser-1.0.jar!/lib/simbiom-dao-1.0.jar!/biobank-mysql.properties
+09:48:04,554 DEBUG [SampleInventoryDAO:485] Creating sample inventory datasource
+09:48:04,554 DEBUG [SampleInventoryDAO:489] Database driver loaded: com.mysql.jdbc.Driver
+09:48:04,577 DEBUG [SampleInventoryDAO:548] Verify table t_sample_accession
+09:48:04,584 DEBUG [SampleInventoryDAO:548] Verify table t_sample_donor
+09:48:04,600 DEBUG [SampleInventoryDAO:548] Verify table t_donor_property
+09:48:04,602 DEBUG [SampleInventoryDAO:548] Verify table t_sample_time
+09:48:04,603 DEBUG [SampleInventoryDAO:548] Verify table t_sample_organization
+09:48:04,604 DEBUG [SampleInventoryDAO:548] Verify table t_sample
+09:48:04,606 DEBUG [SampleInventoryDAO:548] Verify table t_sample_type
+09:48:04,607 DEBUG [SampleInventoryDAO:548] Verify table t_sample_study
+09:48:04,608 DEBUG [SampleInventoryDAO:548] Verify table t_sample_studymember
+09:48:04,610 DEBUG [SampleInventoryDAO:548] Verify table t_sample_subject
+09:48:04,612 DEBUG [SampleInventoryDAO:548] Verify table t_sample_treatment
+09:48:04,613 DEBUG [SampleInventoryDAO:548] Verify table t_sample_tracker
+09:48:04,659 DEBUG [SampleInventoryDAO:548] Verify table t_sample_user
+09:48:04,660 DEBUG [SampleInventoryDAO:548] Verify table t_inventory_template
+09:48:04,661 DEBUG [SampleInventoryDAO:548] Verify table t_inventory_upload
+09:48:04,663 DEBUG [SampleInventoryDAO:548] Verify table t_inventory_raw
+09:48:04,664 DEBUG [SampleInventoryDAO:548] Verify table t_inventory_log
+09:48:04,744 DEBUG [SampleInventoryDAO:548] Verify table t_storage_cost
+09:48:04,745 DEBUG [SampleInventoryDAO:548] Verify table t_storage_cost_preference
+09:48:04,746 DEBUG [SampleInventoryDAO:548] Verify table t_storage_cost_item
+09:48:04,746 DEBUG [SampleInventoryDAO:548] Verify table t_storage_costestimate
+09:48:04,747 DEBUG [SampleInventoryDAO:548] Verify table t_property_column
+09:48:04,749 DEBUG [SampleInventoryDAO:548] Verify table t_property_member
+09:48:04,749 DEBUG [SampleInventoryDAO:548] Verify table t_property
+09:48:04,751 DEBUG [SampleInventoryDAO:548] Verify table t_property_type
+09:48:04,752 DEBUG [SampleInventoryDAO:548] Verify table t_property_list
+09:48:04,753 DEBUG [SampleInventoryDAO:548] Verify table t_property_value
+09:48:04,755 DEBUG [SampleInventoryDAO:548] Verify table t_restrict_rule
+09:48:04,756 DEBUG [SampleInventoryDAO:548] Verify table t_restrict_apply
+09:48:04,758 DEBUG [SampleInventoryDAO:548] Verify table t_sample_report
+09:48:04,759 DEBUG [SampleInventoryDAO:622] Initialize sample inventory database done
+09:48:04,759 WARN  [SampleInventoryDAO:676] Cannot find statement "biobank.study.findById". Need to create it
+09:48:04,759 DEBUG [SampleInventoryDAO:680] Preparing named statement "biobank.study.findById": select * from t_sample_study where studyid = ?
+09:48:04,759 DEBUG [SampleInventoryDAO:684] Named statement "biobank.study.findById" registered
+09:48:04,761 WARN  [SampleInventoryDAO:676] Cannot find statement "biobank.sampleType.findById". Need to create it
+09:48:04,761 DEBUG [SampleInventoryDAO:680] Preparing named statement "biobank.sampleType.findById": select * from t_sample_type where typeid = ?
+09:48:04,761 DEBUG [SampleInventoryDAO:684] Named statement "biobank.sampleType.findById" registered
+09:48:04,762 WARN  [SampleInventoryDAO:676] Cannot find statement "biobank.subject.findBySample". Need to create it
+09:48:04,763 DEBUG [SampleInventoryDAO:680] Preparing named statement "biobank.subject.findBySample": select s.*, p.propertyid from t_sample_subject s, t_sample_donor d left join t_donor_property p on (d.donorid = p.donorid) where d.sampleid = ? and s.studyid = ? and s.donorid = d.donorid
+09:48:04,763 DEBUG [SampleInventoryDAO:684] Named statement "biobank.subject.findBySample" registered
+09:48:04,765 WARN  [SampleInventoryDAO:676] Cannot find statement "biobank.property.findById". Need to create it
+09:48:04,766 DEBUG [SampleInventoryDAO:680] Preparing named statement "biobank.property.findById": select p.*,t.typename, c.columnid, c.dbformat, c.informat, c.outformat, c.columnsize, c.digits, c.minoccurs, c.maxoccurs, c.mandatory from t_property p left join t_property_column c on (p.propertyid = c.propertyid), t_property_type t where p.propertyid = ? and p.typeid = t.typeid
+09:48:04,766 DEBUG [SampleInventoryDAO:684] Named statement "biobank.property.findById" registered
+09:48:04,767 WARN  [SampleInventoryDAO:676] Cannot find statement "biobank.accession.findSampleAccession". Need to create it
+09:48:04,768 DEBUG [SampleInventoryDAO:680] Preparing named statement "biobank.accession.findSampleAccession": select a.* from t_sample_accession a where a.sampleid = ?
+09:48:04,768 DEBUG [SampleInventoryDAO:684] Named statement "biobank.accession.findSampleAccession" registered
+09:48:04,802 WARN  [SampleInventoryDAO:676] Cannot find statement "biobank.process.findByVisit". Need to create it
+09:48:04,802 DEBUG [SampleInventoryDAO:680] Preparing named statement "biobank.process.findByVisit": select p.*,t.visit from t_sample_processing p, t_sample_time t where p.sampleid = ? and p.treatid = ? and p.timeid = t.timeid order by p.processed
+09:48:04,804 DEBUG [SampleInventoryDAO:684] Named statement "biobank.process.findByVisit" registered
+09:48:04,807 WARN  [SampleInventoryDAO:676] Cannot find statement "biobank.sampledetail.findById". Need to create it
+09:48:04,808 DEBUG [SampleInventoryDAO:680] Preparing named statement "biobank.sampledetail.findById": select * from t_sample_report where sampleid = ?
+09:48:04,808 DEBUG [SampleInventoryDAO:684] Named statement "biobank.sampledetail.findById" registered
+09:48:04,852 DEBUG [SampleInventoryDAO:2590] Sample summary properties: {path=biobank.summary.Molecules}
+09:48:04,852 WARN  [SampleInventoryDAO:676] Cannot find statement "biobank.summary.Molecules". Need to create it
+09:48:04,852 DEBUG [SampleInventoryDAO:680] Preparing named statement "biobank.summary.Molecules": select 'Molecules' as groupname, count(p.sampleid) as samplecount, concat(t.treatdesc,'') as term from t_sample_treatment t, t_sample_processing p where t.treatment = 'Study drug' and p.treatid = t.treatid group by t.treatdesc;
+09:48:04,853 DEBUG [SampleInventoryDAO:684] Named statement "biobank.summary.Molecules" registered
+09:48:04,882 DEBUG [SampleInventoryDAO:2590] Sample summary properties: {path=biobank.summary.Molecules}
+09:48:04,914 DEBUG [SampleInventoryDAO:2590] Sample summary properties: {path=biobank.summary.Molecules}
+09:48:04,934 DEBUG [SampleInventoryDAO:2590] Sample summary properties: {path=biobank.summary.Molecules}
+09:48:04,967 DEBUG [FilterModel:213] Filter model selected: [Event onAfterRender <Combobox u2uPh0#cbFilterSelector_0>]
+09:48:04,967 DEBUG [FilterModel:217] Combobox items:8
+09:48:04,967 DEBUG [SearchFilter:223] Layout filter. context: {filterNum=0, inventory=com.emd.simbiom.dao.SampleInventoryDAO@59989e8d}
+09:48:04,967 DEBUG [DefaultView:?] Layout of Sample import newer than
+09:48:05,389 DEBUG [VelocityView:?] Configured context tools from tools.xml
+09:48:05,438 DEBUG [DefaultView:?] Register action
+09:48:05,440 DEBUG [ViewAction:?] Event onSelect for component id cbFilterUnit_0 registered
+09:48:05,440 DEBUG [ViewAction:?] Event onChanging for component id intFilterCriteria_0 registered
+09:48:05,441 DEBUG [ViewAction:?] Event onChange for component id dbEndDate_0 registered
+09:48:05,441 DEBUG [AgeFilter:197] Initialize components: intFilterCriteria_0
+09:48:05,443 DEBUG [TemplateModel:235] Template model selected: [Event onAfterRender <Combobox u2uP42#cbTemplate>]
+09:48:05,443 DEBUG [CategoryTreeView:238] Category tree model selected: [Event onAfterRender <Tree u2uPp#trCategory>]
+09:48:05,444 DEBUG [CategoryTreeView:242] Tree items:3
+09:48:05,444 DEBUG [CategoryTreeView:243] Tree model:com.emd.simbiom.view.CategoryTreeModel@2929ba1e
+09:48:05,444 DEBUG [RegistrationModel:117] Registration model selected: [Event onAfterRender <Combobox u2uPu3#cbRegistration>]
+09:48:05,445 DEBUG [SampleTypeModel:171] Sample type model selected: [Event onAfterRender <Combobox u2uP54#cbSampleType_0>]
+09:48:05,445 DEBUG [SampleTypeModel:150] Volume selection model: cbCostSample_0
+09:48:05,445 WARN  [SampleInventoryDAO:676] Cannot find statement "biobank.costsample.findByType". Need to create it
+09:48:05,445 DEBUG [SampleInventoryDAO:680] Preparing named statement "biobank.costsample.findByType": select p.*,c.region,c.servicegroup,c.serviceitem,c.unit,c.frequency,c.price,c.currency from t_storage_cost_preference p, t_storage_cost c where p.costid = c.costid and p.typename = ? order by p.rank
+09:48:05,446 DEBUG [SampleInventoryDAO:684] Named statement "biobank.costsample.findByType" registered
+09:48:05,447 DEBUG [VolumeSelector:76] Sample volume model context: {result=[Lcom.emd.simbiom.model.CostSample;@2bcbe61}
+09:48:05,447 DEBUG [VolumeSelector:85] Assigning model, number of cost items: 3
+09:48:05,448 DEBUG [VolumeSelector:96] Sample volume model selected: [Event onAfterRender <Combobox u2uP84#cbCostSample_0>]
+09:48:09,495 INFO  [[/]:183] Initializing Spring FrameworkServlet 'dispatcherServlet'
+09:48:09,495 INFO  [DispatcherServlet:479] FrameworkServlet 'dispatcherServlet': initialization started
+09:48:09,596 INFO  [DispatcherServlet:498] FrameworkServlet 'dispatcherServlet': initialization completed in 100 ms
+09:48:13,256 DEBUG [SampleInventoryDAO:2590] Sample summary properties: {path=biobank.summary.Molecules}
+09:48:13,276 DEBUG [SampleInventoryDAO:2590] Sample summary properties: {path=biobank.summary.Molecules}
+09:48:13,297 DEBUG [SampleInventoryDAO:2590] Sample summary properties: {path=biobank.summary.Molecules}
+09:48:13,331 DEBUG [SampleInventoryDAO:2590] Sample summary properties: {path=biobank.summary.Molecules.Studies, Molecules=Abituzumab}
+09:48:13,332 WARN  [SampleInventoryDAO:676] Cannot find statement "biobank.summary.Molecules.Studies". Need to create it
+09:48:13,333 DEBUG [SampleInventoryDAO:680] Preparing named statement "biobank.summary.Molecules.Studies": select 'Studies' as groupname, concat(st.studyname,'') as term, count(s.sampleid) as samplecount from t_sample_treatment t, t_sample_processing p, t_sample_study st, t_sample_studymember s where t.treatment = 'Study drug' and p.treatid = t.treatid and p.sampleid = s.sampleid and st.studyid = s.studyid and t.treatdesc = ? group by st.studyname
+09:48:13,333 DEBUG [SampleInventoryDAO:684] Named statement "biobank.summary.Molecules.Studies" registered
+09:48:13,405 DEBUG [SampleInventoryDAO:2590] Sample summary properties: {path=biobank.summary.Molecules.Sample_types, Molecules=Abituzumab}
+09:48:13,406 WARN  [SampleInventoryDAO:676] Cannot find statement "biobank.summary.Molecules.Sample_types". Need to create it
+09:48:13,406 DEBUG [SampleInventoryDAO:680] Preparing named statement "biobank.summary.Molecules.Sample_types": select 'Sample types' as groupname, concat(st.typename,'') as term, count(s.sampleid) as samplecount from t_sample_treatment t, t_sample_processing p, t_sample_type st, t_sample s where t.treatment = 'Study drug' and p.treatid = t.treatid and p.sampleid = s.sampleid and st.typeid = s.typeid and t.treatdesc = ? group by st.typename
+09:48:13,406 DEBUG [SampleInventoryDAO:684] Named statement "biobank.summary.Molecules.Sample_types" registered
+09:48:13,418 DEBUG [SampleInventoryDAO:2590] Sample summary properties: {path=biobank.summary.Molecules.Locations, Molecules=Abituzumab}
+09:48:13,418 WARN  [SampleInventoryDAO:676] Cannot find statement "biobank.summary.Molecules.Locations". Need to create it
+09:48:13,418 DEBUG [SampleInventoryDAO:680] Preparing named statement "biobank.summary.Molecules.Locations": select 'Locations' as groupname, concat(o.orgname,' ',date_format(ps.processed,'%e %b %Y')) as term, count(s.sampleid) as samplecount from t_sample_treatment t, t_sample_processing p, t_sample_processing ps, t_sample_organization o, t_sample_time tm, t_sample s where t.treatment = 'Study drug' and p.treatid = t.treatid and p.sampleid = s.sampleid and ps.sampleid = s.sampleid and ps.treatid = 7 and tm.timeid = ps.timeid and o.orgid = tm.orgid and t.treatdesc = ? group by concat(o.orgname,' ',ps.processed)
+09:48:13,418 DEBUG [SampleInventoryDAO:684] Named statement "biobank.summary.Molecules.Locations" registered
+09:48:13,421 DEBUG [SampleInventoryDAO:2590] Sample summary properties: {path=biobank.summary.Molecules.Diseases, Molecules=Abituzumab}
+09:48:13,422 WARN  [SampleInventoryDAO:676] Cannot find statement "biobank.summary.Molecules.Diseases". Need to create it
+09:48:13,422 ERROR [CategoryViewNode:146] java.sql.SQLException: Cannot find named statement: biobank.summary.Molecules.Diseases
+09:48:15,693 DEBUG [SampleInventoryDAO:2590] Sample summary properties: {path=biobank.summary.Molecules}
+09:48:15,707 DEBUG [SampleInventoryDAO:2590] Sample summary properties: {path=biobank.summary.Molecules}
+09:48:15,726 DEBUG [SampleInventoryDAO:2590] Sample summary properties: {path=biobank.summary.Molecules}
+09:48:15,739 DEBUG [SampleInventoryDAO:2590] Sample summary properties: {path=biobank.summary.Molecules.Sample_types, Molecules=Abituzumab}
+09:48:15,753 DEBUG [SampleInventoryDAO:2590] Sample summary properties: {path=biobank.summary.Molecules.Sample_types, Molecules=Abituzumab}
+09:48:15,762 DEBUG [SampleInventoryDAO:2590] Sample summary properties: {path=biobank.summary.Molecules.Sample_types, Molecules=Abituzumab}
+09:48:15,781 DEBUG [SampleInventoryDAO:2590] Sample summary properties: {path=biobank.summary.Molecules.Sample_types, Molecules=Abituzumab}
+09:48:15,793 DEBUG [SampleInventoryDAO:2590] Sample summary properties: {path=biobank.summary.Molecules.Sample_types, Molecules=Abituzumab}
+09:48:15,812 DEBUG [SampleInventoryDAO:2590] Sample summary properties: {path=biobank.summary.Molecules.Sample_types, Molecules=Abituzumab}
+09:48:15,827 DEBUG [SampleInventoryDAO:2590] Sample summary properties: {path=biobank.summary.Molecules.Sample_types, Molecules=Abituzumab}
+09:48:15,839 DEBUG [SampleInventoryDAO:2590] Sample summary properties: {path=biobank.summary.Molecules.Sample_types, Molecules=Abituzumab}
+09:48:17,511 DEBUG [SampleInventoryDAO:2590] Sample summary properties: {path=biobank.summary.Molecules}
+09:48:17,544 DEBUG [SampleInventoryDAO:2590] Sample summary properties: {path=biobank.summary.Molecules}
+09:48:17,567 DEBUG [SampleInventoryDAO:2590] Sample summary properties: {path=biobank.summary.Molecules}
+09:48:17,613 DEBUG [SampleInventoryDAO:2590] Sample summary properties: {path=biobank.summary.Molecules.Sample_types, Molecules=Abituzumab}
+09:48:17,639 DEBUG [SampleInventoryDAO:2590] Sample summary properties: {path=biobank.summary.Molecules.Sample_types, Molecules=Abituzumab}
+09:48:17,677 DEBUG [SampleInventoryDAO:2590] Sample summary properties: {path=biobank.summary.Molecules}
+09:48:17,704 DEBUG [SampleInventoryDAO:2590] Sample summary properties: {path=biobank.summary.Molecules}
+09:48:17,738 DEBUG [SampleInventoryDAO:2590] Sample summary properties: {path=biobank.summary.Molecules}
+09:48:17,759 DEBUG [SampleInventoryDAO:2590] Sample summary properties: {path=biobank.summary.Molecules.Sample_types, Molecules=Abituzumab}
+09:48:17,781 DEBUG [SampleInventoryDAO:2590] Sample summary properties: {path=biobank.summary.Molecules.Sample_types, Molecules=Abituzumab}
+09:48:17,821 DEBUG [CategoryTreeView:238] Category tree model selected: [SelectEvent onSelect <Tree u2uPp#trCategory>]
+09:48:17,822 DEBUG [SampleInventoryDAO:2590] Sample summary properties: {path=biobank.summary.Molecules}
+09:48:17,833 DEBUG [SampleInventoryDAO:2590] Sample summary properties: {path=biobank.summary.Molecules}
+09:48:17,860 DEBUG [SampleInventoryDAO:2590] Sample summary properties: {path=biobank.summary.Molecules}
+09:48:17,887 DEBUG [SampleInventoryDAO:2590] Sample summary properties: {path=biobank.summary.Molecules.Sample_types, Molecules=Abituzumab}
+09:48:17,904 DEBUG [SampleInventoryDAO:2590] Sample summary properties: {path=biobank.summary.Molecules.Sample_types, Molecules=Abituzumab}
+09:48:17,932 DEBUG [CategoryTreeView:164] Category path: Molecules.Sample_types
+09:48:17,932 DEBUG [CategoryTreeView:166] View found: com.emd.simbiom.category.GoogleChartCategoryView
+09:48:17,933 DEBUG [CategoryTreeView:197] set chartTitle = Samples per Sample_types
+09:48:17,933 DEBUG [SampleInventoryDAO:2590] Sample summary properties: {path=biobank.summary}
+09:48:17,933 WARN  [SampleInventoryDAO:676] Cannot find statement "biobank.summary". Need to create it
+09:48:17,933 DEBUG [SampleInventoryDAO:680] Preparing named statement "biobank.summary": select 'Samples' as groupname, 'Samples' as term, count(sampleid) as samplecount from t_sample
+09:48:17,933 DEBUG [SampleInventoryDAO:684] Named statement "biobank.summary" registered
+09:48:17,935 DEBUG [CategoryTreeView:206] All samples query: 1
+09:48:17,935 DEBUG [CategoryView:138] Layout category view. context: {path=Molecules|Abituzumab|Sample types, modelName=trCategory, chartTitle=Samples per Sample_types, allSamples=Samples, category=Sample types}
+09:48:17,935 DEBUG [DefaultView:?] Layout of Molecules.Sample_types
+09:48:17,947 DEBUG [DefaultView:?] Register action
+09:48:17,948 DEBUG [ViewAction:?] Event onSelect for component id chrtBarChart registered
+09:48:17,950 DEBUG [SampleInventoryDAO:2590] Sample summary properties: {path=biobank.summary.Molecules.Sample_types, Molecules=Abituzumab}
+09:48:17,989 DEBUG [GoogleChartCategoryView:156] Calculated chart height: 480
+09:48:21,086 DEBUG [BrowseSamples:166] Selection: row=2 column=1 value=419
+09:48:21,086 DEBUG [BrowseSamples:170] Query path: Molecules|Abituzumab|Sample types|serum|
+09:48:21,087 DEBUG [BrowseSamples:176] Retrieve samples of Molecules|Abituzumab|Sample types|serum|samples
+09:48:21,087 DEBUG [SampleInventoryDAO:2634] Sample category query properties: {path=biobank.summary.Molecules.Sample_types.samples, Sample_types=serum, Molecules=Abituzumab}
+09:48:21,087 WARN  [SampleInventoryDAO:676] Cannot find statement "biobank.summary.Molecules.Sample_types.samples". Need to create it
+09:48:21,088 DEBUG [SampleInventoryDAO:680] Preparing named statement "biobank.summary.Molecules.Sample_types.samples": select distinct s.*, stud.studyid from t_sample_treatment t, t_sample_processing p, t_sample s, t_sample_type st, t_sample_studymember stud where t.treatment = 'Study drug' and p.treatid = t.treatid and p.sampleid = s.sampleid and st.typeid = s.typeid and stud.sampleid = s.sampleid and t.treatdesc = ? and st.typename = ?
+09:48:21,088 DEBUG [SampleInventoryDAO:684] Named statement "biobank.summary.Molecules.Sample_types.samples" registered
+09:48:21,247 DEBUG [BrowseSamples:178] Number of samples retrieved: 419
+09:48:21,247 DEBUG [SampleResult:189] Sample result model context: {result=[Lcom.emd.simbiom.model.Sample;@27f58ac9}
+09:48:21,248 DEBUG [SampleResult:212] Assigning model, number of samples: 419
+09:48:21,313 DEBUG [BrowseSamples:101] Sample result model initialized
+09:48:25,343 DEBUG [SelectSample:313] Sample info requested: [MouseEvent onClick <Button u2uPjz#btInfoRow_0a14885f-637b-4dcd-b0fc-5759000e655c>]
+09:48:25,345 DEBUG [SelectSample:321] Compile information on sample: 0a14885f-637b-4dcd-b0fc-5759000e655c
+09:48:25,345 DEBUG [SelectSample:175] Display details of 0a14885f-637b-4dcd-b0fc-5759000e655c, details length: 55665
+09:48:25,349 DEBUG [DefaultView:?] Layout of 
+09:48:26,150 DEBUG [VelocityView:?] Content after transform ():
+<?xml version="1.0" encoding="UTF-8"?>
+
+<vlayout>
+  <groupbox id="gbInfoGeneral" mold="3d" open="true">
+    <caption image="/images/status.png" label="General" />                  
+    <grid id="grInfoGeneral" fixedLayout="true" span="true">
+      <columns>
+        <column label="Show" width="30px" hflex="1"/>
+        <column label="Filter" width="30px" hflex="1"/>
+        <column label="Property" hflex="min"/>
+        <column label="Value" hflex="min"/>
+      </columns>
+      <rows>
+        <row>
+          <checkbox id="chkShow_sampleid" checked="false" />
+          <checkbox id="chkFilter_sampleid" checked="false" />
+          <label id="lbProperty_sampleid" value="Internal ID" />
+          <label id="lbValue_sampleid" value="0a14885f-637b-4dcd-b0fc-5759000e655c" />
+        </row>
+        <row>
+          <checkbox id="chkShow_sampletype" checked="true" value="typename"/>
+          <checkbox id="chkFilter_sampletype" checked="false" />
+          <label id="lbProperty_sampletype" value="Sample type" />
+          <label id="lbValue_sampletype" value="serum" />
+        </row>
+        <row>
+          <checkbox id="chkShow_samplename" checked="false" />
+          <checkbox id="chkFilter_samplename" checked="false" />
+          <label id="lbProperty_samplename" value="Sample name" />
+          <label id="lbValue_samplename" value="serum 2015-05-15 06:18:41" />
+        </row>
+        <row>
+          <checkbox id="chkShow_created" disabled="true" checked="false" />
+          <checkbox id="chkFilter_created" disabled="true" checked="false" />
+          <label id="lbProperty_created" value="Report created" />
+          <label id="lbValue_created" value="2018-03-02 17:07:38.007" />
+        </row>
+<!--
+-->
+        <row>
+          <checkbox id="chkShow_accessions" checked="false" value="accessions" />
+          <checkbox id="chkFilter_accessions" checked="false" />
+          <label id="lbProperty_accessions" value="Known as" />
+          <label id="lbValue_accessions" value="U720422 (at Covance)" />
+        </row>
+      </rows>
+    </grid>
+  </groupbox>
+  <groupbox id="gbInfoStudyDonor" mold="3d" open="true">
+    <caption image="/images/status.png" label="Study and Donor" />                  
+    <grid id="grInfoStudyDonor" fixedLayout="true" span="true">
+      <columns>
+        <column label="Keep" width="30px" hflex="1"/>
+        <column label="Filter" width="30px" hflex="1"/>
+        <column label="Property" hflex="min"/>
+        <column label="Value" hflex="min"/>
+      </columns>
+      <rows>
+        <row>
+          <checkbox id="chkShow_study" checked="true" value="studyname"/>
+          <checkbox id="chkFilter_study" checked="false" />
+          <label id="lbProperty_study" value="Study" />
+          <label id="lbValue_study" value="EMR62242-004" />
+        </row>
+        <row>
+          <checkbox id="chkShow_reloc" checked="false" />
+          <checkbox id="chkFilter_reloc" checked="false" />
+          <label id="lbProperty_reloc" value="Relocation date" />
+          <label id="lbValue_reloc" value="2015-05-15 18:17:37.0" />
+        </row>
+        <row>
+          <checkbox id="chkShow_expire" checked="false" value="//sample-details/studies/study/property[@name='expire']"/>
+          <checkbox id="chkFilter_expire" checked="false" />
+          <label id="lbProperty_expire" value="Storage duration end" />
+          <label id="lbValue_expire" value="2025-05-12 18:17:37.0" />
+        </row>
+        <row>
+          <checkbox id="chkShow_subjid" checked="true" value="(subjectid)"/>
+          <checkbox id="chkFilter_subjid" checked="false" />
+          <label id="lbProperty_subjid" value="Subject ID" />
+          <label id="lbValue_subjid" value="03031007" />
+        </row>
+        <row>
+          <checkbox id="chkShow_enrolled" checked="false" value="//studies/study/subject/property[@name='enrolled']"/>
+          <checkbox id="chkFilter_enrolled" checked="false" />
+          <label id="lbProperty_enrolled" value="Enrolled" />
+          <label id="lbValue_enrolled" value="2012-10-23 00:00:00.0" />
+        </row>
+        <row>
+          <checkbox id="chkShow_ethnicity" checked="false" value="//studies/study/subject/property[@name='ethnicity']"/>
+          <checkbox id="chkFilter_ethnicity" checked="false" />
+          <label id="lbProperty_ethnicity" value="Ethnicity" />
+          <label id="lbValue_ethnicity" value="White (Western Europe)" />
+        </row>
+        <row>
+          <checkbox id="chkShow_gender" checked="false" value="//studies/study/subject/property[@name='gender']"/>
+          <checkbox id="chkFilter_gender" checked="false" />
+          <label id="lbProperty_gender" value="Gender" />
+          <label id="lbValue_gender" value="M" />
+        </row>
+        <row>
+          <checkbox id="chkShow_age" checked="false" value="//studies/study/subject/property[@name='age']"/>
+          <checkbox id="chkFilter_age" checked="false" />
+          <label id="lbProperty_age" value="Age" />
+          <label id="lbValue_age" value="52" />
+        </row>
+        <row>
+          <checkbox id="chkShow_sa_group_1" checked="false" value="//sample-details/"/>
+          <checkbox id="chkFilter_sa_group_1" checked="false" />
+          <label id="lbProperty_sa_group_1" value="group" />
+          <label id="lbValue_sattr_1" value="EMD525797 1000 mg q2w" />
+        </row>
+        <row>
+          <checkbox id="chkShow_sa_Grade_2" checked="false" value="//sample-details/"/>
+          <checkbox id="chkFilter_sa_Grade_2" checked="false" />
+          <label id="lbProperty_sa_Grade_2" value="Grade" />
+          <label id="lbValue_sattr_2" value="Moderately differentiated" />
+        </row>
+        <row>
+          <checkbox id="chkShow_sa_First diagnosed_3" checked="false" value="//sample-details/"/>
+          <checkbox id="chkFilter_sa_First diagnosed_3" checked="false" />
+          <label id="lbProperty_sa_First diagnosed_3" value="First diagnosed" />
+          <label id="lbValue_sattr_3" value="2003-01-01" />
+        </row>
+        <row>
+          <checkbox id="chkShow_sa_Histology_4" checked="false" value="//sample-details/"/>
+          <checkbox id="chkFilter_sa_Histology_4" checked="false" />
+          <label id="lbProperty_sa_Histology_4" value="Histology" />
+          <label id="lbValue_sattr_4" value="Adenocarcinoma" />
+        </row>
+        <row>
+          <checkbox id="chkShow_sa_Primary tumor localization_5" checked="false" value="//sample-details/"/>
+          <checkbox id="chkFilter_sa_Primary tumor localization_5" checked="false" />
+          <label id="lbProperty_sa_Primary tumor localization_5" value="Primary tumor localization" />
+          <label id="lbValue_sattr_5" value="Other" />
+        </row>
+        <row>
+          <checkbox id="chkShow_sa_TNM stage_6" checked="false" value="//sample-details/"/>
+          <checkbox id="chkFilter_sa_TNM stage_6" checked="false" />
+          <label id="lbProperty_sa_TNM stage_6" value="TNM stage" />
+          <label id="lbValue_sattr_6" value="T2N0M0" />
+        </row>
+      </rows>
+    </grid>
+  </groupbox>
+  <groupbox id="gbInfoProcessing" mold="3d" open="false">
+    <caption image="/images/status.png" label="Sample processing" />                  
+    <grid id="grInfoProcessing" fixedLayout="true" span="true">
+      <columns>
+        <column label="Keep" width="30px" hflex="1"/>
+        <column label="Filter" width="30px" hflex="1"/>
+        <column label="Property" hflex="min"/>
+        <column label="Value" hflex="min"/>
+      </columns>
+      <rows>
+      </rows>
+    </grid>
+  </groupbox>
+  <groupbox id="gbInfoRestriction" mold="3d" open="false">
+    <caption image="/images/status.png" label="Compliance information" />                  
+    <grid id="grInfoRestriction" fixedLayout="true" span="true">
+      <columns>
+        <column label="Keep" width="30px" hflex="1"/>
+        <column label="Filter" width="30px" hflex="1"/>
+        <column label="Property" hflex="min"/>
+        <column label="Value" hflex="min"/>
+      </columns>
+      <rows>
+        <row>
+          <checkbox id="chkShow_rr_study_1" checked="false" />
+          <checkbox id="chkFilter_rr_study_1" checked="false" />
+          <label id="lbProperty_rr_study_1" value="PGx Sample Retention after Withdrawal" />
+          <label id="lbValue_rr_study_1" value="Destroy samples" />
+        </row>
+        <row>
+          <checkbox id="chkShow_rr_study_2" checked="false" />
+          <checkbox id="chkFilter_rr_study_2" checked="false" />
+          <label id="lbProperty_rr_study_2" value="Anonymised Sample Use included in ICF" />
+          <label id="lbValue_rr_study_2" value="No" />
+        </row>
+        <row>
+          <checkbox id="chkShow_rr_study_3" checked="false" />
+          <checkbox id="chkFilter_rr_study_3" checked="false" />
+          <label id="lbProperty_rr_study_3" value="Sample Retention after Withdrawal" />
+          <label id="lbValue_rr_study_3" value="Destroy samples" />
+        </row>
+        <row>
+          <checkbox id="chkShow_rr_study_4" checked="false" />
+          <checkbox id="chkFilter_rr_study_4" checked="false" />
+          <label id="lbProperty_rr_study_4" value="Future Use of PGx sample limitted to Study Drug" />
+          <label id="lbValue_rr_study_4" value="Yes" />
+        </row>
+        <row>
+          <checkbox id="chkShow_rr_study_5" checked="false" />
+          <checkbox id="chkFilter_rr_study_5" checked="false" />
+          <label id="lbProperty_rr_study_5" value="PGx samples retained for Future Use" />
+          <label id="lbValue_rr_study_5" value="Yes" />
+        </row>
+        <row>
+          <checkbox id="chkShow_rr_study_6" checked="false" />
+          <checkbox id="chkFilter_rr_study_6" checked="false" />
+          <label id="lbProperty_rr_study_6" value="Future Use allows Re-Analysis" />
+          <label id="lbValue_rr_study_6" value="Not specified" />
+        </row>
+        <row>
+          <checkbox id="chkShow_rr_study_7" checked="false" />
+          <checkbox id="chkFilter_rr_study_7" checked="false" />
+          <label id="lbProperty_rr_study_7" value="Storage Duration" />
+          <label id="lbValue_rr_study_7" value="12" />
+        </row>
+        <row>
+          <checkbox id="chkShow_rr_study_8" checked="false" />
+          <checkbox id="chkFilter_rr_study_8" checked="false" />
+          <label id="lbProperty_rr_study_8" value="PGx Data Retention after Withdrawal" />
+          <label id="lbValue_rr_study_8" value="Destroy data" />
+        </row>
+        <row>
+          <checkbox id="chkShow_rr_study_9" checked="false" />
+          <checkbox id="chkFilter_rr_study_9" checked="false" />
+          <label id="lbProperty_rr_study_9" value="Destruction Without Further Notice" />
+          <label id="lbValue_rr_study_9" value="Yes" />
+        </row>
+        <row>
+          <checkbox id="chkShow_rr_study_10" checked="false" />
+          <checkbox id="chkFilter_rr_study_10" checked="false" />
+          <label id="lbProperty_rr_study_10" value="Storage Location" />
+          <label id="lbValue_rr_study_10" value="storageloc" />
+        </row>
+        <row>
+          <checkbox id="chkShow_rr_study_11" checked="false" />
+          <checkbox id="chkFilter_rr_study_11" checked="false" />
+          <label id="lbProperty_rr_study_11" value="Future Research to be specified in a Future Research Plan" />
+          <label id="lbValue_rr_study_11" value="No" />
+        </row>
+        <row>
+          <checkbox id="chkShow_rr_study_12" checked="false" />
+          <checkbox id="chkFilter_rr_study_12" checked="false" />
+          <label id="lbProperty_rr_study_12" value="Anonymised Sample Use Optional" />
+          <label id="lbValue_rr_study_12" value="No" />
+        </row>
+        <row>
+          <checkbox id="chkShow_rr_study_13" checked="false" />
+          <checkbox id="chkFilter_rr_study_13" checked="false" />
+          <label id="lbProperty_rr_study_13" value="Future Use of PGx sample Not Specified" />
+          <label id="lbValue_rr_study_13" value="No" />
+        </row>
+        <row>
+          <checkbox id="chkShow_rr_study_14" checked="false" />
+          <checkbox id="chkFilter_rr_study_14" checked="false" />
+          <label id="lbProperty_rr_study_14" value="Future Use in context of CDx allowed" />
+          <label id="lbValue_rr_study_14" value="Not specified" />
+        </row>
+        <row>
+          <checkbox id="chkShow_rr_study_15" checked="false" />
+          <checkbox id="chkFilter_rr_study_15" checked="false" />
+          <label id="lbProperty_rr_study_15" value="Data Retention after Withdrawal" />
+          <label id="lbValue_rr_study_15" value="Use data" />
+        </row>
+        <row>
+          <checkbox id="chkShow_rr_study_16" checked="false" />
+          <checkbox id="chkFilter_rr_study_16" checked="false" />
+          <label id="lbProperty_rr_study_16" value="Storage Duration of PGx samples" />
+          <label id="lbValue_rr_study_16" value="12" />
+        </row>
+        <row>
+          <checkbox id="chkShow_rr_study_17" checked="false" />
+          <checkbox id="chkFilter_rr_study_17" checked="false" />
+          <label id="lbProperty_rr_study_17" value="Future Use allows PGx sample Re-Analysis" />
+          <label id="lbValue_rr_study_17" value="Yes" />
+        </row>
+        <row>
+          <checkbox id="chkShow_rr_study_18" checked="false" />
+          <checkbox id="chkFilter_rr_study_18" checked="false" />
+          <label id="lbProperty_rr_study_18" value="PGx Sample Optional" />
+          <label id="lbValue_rr_study_18" value="Yes" />
+        </row>
+        <row>
+          <checkbox id="chkShow_rr_study_19" checked="false" />
+          <checkbox id="chkFilter_rr_study_19" checked="false" />
+          <label id="lbProperty_rr_study_19" value="Sample Return to Site limited to Time" />
+          <label id="lbValue_rr_study_19" value="Storage period or consent withdrawal" />
+        </row>
+        <row>
+          <checkbox id="chkShow_rr_study_20" checked="false" />
+          <checkbox id="chkFilter_rr_study_20" checked="false" />
+          <label id="lbProperty_rr_study_20" value="Upfront Consent for unspecified Future Reaserch required" />
+          <label id="lbValue_rr_study_20" value="No" />
+        </row>
+        <row>
+          <checkbox id="chkShow_rr_study_21" checked="false" />
+          <checkbox id="chkFilter_rr_study_21" checked="false" />
+          <label id="lbProperty_rr_study_21" value="Sample Return to Site" />
+          <label id="lbValue_rr_study_21" value="Yes" />
+        </row>
+        <row>
+          <checkbox id="chkShow_rr_study_22" checked="false" />
+          <checkbox id="chkFilter_rr_study_22" checked="false" />
+          <label id="lbProperty_rr_study_22" value="Future Use limited to Study Drug" />
+          <label id="lbValue_rr_study_22" value="studydrug" />
+        </row>
+        <row>
+          <checkbox id="chkShow_rr_study_23" checked="false" />
+          <checkbox id="chkFilter_rr_study_23" checked="false" />
+          <label id="lbProperty_rr_study_23" value="Storage Location of PGx samples" />
+          <label id="lbValue_rr_study_23" value="pgxstorageloc" />
+        </row>
+        <row>
+          <checkbox id="chkShow_rr_study_24" checked="false" />
+          <checkbox id="chkFilter_rr_study_24" checked="false" />
+          <label id="lbProperty_rr_study_24" value="Sample Optional" />
+          <label id="lbValue_rr_study_24" value="No" />
+        </row>
+        <row>
+          <checkbox id="chkShow_rr_study_25" checked="false" />
+          <checkbox id="chkFilter_rr_study_25" checked="false" />
+          <label id="lbProperty_rr_study_25" value="Future Use Not Specified" />
+          <label id="lbValue_rr_study_25" value="No" />
+        </row>
+        <row>
+          <checkbox id="chkShow_rr_study_26" checked="false" />
+          <checkbox id="chkFilter_rr_study_26" checked="false" />
+          <label id="lbProperty_rr_study_26" value="Storage and Future Use limited to Sample Purpose" />
+          <label id="lbValue_rr_study_26" value="sfusp" />
+        </row>
+        <row>
+          <checkbox id="chkShow_rr_study_27" checked="false" />
+          <checkbox id="chkFilter_rr_study_27" checked="false" />
+          <label id="lbProperty_rr_study_27" value="Future Use Optional" />
+          <label id="lbValue_rr_study_27" value="No" />
+        </row>
+        <row>
+          <checkbox id="chkShow_rr_study_28" checked="false" />
+          <checkbox id="chkFilter_rr_study_28" checked="false" />
+          <label id="lbProperty_rr_study_28" value="Future Use of PGx sample in context of CDx allowed" />
+          <label id="lbValue_rr_study_28" value="Not specified" />
+        </row>
+        <row>
+          <checkbox id="chkShow_rr_study_29" checked="false" />
+          <checkbox id="chkFilter_rr_study_29" checked="false" />
+          <label id="lbProperty_rr_study_29" value="Future Research Approval Required" />
+          <label id="lbValue_rr_study_29" value="No" />
+        </row>
+        <row>
+          <checkbox id="chkShow_rr_study_30" checked="false" />
+          <checkbox id="chkFilter_rr_study_30" checked="false" />
+          <label id="lbProperty_rr_study_30" value="Future Use of PGx sample limitted to Disease" />
+          <label id="lbValue_rr_study_30" value="Yes" />
+        </row>
+        <row>
+          <checkbox id="chkShow_rr_study_31" checked="false" />
+          <checkbox id="chkFilter_rr_study_31" checked="false" />
+          <label id="lbProperty_rr_study_31" value="Sample Destruction Plan" />
+          <label id="lbValue_rr_study_31" value="No" />
+        </row>
+        <row>
+          <checkbox id="chkShow_rr_study_32" checked="false" />
+          <checkbox id="chkFilter_rr_study_32" checked="false" />
+          <label id="lbProperty_rr_study_32" value="Access by Personel to Samples" />
+          <label id="lbValue_rr_study_32" value="acsampleregulation" />
+        </row>
+        <row>
+          <checkbox id="chkShow_rr_study_33" checked="false" />
+          <checkbox id="chkFilter_rr_study_33" checked="false" />
+          <label id="lbProperty_rr_study_33" value="Limited Duration of Future Retest" />
+          <label id="lbValue_rr_study_33" value="durationlimitft" />
+        </row>
+        <row>
+          <checkbox id="chkShow_rr_study_34" checked="false" />
+          <checkbox id="chkFilter_rr_study_34" checked="false" />
+          <label id="lbProperty_rr_study_34" value="Sample Return to Site limited to Type" />
+          <label id="lbValue_rr_study_34" value="Tissue block" />
+        </row>
+        <row>
+          <checkbox id="chkShow_rr_study_35" checked="false" />
+          <checkbox id="chkFilter_rr_study_35" checked="false" />
+          <label id="lbProperty_rr_study_35" value="Access by Subject to Samples &amp; Data" />
+          <label id="lbValue_rr_study_35" value="acsampleregulation" />
+        </row>
+        <row>
+          <checkbox id="chkShow_rr_study_36" checked="false" />
+          <checkbox id="chkFilter_rr_study_36" checked="false" />
+          <label id="lbProperty_rr_study_36" value="Additional Consent required for Future Research Plan" />
+          <label id="lbValue_rr_study_36" value="No" />
+        </row>
+        <row>
+          <checkbox id="chkShow_rr_study_37" checked="false" />
+          <checkbox id="chkFilter_rr_study_37" checked="false" />
+          <label id="lbProperty_rr_study_37" value="Future Use limited to Other Use" />
+          <label id="lbValue_rr_study_37" value="futureotheruse" />
+        </row>
+        <row>
+          <checkbox id="chkShow_rr_study_38" checked="false" />
+          <checkbox id="chkFilter_rr_study_38" checked="false" />
+          <label id="lbProperty_rr_study_38" value="Future Use limited to Disease" />
+          <label id="lbValue_rr_study_38" value="studydisease" />
+        </row>
+        <row>
+          <checkbox id="chkShow_rr_study_39" checked="false" />
+          <checkbox id="chkFilter_rr_study_39" checked="false" />
+          <label id="lbProperty_rr_study_39" value="Sample type to be Destroyed after Withdrawal" />
+          <label id="lbValue_rr_study_39" value="Blood" />
+        </row>
+        <row>
+          <checkbox id="chkShow_rr_study_40" checked="false" />
+          <checkbox id="chkFilter_rr_study_40" checked="false" />
+          <label id="lbProperty_rr_study_40" value="Anonymised Sample Use Duration" />
+          <label id="lbValue_rr_study_40" value="asuseduration" />
+        </row>
+      </rows>
+    </grid>
+  </groupbox>
+  <hlayout>
+    <button id="btDetailsKeep" label="Update list" />
+    <button id="btDetailsClose" label="Close" />
+  </hlayout>
+</vlayout>
+
+09:48:26,251 DEBUG [DefaultView:?] Register action
+09:48:26,252 DEBUG [ViewAction:?] Event onClick for component id btDetailsKeep registered
+09:48:32,226 DEBUG [UpdateColumns:101] Update column event: [MouseEvent onClick <Button u2uPg70#btDetailsKeep>]
+09:48:32,254 DEBUG [UpdateColumns:114] [chkShow_sampletype:typename, chkShow_study:studyname, chkShow_subjid:(subjectid), chkShow_ethnicity://studies/study/subject/property[@name='ethnicity']]
+09:48:32,254 DEBUG [SelectSample:189] Closing event received
+09:48:32,255 DEBUG [SampleResult:189] Sample result model context: {result=[Lcom.emd.simbiom.model.Sample;@775e6d2c}
+09:48:32,288 DEBUG [SampleResult:212] Assigning model, number of samples: 419
+09:48:32,595 DEBUG [SampleRow:231] Length of node list: 1
+09:48:32,713 DEBUG [SampleRow:231] Length of node list: 1
+09:48:32,726 DEBUG [SampleRow:231] Length of node list: 1
+09:48:32,738 DEBUG [SampleRow:231] Length of node list: 0
+09:48:32,749 DEBUG [SampleRow:231] Length of node list: 1
+09:48:32,822 DEBUG [SampleRow:231] Length of node list: 1
+09:48:32,837 DEBUG [SampleRow:231] Length of node list: 1
+09:48:32,871 DEBUG [SampleRow:231] Length of node list: 1
+09:48:32,885 DEBUG [SampleRow:231] Length of node list: 1
+09:48:32,895 DEBUG [SampleRow:231] Length of node list: 1
+09:48:32,936 DEBUG [SampleRow:231] Length of node list: 1
+09:48:32,948 DEBUG [SampleRow:231] Length of node list: 1
+09:48:32,984 DEBUG [SampleRow:231] Length of node list: 1
+09:48:33,016 DEBUG [SampleRow:231] Length of node list: 1
+09:48:33,034 DEBUG [SampleRow:231] Length of node list: 1
+09:48:33,081 DEBUG [SampleRow:231] Length of node list: 1
+09:48:33,096 DEBUG [SampleRow:231] Length of node list: 1
+09:48:33,109 DEBUG [SampleRow:231] Length of node list: 1
+09:48:33,121 DEBUG [SampleRow:231] Length of node list: 1
+09:48:33,220 DEBUG [SampleRow:231] Length of node list: 1
+09:58:55,157 INFO  [AnnotationConfigEmbeddedWebApplicationContext:875] Closing org.springframework.boot.context.embedded.AnnotationConfigEmbeddedWebApplicationContext@ca245bd: startup date [Sun Mar 04 09:44:51 CET 2018]; root of context hierarchy
+09:58:55,159 INFO  [DefaultLifecycleProcessor:356] Stopping beans in phase 0
+09:58:55,161 INFO  [EndpointMBeanExporter:432] Unregistering JMX-exposed beans on shutdown
+09:58:55,161 INFO  [AnnotationMBeanExporter:432] Unregistering JMX-exposed beans on shutdown
+09:58:55,395 DEBUG [InventoryCleanup:74] Sample inventory browser context about to be destroyed.
+09:58:55,395 DEBUG [InventoryCleanup:80] Cleaning database access of user 0 portlet id zk boot
+09:58:55,396 DEBUG [SampleInventoryDAO:4092] Data access object cleaned
+09:58:55,397 DEBUG [InventoryCleanup:80] Cleaning database access of user -1 portlet id zk boot
+09:58:55,397 DEBUG [SampleInventoryDAO:4092] Data access object cleaned
+09:58:55,397 DEBUG [InventoryCleanup:50] Webapp cleanup done.
