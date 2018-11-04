@@ -25,6 +25,7 @@
       <tab id="tabUpload" label="Upload" disabled="true" />
       <tab id="tabCost" label="Costs" />
       <tab id="tabBudget" label="Budget" />
+      <tab id="tabStorage" label="Storage" />
       <tab id="tabLogin" label="Login" />
     </tabs>
 
@@ -456,9 +457,11 @@
           <vlayout>
             <hlayout>
               <label value="Period"/>
-              <combobox id="cbBudgetYear" autodrop="true" width="200px" mold="rounded" buttonVisible="true"/>
+              <combobox id="cbBudgetPeriod" autodrop="true" width="200px" mold="rounded" buttonVisible="true"/>
               <label value="Program"/>
               <combobox id="cbBudgetProgram" autodrop="true" width="200px" mold="rounded" buttonVisible="true"/>
+              <label value="Storage project"/>
+              <combobox id="cbBudgetProject" autodrop="true" width="300px" mold="rounded" buttonVisible="true"/>
             </hlayout>
             <vlayout id="vlBudgetVisual">
               <label id="lbNoBudget" width="400px" value="Budget overview is not available"/>
@@ -506,6 +509,105 @@
           </grid>
         </groupbox>
 
+      </tabpanel>
+
+      <tabpanel id="pnStorage">
+
+        <grid id="grStorageProject" fixedLayout="true" style="overflow: hidden;" >
+          <columns>
+	    <column width="20%" />
+	    <column width="80%" />
+          </columns>
+
+          <rows>
+
+            <row>
+              <cell style="text-align:left">
+	        <label value="Storage project"/>
+              </cell>
+              <hlayout>
+                <combobox id="cbStorageProject" autodrop="true" width="300px" mold="rounded" buttonVisible="true"/>
+                <button id="btStorageProjectAdd" image="/images/add-icon.png" />
+                <button id="btStorageProjectDelete" image="/images/delete-icon.png" />
+	      </hlayout>
+            </row>
+
+            <row id="rowStorageMessage"/>
+
+            <row>
+              <cell colspan="2">
+                <groupbox id="gbStorageDetails" mold="3d" open="true">
+                  <caption image="/images/status.png" label="Storage details" />                  
+                  <grid id="grStorageDetails" fixedLayout="true" span="true">
+                    <columns>
+                      <column width="20%"/>
+                      <column width="80%"/>
+                    </columns>
+
+                    <rows>
+
+                      <row>
+                        <cell style="text-align:left">
+                          <label value="Project title"/>
+                        </cell>
+                        <hlayout>
+                          <textbox id="txtProjectName" width="300px"/>
+    		          <button id="btProjectRename" label="Rename"/>
+                        </hlayout>
+                      </row>
+
+                      <row>
+                        <cell style="text-align:left">
+                          <label value="Storage groups"/>
+                        </cell>
+                        <hlayout>
+                          <combobox id="cbStorageGroup" autodrop="true" width="300px" mold="rounded" buttonVisible="true"/>
+                          <button id="btStorageGroupAdd" image="/images/add-icon.png" />
+                          <button id="btStorageGroupDelete" image="/images/delete-icon.png" />
+                        </hlayout>
+                      </row>
+
+                      <row>
+                        <cell style="text-align:left">
+                          <label value="Billing"/>
+                        </cell>
+                        <grid id="grBillingInfo" fixedLayout="true" span="true" style="overflow: hidden;">
+                          <columns>
+                            <column width="100%" />
+                          </columns>
+                          <rows id="rowsBillingItems">
+                            <row id="rowBillingItem_0">
+                              <hlayout>
+                                <hlayout>
+                                  <label value="Project code"/>
+                                  <textbox id="txtProjectCode_0" width="150px"/>
+		                </hlayout>
+                                <hlayout>
+                                  <label value="Purchase order"/>
+                                  <textbox id="txtPurchaseOrder_0" width="150px"/>
+                                </hlayout>
+                                <hlayout>
+                                  <label value="Value"/>
+                                  <decimalbox id="decPurchaseValue_0" width="100px" format="###,###.##"/>
+                                </hlayout>
+                                <hlayout>
+                                  <button id="btBillingAdd_0" disabled="true" image="/images/add-icon.png" />
+                                  <button id="btBillingRemove_0" disabled="true" image="/images/delete-icon.png" />
+		                </hlayout>
+                              </hlayout>
+                            </row>
+                          </rows>
+                        </grid>
+                      </row>
+
+                    </rows>
+                  </grid>
+                </groupbox>
+              </cell>
+	    </row>
+
+	  </rows>
+	</grid>
       </tabpanel>
 
       <tabpanel id="pnLogin">

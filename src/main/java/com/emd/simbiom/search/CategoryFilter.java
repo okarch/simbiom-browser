@@ -22,7 +22,8 @@ import org.zkoss.zul.Combobox;
 import org.zkoss.zul.ListModelArray;
 import org.zkoss.zul.Window;
 
-import com.emd.simbiom.dao.SampleInventoryDAO;
+// import com.emd.simbiom.dao.SampleInventoryDAO;
+import com.emd.simbiom.dao.SampleInventory;
 
 import com.emd.simbiom.model.Sample;
 
@@ -84,7 +85,8 @@ public class CategoryFilter extends SearchFilter implements EventListener {
     }
 
     private String[] createTerms( Map context ) {
-	SampleInventoryDAO dao = (SampleInventoryDAO)context.get( "inventory" );
+	// SampleInventoryDAO dao = (SampleInventoryDAO)context.get( "inventory" );
+	SampleInventory dao = (SampleInventory)context.get( "inventory" );
 	if( dao == null ) {
 	    log.error( "Missing or invalid database access" );
 	    return new String[0];
@@ -161,7 +163,8 @@ public class CategoryFilter extends SearchFilter implements EventListener {
      *
      * @param a set of samples matching the filter ordered by sample id. 
      */
-    public SortedSet<Sample> applyFilter( SortedSet<Sample> samples, Window wnd, SampleInventoryDAO dao )
+    // public SortedSet<Sample> applyFilter( SortedSet<Sample> samples, Window wnd, SampleInventoryDAO dao )
+    public SortedSet<Sample> applyFilter( SortedSet<Sample> samples, Window wnd, SampleInventory dao )
 	throws SQLException {
 
 	String querySt = getTerm( wnd );

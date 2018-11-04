@@ -104,6 +104,12 @@
              commandName="colSelect"
              event="onClick" />
 
+    <command config-class="com.emd.simbiom.storage.SelectStorageDetails"
+             commandName="cbStorageProject"
+             event="onSelect" /> 
+    <command config-class="com.emd.simbiom.storage.AddBillingItem"
+             commandName="btBillingAdd_0"
+             event="onClick" />
 
     <result config-class="com.emd.simbiom.search.FilterModel"
             modelName="cbFilterSelector_0">
@@ -349,6 +355,16 @@
             modelName="grResultLog"
             messageRowId="rowMessageUpload" />
 
+    <result config-class="com.emd.simbiom.storage.StorageProjectModel"
+            modelName="cbStorageProject"
+            messageRowId="rowStorageMessage" />
+    <result config-class="com.emd.simbiom.storage.StorageProjectModel"
+            modelName="cbBudgetProject"
+            messageRowId="rowStorageMessage" />
+    <result config-class="com.emd.simbiom.storage.StorageGroupModel"
+            modelName="cbStorageGroup"
+            messageRowId="rowStorageMessage" />
+
 <!--
     <result config-class="com.emd.simbiom.category.CategorySelector"
             modelName="cbCategory"
@@ -526,6 +542,73 @@
             modelName="grCostItems"
             messageRowId="rowMessageCost" />
 
+    <result config-class="com.emd.simbiom.budget.InvoiceStatusModel"
+            modelName="cbInvoiceStatus"
+            messageRowId="rowMessageCost" />
+
+    <result config-class="com.emd.simbiom.budget.InvoiceResult"
+            messageRowId="rowMessageBudget"
+            modelName="grInvoices">
+
+      <columns config-class="com.emd.simbiom.view.ColumnSet">
+        <column config-class="com.emd.simbiom.view.ColumnRenderer"
+                columnId="colInvoice_0"
+                label="Period"
+                contentField="started"
+                sort="date"
+                dateFormat="MMM yyyy" />
+        <column config-class="com.emd.simbiom.view.ColumnRenderer"
+                columnId="colInvoice_1"
+                label="PO Number"
+                contentField="purchase"
+                sort="string"
+                caseInsensitive="true" />
+        <column config-class="com.emd.simbiom.view.ColumnRenderer"
+                columnId="colInvoice_2"
+                label="Invoice"
+                contentField="invoice"
+                sort="string"
+                caseInsensitive="true" />
+        <column config-class="com.emd.simbiom.view.ColumnRenderer"
+                columnId="colInvoice_3"
+                label="Value"
+                contentField="amount,currency"
+                sort="number" 
+                numberFormat="%7.2f" />
+        <column config-class="com.emd.simbiom.view.ColumnRenderer"
+                columnId="colInvoice_4"
+                label="Samples"
+                contentField="numsamples"
+                sort="number"
+                numberFormat="%7.2f" />
+        <column config-class="com.emd.simbiom.view.ColumnRenderer"
+                columnId="colInvoice_5"
+                label="Status"
+                layout="combobox"
+                contentResult="cbInvoiceStatus"
+                contentField="verified,approved" />
+        <column config-class="com.emd.simbiom.view.ColumnRenderer"
+                columnId="colSearch_6"
+                label="Project"
+                layout="vlayout"
+                contentField="projects" />
+      </columns>
+
+<!--
+      <details config-class="com.emd.simbiom.search.SampleDetailsView"
+               template="/template/sample-details.zul"
+               detailsLayout="vlSampleDetailsView"
+               width="1000px">
+
+        <action config-class="com.emd.simbiom.search.UpdateColumns"
+                component="btDetailsKeep"
+                event="onClick" />
+      </details>
+-->
+
+    </result>
+
+<!--
     <inventory config-class="com.emd.simbiom.dao.SampleInventoryDAO"
               url="jdbc:mysql://localhost/biobank"
               driver="com.mysql.jdbc.Driver"
@@ -539,7 +622,7 @@
                      url="http://localhost:7272/solr/biobank" />
 
     </inventory>
-
+-->
     <datafactory config-class="com.emd.simbiom.dao.InventoryFactory">
 
       <database config-class="com.emd.simbiom.dao.DatabaseDAO"
