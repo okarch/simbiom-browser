@@ -478,7 +478,7 @@
                 <menubar autodrop="true">
                   <menu label="Edit">
                     <menupopup>
-                      <menuitem label="New Invoice" image="/images/add-icon.png"/>
+                      <menuitem id="miNewInvoice" label="New Invoice" image="/images/add-icon.png"/>
                       <menuitem label="Delete Invoice" image="/images/delete-icon.png"/>
                     </menupopup>
                   </menu>
@@ -490,10 +490,21 @@
                   </menu>
                 </menubar>
               </auxheader>
-              <auxheader colspan="3">		      
+              <auxheader colspan="5">		      
                 <textbox id="txtInvoiceSearch" width="200px"/>
                 <button id="btInvoiceSearch" label="Search"/>
-                <combobox id="cbInvoicePeriod" autodrop="true" width="200px" mold="rounded" buttonVisible="true"/>		      
+                <label value="Period from"/>
+                <datebox id="dbInvoiceFrom" width="150px"/>
+	        <label value="to"/>
+                <datebox id="dbInvoiceTo" width="150px" />
+                <label value="Invoice status"/>
+                <combobox id="cbInvoiceReview" autodrop="true" width="150px" mold="rounded" buttonVisible="true">
+                  <comboitem label="All" value="All" />
+                  <comboitem label="Not reviewed" value="Not reviewed" />
+                  <comboitem label="Checked" value="Checked" />
+                  <comboitem label="Approved" value="Approved" />
+                  <comboitem label="Rejected" value="Rejected" />
+                </combobox>
               </auxheader>
             </auxhead> 
             <columns id="colInvoices" menupopup="auto" sizable="true">
@@ -565,6 +576,13 @@
                           <button id="btStorageGroupAdd" image="/images/add-icon.png" />
                           <button id="btStorageGroupDelete" image="/images/delete-icon.png" />
                         </hlayout>
+                      </row>
+
+                      <row>
+                        <cell style="text-align:left">
+                          <label value="Remaining value"/>
+                        </cell>
+                        <decimalbox id="decBillingRemainder" width="100px"/>
                       </row>
 
                       <row>

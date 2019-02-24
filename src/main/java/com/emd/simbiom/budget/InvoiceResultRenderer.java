@@ -82,10 +82,10 @@ public class InvoiceResultRenderer implements RowRenderer {
 	bt.setHeight( "20px" );
  	bt.setParent( hl );
 
- 	// SelectSample selectSample = (SelectSample)preferences.getCommand( SelectSample.class );
+	EditInvoice editInvoice = (EditInvoice)preferences.getCommand( EditInvoice.class );
 
-	// if( selectSample != null )
- 	//     bt.addEventListener( Events.ON_CLICK, selectSample );
+	if( editInvoice != null )
+	    bt.addEventListener( Events.ON_CLICK, editInvoice );
 
  	// bt.setImage( "/images/info.png" );
 // 	Button btr = new Button();

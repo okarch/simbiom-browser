@@ -104,6 +104,11 @@
              commandName="colSelect"
              event="onClick" />
 
+    <command config-class="com.emd.simbiom.budget.EditInvoice"
+             commandName="miNewInvoice"
+             detailsLayout="vlInvoiceDetailsView"
+             event="onClick" />
+
     <command config-class="com.emd.simbiom.storage.SelectStorageDetails"
              commandName="cbStorageProject"
              event="onSelect" /> 
@@ -546,6 +551,10 @@
             modelName="cbInvoiceStatus"
             messageRowId="rowMessageCost" />
 
+    <result config-class="com.emd.simbiom.budget.BudgetPeriod"
+            modelName="cbBudgetPeriod"
+            messageRowId="rowMessageBudget" />
+
     <result config-class="com.emd.simbiom.budget.InvoiceResult"
             messageRowId="rowMessageBudget"
             modelName="grInvoices">
@@ -572,7 +581,7 @@
         <column config-class="com.emd.simbiom.view.ColumnRenderer"
                 columnId="colInvoice_3"
                 label="Value"
-                contentField="amount,currency"
+                contentField="amount;currency"
                 sort="number" 
                 numberFormat="%7.2f" />
         <column config-class="com.emd.simbiom.view.ColumnRenderer"
@@ -586,7 +595,7 @@
                 label="Status"
                 layout="combobox"
                 contentResult="cbInvoiceStatus"
-                contentField="verified,approved" />
+                contentField="verified;approved" />
         <column config-class="com.emd.simbiom.view.ColumnRenderer"
                 columnId="colSearch_6"
                 label="Project"
@@ -594,17 +603,19 @@
                 contentField="projects" />
       </columns>
 
-<!--
-      <details config-class="com.emd.simbiom.search.SampleDetailsView"
-               template="/template/sample-details.zul"
-               detailsLayout="vlSampleDetailsView"
+      <details config-class="com.emd.simbiom.budget.InvoiceDetailsView"
+               template="/template/invoice-details.zul"
+               detailsLayout="vlInvoiceDetailsView"
                width="1000px">
 
-        <action config-class="com.emd.simbiom.search.UpdateColumns"
-                component="btDetailsKeep"
+        <action config-class="com.emd.simbiom.budget.UpdateInvoice"
+                component="btInvDetailsStore"
                 event="onClick" />
+        <action config-class="com.emd.simbiom.budget.UpdateInvoice"
+                component="btInvDetailsClose"
+                event="onClick" />
+
       </details>
--->
 
     </result>
 

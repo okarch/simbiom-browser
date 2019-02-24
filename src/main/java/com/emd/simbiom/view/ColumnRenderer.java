@@ -13,6 +13,9 @@ import java.sql.Timestamp;
 
 import org.apache.commons.lang.time.DateFormatUtils;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import org.zkoss.zk.ui.Component;
 
 import org.zkoss.zul.Combobox;
@@ -51,12 +54,8 @@ public class ColumnRenderer implements ColumnFormatter, Comparator {
     private boolean caseInsensitive;
 
     private SampleInventory sampleInventory;
-    /**
-     * Describe contentResult here.
-     */
-    /**
-     * Describe layout here.
-     */
+
+    private static Log log = LogFactory.getLog(ColumnRenderer.class);
 
     public ColumnRenderer() {
 	this.columnId = "";
@@ -344,16 +343,25 @@ public class ColumnRenderer implements ColumnFormatter, Comparator {
     }
 
     private Object[] getValue( Object data ) {
-	String[] fNames = Stringx.getDefault(getContentField(), "" ).split( "," );
+	String[] fNames = Stringx.getDefault(getContentField(), "" ).split( ";" );
+	// log.debug( "Content field: "+getContentField()+" field names: "+fNames.length );
 	List vals = new ArrayList();
 	for( int i = 0; i < fNames.length; i++ ) {
 	    Object retVal = null;
-	    if( fNames[i].trim().length() > 0 )
+	    if( fNames[i].trim().length() > 0 ) {
 		retVal = ClassUtils.get( data, fNames[i].trim(), null );
+		// log.debug( "  called property "+fNames[i]+": "+((retVal==null)?"NULL":retVal.toString()));
+	    }
 	    if( retVal == null )
 		vals.add( "" );
 	    else if( retVal.getClass().isArray() ) {
 		Object[] arrObj = (Object[])retVal;
+		for( int j = 0; j < arrObj.length; j++ ) {
+		    if( arrObj[j] != null )
+			vals.add( arrObj[j] );
+		    else
+			vals.add( "" );
+		}
 	    }
 	    else {
 		vals.add( retVal );
@@ -364,16 +372,22 @@ public class ColumnRenderer implements ColumnFormatter, Comparator {
     }
 
     private String[] getStringValues( Object data ) {
-	String[] fNames = Stringx.getDefault(getContentField(), "" ).split( "," );
+	String[] fNames = Stringx.getDefault(getContentField(), "" ).split( ";" );
 	List vals = new ArrayList();
 	for( int i = 0; i < fNames.length; i++ ) {
 	    Object retVal = null;
-	    if( fNames[i].trim().length() > 0 )
+	    if( fNames[i].trim().length() > 0 ) 
 		retVal = ClassUtils.get( data, fNames[i].trim(), null );
 	    if( retVal == null )
 		vals.add( "" );
 	    else if( retVal.getClass().isArray() ) {
 		Object[] arrObj = (Object[])retVal;
+		for( int j = 0; j < arrObj.length; j++ ) {
+		    if( arrObj[j] != null )
+			vals.add( arrObj[j] );
+		    else
+			vals.add( "" );
+		}
 	    }
 	    else {
 		vals.add( retVal );
@@ -392,6 +406,9 @@ public class ColumnRenderer implements ColumnFormatter, Comparator {
 	    }
 	    else if( val instanceof Number ) {
 		values[i] = formatNumber( (Number)val, getNumberFormat() );
+	    }
+	    else {
+		values[i] = val.toString();
 	    }
 	    i++;
 	}
@@ -457,6 +474,7 @@ public class ColumnRenderer implements ColumnFormatter, Comparator {
 		cmp = new Tree();
 	    }
 	    if( cmp != null ) {
+		cmp.setId( cmpId );
 		Map ctxt = new HashMap();
 		ctxt.put( "data", data );
 		ctxt.put( "result", getValue( data ) );
@@ -466,7 +484,9 @@ public class ColumnRenderer implements ColumnFormatter, Comparator {
 	else if( "vlayout".equals(cmpType) ) {
 	    cmp = new Vlayout();
 	    String[] vals = getStringValues( data );
+	    // log.debug( "number of column values: "+vals.length );
 	    for( int i = 0; i < vals.length; i++ ) {
+		// log.debug( "  label value: "+vals[i] );
 		Label lb = new Label( vals[i] );
 		lb.setParent( cmp );
 	    }

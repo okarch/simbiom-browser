@@ -38,12 +38,14 @@ import com.emd.util.Stringx;
 public class InvoiceResult extends DefaultModelProducer {
     // private int lastCreatedDays;
     private ColumnSet columnSet;
-    // private SampleDetailsView details;
+    private InvoiceDetailsView details;
 
     private static Log log = LogFactory.getLog(InvoiceResult.class);
 
     public static final String COMPONENT_ID = "grInvoices";
     public static final String RESULT = "result";
+
+    private static final int INITIAL_PERIOD = -2; 
     
 
     public InvoiceResult() {
@@ -72,7 +74,7 @@ public class InvoiceResult extends DefaultModelProducer {
 	    }
 	    try {
 		Period invPeriod = Period.fromQuarter( 0 );
-		invPeriod.join( Period.fromQuarter( -1 ) );
+		invPeriod.join( Period.fromQuarter( INITIAL_PERIOD ) );
 
 		invoices = dao.findInvoiceByPeriod( invPeriod, true );
 		// if( invoices.length > 0 )
@@ -156,20 +158,20 @@ public class InvoiceResult extends DefaultModelProducer {
     /**
      * Get the <code>Details</code> value.
      *
-     * @return a <code>SampleDetailsView</code> value
+     * @return an <code>InvoiceDetailsView</code> value
      */
-    // public final SampleDetailsView getDetails() {
-    // 	return details;
-    // }
+    public final InvoiceDetailsView getDetails() {
+	return details;
+    }
 
     /**
      * Set the <code>Details</code> value.
      *
      * @param details The new Details value.
      */
-    // public final void setDetails(final SampleDetailsView details) {
-    // 	this.details = details;
-    // }
+    public final void setDetails(final InvoiceDetailsView details) {
+	this.details = details;
+    }
 
     // protected void updateActions( String pId, long uId ) {
     // 	Iterator<SearchFilter> it = filters.iterator();
