@@ -1,5 +1,7 @@
 package com.emd.simbiom.storage;
 
+import java.math.BigDecimal;
+
 import java.sql.SQLException;
 
 import java.util.HashMap;
@@ -206,6 +208,29 @@ public class AddBillingItem extends InventoryCommand {
     }
 
     /**
+     * Clears billing information.
+     *
+     * @param wnd the current window.
+     */
+    public void clearBilling( Window wnd ) {
+	int k = 1;
+	while( billingRowExists( wnd, k ) ) {
+	    removeRow( wnd, k );
+	    k++;
+	}
+
+	Textbox txt = (Textbox)wnd.getFellowIfAny( PROJECT_CODE+"_0" );
+	if( txt != null )
+	    txt.setValue( "" );
+	txt = (Textbox)wnd.getFellowIfAny( PO_NUM+"_0" );
+	if( txt != null )
+	    txt.setValue( "" );
+	Decimalbox dec = (Decimalbox)wnd.getFellowIfAny( AMOUNT+"_0" );
+	if( dec != null )
+	    dec.setValue( new BigDecimal(0d) );
+    }
+
+    /**
      * Updates the billing information and adds as many rows as needed.
      *
      * @param wnd the current app window.
@@ -279,7 +304,7 @@ public class AddBillingItem extends InventoryCommand {
 	String suff = addBillingRow( wnd );
 	registerPreferences( wnd, suff );
 
-	showMessage( wnd, MESSAGE_ID, "lbMessageStorage", "Billing information added" );
+	showMessage( wnd, MESSAGE_ID, "lbStorageMessage", "Billing information added" );
     }
 
 }

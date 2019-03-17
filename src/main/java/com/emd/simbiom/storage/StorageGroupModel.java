@@ -1,8 +1,10 @@
 package com.emd.simbiom.storage;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import java.sql.SQLException;
@@ -73,7 +75,7 @@ public class StorageGroupModel extends DefaultModelProducer implements EventList
     public void initModel( Window wnd, Map context ) {
 	// SampleInventory dao = getSampleInventory();
 	// if( dao == null ) {
-	//     writeMessage( wnd, "Error: No database access configured" );
+	//     log.error( "No database access configured" );
 	//     return;
 	// }
 
@@ -82,14 +84,13 @@ public class StorageGroupModel extends DefaultModelProducer implements EventList
 
 	//     Combobox cbTempl = (Combobox)wnd.getFellowIfAny( getModelName() );
 	//     if( cbTempl != null ) {
-	// 	if( context == null )
-	// 	    context = new HashMap();
-	// 	context.put( RESULT, tList );
-	// 	assignModel( cbTempl, context );
+	//  	if( context == null )
+	//  	    context = new HashMap();
+	//  	context.put( RESULT, tList );
+	//  	assignModel( cbTempl, context );
 	//     }
 	// }
 	// catch( SQLException sqe ) {
-	//     writeMessage( wnd, "Error: Cannot query database: "+Stringx.getDefault(sqe.getMessage(),"reason unknown") );
 	//     log.error( sqe );
 	// }
     }
@@ -201,6 +202,26 @@ public class StorageGroupModel extends DefaultModelProducer implements EventList
 	    log.debug( "Assigning model, number of storage groups: "+tList.length );
 	    combobox.setModel( new ListModelArray( sortStorageGroups(tList) ) );
 	}
+    }
+
+    /**
+     * Returns the current list of storage groups.
+     *
+     * @param wnd the app window.
+     * @return (potentially empty) array of storage groups.
+     */
+    public StorageGroup[] getStorageGroups( Window wnd ) {
+	Combobox cb = (Combobox)wnd.getFellowIfAny( getModelName() );
+	List<StorageGroup> grps = new ArrayList<StorageGroup>(); 
+	if( (cb != null) ) {
+	    ListModel model = (ListModel)cb.getModel();
+	    if( model != null ) {
+		for( int i = 0; i < model.getSize(); i++ ) 
+		    grps.add( (StorageGroup)model.getElementAt(i) );
+	    }
+	}
+	StorageGroup[] aGrps = new StorageGroup[ grps.size() ];
+	return (StorageGroup[])grps.toArray( aGrps );
     }
 
     /**

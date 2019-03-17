@@ -192,6 +192,19 @@ public class ColumnSet {
 	
     // }
 
+    public void initSort( Grid grid ) {
+	ColumnRenderer[] cols = getColumns();
+     	for( int i = 0; i < cols.length; i++ ) {
+    // 	    cols[i].setSampleInventory( dao );
+     	    Column col = (Column)grid.getFellowIfAny( cols[i].getColumnId() );
+     	    if( col != null ) {
+     		col.setSortAscending( new BidirectionalComparator( cols[i] ) );
+     		col.setSortDescending( new BidirectionalComparator( cols[i], true ) );
+     		col.setLabel( cols[i].getLabel() );
+     	    }
+     	}
+    }
+
     /**
      * Checks wether a certain labe is included in the column list.
      *

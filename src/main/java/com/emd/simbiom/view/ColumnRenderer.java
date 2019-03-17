@@ -302,31 +302,65 @@ public class ColumnRenderer implements ColumnFormatter, Comparator {
     public int compare(Object o1, Object o2) {	
 	Comparator cmp = getComparator();
 
-	Object val1 = getValue( o1 );
-	Object val2 = getValue( o2 );
+	Object[] val1 = getValue( o1 );
+	Object[] val2 = getValue( o2 );
 
-	if( val1 == null )
-	    val1 = getDefaultValue();
-	if( val2 == null )
-	    val2 = getDefaultValue();
+	Object cVal1 = null;
+	Object cVal2 = null;
+	if( val1.length <= 0 )
+	    cVal1 = getDefaultValue();
+	else
+	    cVal1 = val1[0];
+	if( val2.length <= 0 )
+	    cVal2 = getDefaultValue();
+	else
+	    cVal2 = val2[0];
 
-	if( (val1 == null) && (val2 == null) )
+	if( (cVal1 == null) && (cVal2 == null) )
 	    return 0;
 
-	if( val1 == null )
+	if( cVal1 == null )
 	    return -1;
-	if( val2 == null )
+	if( cVal2 == null )
 	    return 1;
 
 	if( cmp != null ) 
-	    return cmp.compare( val1, val2 );
+	    return cmp.compare( cVal1, cVal2 );
 
-	if( (val1 instanceof Comparable) &&
-	    (val2 instanceof Comparable) )
-	    return ((Comparable)val1).compareTo( val2 );
+	if( (cVal1 instanceof Comparable) &&
+	    (cVal2 instanceof Comparable) )
+	    return ((Comparable)cVal1).compareTo( cVal2 );
 
 	return 0;
     }    
+    // public int compare(Object o1, Object o2) {	
+    // 	Comparator cmp = getComparator();
+
+    // 	Object val1 = getValue( o1 );
+    // 	Object val2 = getValue( o2 );
+
+    // 	if( val1 == null )
+    // 	    val1 = getDefaultValue();
+    // 	if( val2 == null )
+    // 	    val2 = getDefaultValue();
+
+    // 	if( (val1 == null) && (val2 == null) )
+    // 	    return 0;
+
+    // 	if( val1 == null )
+    // 	    return -1;
+    // 	if( val2 == null )
+    // 	    return 1;
+
+    // 	if( cmp != null ) 
+    // 	    return cmp.compare( val1, val2 );
+
+    // 	if( (val1 instanceof Comparable) &&
+    // 	    (val2 instanceof Comparable) )
+    // 	    return ((Comparable)val1).compareTo( val2 );
+
+    // 	return 0;
+    // }    
 
     // public int compare(Object o1, Object o2) {	
     // 	String st1 = getContentValue( o1 );

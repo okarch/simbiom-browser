@@ -36,6 +36,7 @@
 /home/okarch/classes/simbiom-browser/src/main/java/com/emd/simbiom/search/FilterModel.java
 /home/okarch/classes/simbiom-browser/src/main/java/com/emd/simbiom/search/CategoryFilter.java
 /home/okarch/classes/simbiom-browser/src/main/java/com/emd/simbiom/template/EditTemplate.java
+/home/okarch/classes/simbiom-browser/src/main/java/com/emd/simbiom/budget/InvoicePeriodChange.java
 /home/okarch/classes/simbiom-browser/src/main/java/com/emd/simbiom/view/ColumnSet.java
 /home/okarch/classes/simbiom-browser/src/main/java/com/emd/simbiom/template/BatchEntry.java
 /home/okarch/classes/simbiom-browser/src/main/java/com/emd/simbiom/view/DefaultModelProducer.java
@@ -55,6 +56,7 @@
 /home/okarch/classes/simbiom-browser/src/main/java/com/emd/simbiom/category/BrowseLogisticsSamples.java
 /home/okarch/classes/simbiom-browser/src/main/java/com/emd/simbiom/search/ContentOperatorChange.java
 /home/okarch/classes/simbiom-browser/src/main/java/com/emd/simbiom/search/SampleResultRenderer.java
+/home/okarch/classes/simbiom-browser/src/main/java/com/emd/simbiom/budget/InvoiceSummary.java
 /home/okarch/classes/simbiom-browser/src/main/java/com/emd/simbiom/budget/EditInvoice.java
 /home/okarch/classes/simbiom-browser/src/main/java/com/emd/simbiom/view/CategoryTreeNode.java
 /home/okarch/classes/simbiom-browser/src/main/java/com/emd/simbiom/cost/AmountChange.java
@@ -82,7 +84,9 @@
 /home/okarch/classes/simbiom-browser/src/main/java/com/emd/simbiom/search/RowCache.java
 /home/okarch/classes/simbiom-browser/src/main/java/com/emd/simbiom/search/SampleResult.java
 /home/okarch/classes/simbiom-browser/src/main/java/com/emd/simbiom/portlet/ServletInitializer.java
+/home/okarch/classes/simbiom-browser/src/main/java/com/emd/simbiom/storage/EditStorageProject.java
 /home/okarch/classes/simbiom-browser/src/main/java/com/emd/simbiom/view/CategoryTreeModel.java
+/home/okarch/classes/simbiom-browser/src/main/java/com/emd/simbiom/budget/SearchInvoice.java
 /home/okarch/classes/simbiom-browser/src/main/java/com/emd/simbiom/search/SearchFilter.java
 /home/okarch/classes/simbiom-browser/src/main/java/com/emd/simbiom/category/CategoryTreeView.java
 /home/okarch/classes/simbiom-browser/src/main/java/com/emd/simbiom/search/FilterRemove.java

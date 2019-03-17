@@ -17,6 +17,7 @@ import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.Events;
 
 import org.zkoss.zul.Combobox;
+import org.zkoss.zul.Datebox;
 import org.zkoss.zul.ListModel;
 import org.zkoss.zul.ListModelArray;
 import org.zkoss.zul.Window;
@@ -28,6 +29,7 @@ import com.emd.simbiom.util.Period;
 import com.emd.simbiom.util.PeriodParseException;
 
 import com.emd.simbiom.view.DefaultModelProducer;
+import com.emd.simbiom.view.UIUtils;
 
 import com.emd.util.Stringx;
 import com.emd.zk.ZKUtil;
@@ -176,16 +178,17 @@ public class BudgetPeriod extends DefaultModelProducer implements EventListener 
 	return selPeriod;
     }
 
-    private void updateInvoiceList( Window wnd, Period period ) {
+    private Invoice[] updateInvoiceList( Window wnd, Period period ) {
 	log.debug( "Updating budget period: "+period );
 	InvoiceResult invoices = (InvoiceResult)getPreferences().getResult( "grInvoices" );
 	if( invoices == null ) {
 	    log.error( "Invoice list not found" );
-	    return;
+	    return null;
 	}
 	SampleInventory dao = getSampleInventory();
+	Invoice[] invs = null;
 	try {
-	    Invoice[] invs = dao.findInvoiceByPeriod( period, true );
+	    invs = dao.findInvoiceByPeriod( period, true );
 	    Map context = new HashMap();
 	    context.put( InvoiceResult.RESULT, invs );
 	    invoices.assignModel( wnd, context );
@@ -194,6 +197,28 @@ public class BudgetPeriod extends DefaultModelProducer implements EventListener 
 	    writeMessage( wnd, "Error: Cannot query database: "+Stringx.getDefault(sqe.getMessage(),"reason unknown") );
  	    log.error( sqe );
 	}
+	return invs;
+    }
+
+    private void updateInvoiceDates( Window wnd, Period period ) {
+	log.debug( "Updating invoice period dates: "+period );
+	UIUtils.clearMessage( wnd, "lbInvoiceMessage" );
+	Datebox db = (Datebox)wnd.getFellowIfAny( InvoicePeriodChange.CMP_INVOICE_FROM );
+	if( db != null )
+	    db.setValue( period.getStartDate() );
+	db = (Datebox)wnd.getFellowIfAny( InvoicePeriodChange.CMP_INVOICE_TO );
+	if( db != null )
+	    db.setValue( period.getEndDate() );
+    }
+
+    private void updateInvoiceSummary( Window wnd, Invoice[] invs ) {
+	log.debug( "Updating invoice summary, number of invoices: "+invs.length );
+	InvoiceSummary summary = (InvoiceSummary)getPreferences().getCommand( "cmdInvoiceSummary" );
+	if( summary == null ) {
+     	    log.error( "Invoice summary command not defined" );
+     	    return;
+     	}
+	summary.updateSummary( wnd, invs );
     }
 
     /**
@@ -230,7 +255,10 @@ public class BudgetPeriod extends DefaultModelProducer implements EventListener 
 
 	if( selPeriod != null ) {
 	    Window wnd = ZKUtil.findWindow( cb );
-	    updateInvoiceList( wnd, selPeriod );
+	    Invoice[] invs = updateInvoiceList( wnd, selPeriod );
+	    updateInvoiceDates( wnd, selPeriod );
+	    if( invs != null )
+		updateInvoiceSummary( wnd, invs );
 	}
     }
 

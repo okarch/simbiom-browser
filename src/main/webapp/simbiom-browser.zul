@@ -472,6 +472,22 @@
         <groupbox id="gInvoices" mold="3d" open="false">
           <caption label="Invoices" />  
 
+          <grid id="grBudgetInfo" fixedLayout="true" span="true">
+            <columns>
+              <column width="20%" />
+	      <column width="80%" />
+            </columns>
+            <rows>
+              <row>
+                <cell style="text-align:left">
+                  <label value="Invoices"/>
+                </cell>
+                <label id="lbInvoiceSummaryTotal"/>
+              </row>
+              <row id="rowBudgetMessage"/>
+            </rows>
+          </grid>
+
 	  <grid id="grInvoices" fixedLayout="true" span="true" mold="paging" pageSize="20">
             <auxhead>
               <auxheader colspan="2">
@@ -499,6 +515,7 @@
                 <datebox id="dbInvoiceTo" width="150px" />
                 <label value="Invoice status"/>
                 <combobox id="cbInvoiceReview" autodrop="true" width="150px" mold="rounded" buttonVisible="true">
+                  <attribute name="onCreate">self.setSelectedIndex(0);</attribute>
                   <comboitem label="All" value="All" />
                   <comboitem label="Not reviewed" value="Not reviewed" />
                   <comboitem label="Checked" value="Checked" />
@@ -563,7 +580,7 @@
                         </cell>
                         <hlayout>
                           <textbox id="txtProjectName" width="300px"/>
-    		          <button id="btProjectRename" label="Rename"/>
+    		          <button id="btStorageProjectSave" label="Save"/>
                         </hlayout>
                       </row>
 

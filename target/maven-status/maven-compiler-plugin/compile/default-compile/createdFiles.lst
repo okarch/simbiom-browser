@@ -37,6 +37,7 @@ com/emd/simbiom/search/SearchSamples.class
 com/emd/simbiom/template/UploadSamples.class
 com/emd/simbiom/category/BrowseSamples.class
 com/emd/simbiom/view/BarChartEngine.class
+com/emd/simbiom/storage/EditStorageProject.class
 com/emd/simbiom/search/ColumnSelect.class
 com/emd/simbiom/template/UploadLogRenderer.class
 com/emd/simbiom/storage/StorageProjectModel.class
@@ -46,6 +47,7 @@ com/emd/simbiom/storage/SelectStorageDetails.class
 com/emd/simbiom/view/AbstractCategoryTreeNode.class
 com/emd/simbiom/template/UploadTemplate.class
 com/emd/simbiom/search/ColumnSetup.class
+com/emd/simbiom/budget/InvoiceSummary.class
 com/emd/simbiom/search/SelectSample$1.class
 com/emd/simbiom/budget/InvoiceResult.class
 com/emd/simbiom/search/SampleResult.class
@@ -100,6 +102,8 @@ com/emd/simbiom/cost/CostItemRenderer.class
 com/emd/simbiom/cost/AddSampleItem.class
 com/emd/simbiom/storage/AddBillingItem.class
 com/emd/simbiom/template/EditTemplate$2.class
+com/emd/simbiom/budget/SearchInvoice.class
+com/emd/simbiom/budget/InvoicePeriodChange.class
 com/emd/simbiom/storage/StorageProjectModel$1.class
 com/emd/simbiom/view/UIUtils.class
 com/emd/simbiom/search/TextFilter.class

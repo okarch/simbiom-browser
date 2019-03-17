@@ -217,7 +217,7 @@ public class InvoiceResult extends DefaultModelProducer {
 	    grid.setModel( new ListModelArray( invoices ) );
 	}
 	
-	// cSetup.assignGrid( grid, dao );
+	cSetup.initSort( grid );
 
 	writeMessage( grid, String.valueOf(((invoices != null)?invoices.length:0))+" invoices match the search" );
     }

@@ -337,7 +337,7 @@ public class InvoiceStatusModel extends DefaultModelProducer implements EventLis
     }
 
     protected void assignCombobox( Combobox combobox, Map context ) {
-	log.debug( "Invoice status model context: "+context );
+	// log.debug( "Invoice status model context: "+context );
 
 	if( !combobox.isListenerAvailable( "onAfterRender", false ) )
 	    combobox.addEventListener( "onAfterRender", this );
@@ -378,7 +378,7 @@ public class InvoiceStatusModel extends DefaultModelProducer implements EventLis
     public void onEvent(Event event)
 	throws java.lang.Exception {
 
-	log.debug( "Invoice status model selected: "+event );
+	// log.debug( "Invoice status model selected: "+event );
 
 	Combobox cb = (Combobox)event.getTarget();
 

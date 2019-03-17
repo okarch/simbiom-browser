@@ -108,12 +108,30 @@
              commandName="miNewInvoice"
              detailsLayout="vlInvoiceDetailsView"
              event="onClick" />
+    <command config-class="com.emd.simbiom.budget.InvoiceSummary"
+             commandName="cmdInvoiceSummary"
+             event="onClick" />
+    <command config-class="com.emd.simbiom.budget.SearchInvoice"
+             commandName="btInvoiceSearch"
+             event="onClick" />
+    <command config-class="com.emd.simbiom.budget.InvoicePeriodChange"
+             commandName="dbInvoiceFrom"
+             event="onChange" />
+    <command config-class="com.emd.simbiom.budget.InvoicePeriodChange"
+             commandName="dbInvoiceTo"
+             event="onChange" />
 
     <command config-class="com.emd.simbiom.storage.SelectStorageDetails"
              commandName="cbStorageProject"
              event="onSelect" /> 
     <command config-class="com.emd.simbiom.storage.AddBillingItem"
              commandName="btBillingAdd_0"
+             event="onClick" />
+    <command config-class="com.emd.simbiom.storage.EditStorageProject"
+             commandName="btStorageProjectAdd"
+             event="onClick" />
+    <command config-class="com.emd.simbiom.storage.EditStorageProject"
+             commandName="btStorageProjectSave"
              event="onClick" />
 
     <result config-class="com.emd.simbiom.search.FilterModel"
@@ -597,9 +615,10 @@
                 contentResult="cbInvoiceStatus"
                 contentField="verified;approved" />
         <column config-class="com.emd.simbiom.view.ColumnRenderer"
-                columnId="colSearch_6"
+                columnId="colInvoice_6"
                 label="Project"
                 layout="vlayout"
+                sort="string"
                 contentField="projects" />
       </columns>
 
