@@ -38,6 +38,7 @@ import org.zkoss.zul.Textbox;
 import org.zkoss.zul.Window;
 
 import com.emd.simbiom.command.InventoryViewAction;
+import com.emd.simbiom.config.InventoryPreferences;
 import com.emd.simbiom.dao.SampleInventory;
 
 import com.emd.simbiom.model.Billing;
@@ -370,6 +371,17 @@ public class UpdateInvoice extends InventoryViewAction {
 	ses.setAttribute( KEY_ISSUES+".updated."+invId, updInv );
 	return true;
     }
+    // private void clearInvoiceSession() {
+    // 	Session ses = Sessions.getCurrent();
+    // 	if( ses == null ) 
+    // 	    return;
+
+    // 	String invId = String.valueOf(updInv.getInvoiceid());
+    // 	if( preEdit != null )
+    // 	    ses.setAttribute( KEY_ISSUES+".previous."+invId, preEdit );
+    // 	ses.setAttribute( KEY_ISSUES+".updated."+invId, updInv );
+    // 	return true;
+    // }
 
     private Invoice getInvoiceSession( String cmpId, String key ) {
 	String[] toks = cmpId.split( "_" );
@@ -437,7 +449,6 @@ public class UpdateInvoice extends InventoryViewAction {
 
 	return invPeriod;
     }
-
 
     private String checkCurrency( Window wnd, Billing bill, long invId ) {
 	String curr = getSelectedItem( wnd, "cbInvoiceCurrency", "" );
@@ -587,10 +598,14 @@ public class UpdateInvoice extends InventoryViewAction {
 	}
 	Invoice updated = null;
 	try {
-	    if( preEdit == null )
-		updated = sInv.createInvoice( updated );
-	    else
-		updated = sInv.storeInvoice( updated );
+	    if( preEdit == null ) {
+		log.debug( "Creating new invoice: "+inv );
+		updated = sInv.createInvoice( inv );
+	    }
+	    else {
+		log.debug( "Updating invoice: "+inv );
+		updated = sInv.storeInvoice( inv );
+	    }
 	}
 	catch( SQLException sqe ) {
 	    showMessage( wnd, "rowInvoiceDetailsMessage", "lbInvoiceDetailsMessage", "Error: "+
@@ -601,6 +616,10 @@ public class UpdateInvoice extends InventoryViewAction {
 	
 	return updated;
     }
+
+    // private InventoryPreferences getPreferences() {
+    //  	return InventoryPreferences.getInstance( getPortletId(), getUserId() );
+    // }
 
     /**
      * Notifies this listener that an event occurs.
@@ -644,20 +663,18 @@ public class UpdateInvoice extends InventoryViewAction {
 	    return;
 	}
 	else if( cmpId.indexOf( "msgIssue" ) > 0 ) {
+	    preEdit = loadInvoice( wnd );
+	    updInv = getInvoiceSession( cmpId, "updated" );
 	    if( removeIssue( wnd, cmpId ) ) 
 		return;
 	    else {
-		preEdit = getInvoiceSession( cmpId, "updated" );
-		updInv = getInvoiceSession( cmpId, "updated" );
 		setDisableStore( wnd, false );
 	    }
 	}
 
-	if( (updInv != null) && (storeInvoice( wnd, updInv, preEdit ) != null) ) {
-
-	    // update invoice list display
-
-	    Events.postEvent("onClose", wnd, null);
+	if( (updInv != null) && ((updInv = storeInvoice( wnd, updInv, preEdit )) != null) ) {
+	    Period period = new Period( updInv.getStarted(), updInv.getEnded() );
+	    Events.postEvent("onClose", wnd, period );
 	}
 	
     }

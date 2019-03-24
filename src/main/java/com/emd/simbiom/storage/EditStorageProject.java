@@ -194,11 +194,13 @@ public class EditStorageProject extends InventoryCommand {
 	return new StorageGroup[0];
     }
 
-    private void updateStorageProjects( Window wnd ) {
+    private void updateStorageProjects( Window wnd, StorageProject prj ) {
 	InventoryPreferences pref = getPreferences();
 	StorageProjectModel sGroup = (StorageProjectModel)pref.getResult( "cbStorageProject" );
-	if( sGroup != null ) 
+	if( sGroup != null ) {
 	    sGroup.initModel( wnd, null );
+	    sGroup.setSelectedStorageProject( wnd, prj.getTitle() );
+	}
 	sGroup = (StorageProjectModel)pref.getResult( "cbBudgetProject" );
 	if( sGroup != null ) 
 	    sGroup.initModel( wnd, null );
@@ -257,7 +259,101 @@ public class EditStorageProject extends InventoryCommand {
 	return prj;
     }
 
-    private void saveBilling( Window wnd, StorageProject prj ) {
+    private String saveBilling( Window wnd, StorageProject prj ) {
+	if( prj == null ) {
+	    log.warn( "Invalid storage project. Cannot add billing information." );
+	    return null;
+	}
+	SampleInventory dao = getSampleInventory();
+	if( dao == null ) {
+	    showMessage( wnd, "rowStorageMessage", "lbStorageMessage", "Error: Invalid database access." );
+	    return null;
+	}
+	
+	String lastPO = null;
+
+	try {
+	    Map<String,Billing> pCodes = new HashMap<String,Billing>();
+	    int k = 0;
+	    boolean rowExist = false;
+	    do {
+		Textbox txt = (Textbox)wnd.getFellowIfAny( AddBillingItem.PROJECT_CODE+"_"+String.valueOf(k) );
+		String pCode = null;
+		if( txt != null )
+		    pCode = Stringx.getDefault( txt.getValue(), "" ).trim();
+		else
+		    pCode = "";
+	    
+		rowExist = false;
+		txt = (Textbox)wnd.getFellowIfAny( AddBillingItem.PO_NUM+"_"+String.valueOf(k) );
+		String poNum = null;
+		if( txt != null ) {
+		    rowExist = true;
+		    poNum = Stringx.getDefault( txt.getValue(), "" ).trim();
+		}
+		else
+		    poNum = "";
+
+		Decimalbox dec = (Decimalbox)wnd.getFellowIfAny( AddBillingItem.AMOUNT+"_"+String.valueOf(k) );
+		BigDecimal amount = null;
+		if( dec != null )
+		    amount = dec.getValue();
+		amount = ((amount==null)?new BigDecimal(0d):amount);
+
+		log.debug( "Billing item row "+k+" Row exist: "+rowExist );
+
+		if( rowExist && (poNum.length() > 0) ) {
+
+		    Billing bill = pCodes.get( poNum+"."+pCode );
+		    if( bill == null ) {
+
+			// find billing info first
+
+			Billing[] bills = dao.findBilling( prj.getProjectid(), poNum );
+			if( bills.length > 0 ) {
+			    
+			    // match previous billing info
+
+			    log.debug( "Billing information found: "+bills.length+" records" );
+
+			    for( int i = 0; i < bills.length; i++ ) {
+				if( pCode.equals( bills[i].getProjectcode() )) {
+				    bills[i].setTotal( amount.floatValue() );
+				    bill = bills[i];
+				    break;
+				}
+				else 
+				    pCodes.put( poNum+"."+pCode, bills[i] );
+			    }
+			}
+			else {
+
+			    log.debug( "Creating billing information: "+poNum );
+
+			    // create new billing information
+
+			    bill = dao.createBilling( prj, poNum );
+			    bill.setProjectcode( pCode );
+			    bill.setTotal( amount.floatValue() );
+			}
+		    }
+		    else {
+			bill.setTotal( amount.floatValue() );
+		    }
+		    bill = dao.storeBilling( bill );
+		    pCodes.put( poNum+"."+pCode, bill );
+		    lastPO = poNum;
+		}
+		k++;
+	    } 
+	    while( rowExist );
+	}
+      	catch( SQLException sqe ) {
+	    showMessage( wnd, "rowStorageMessage", "lbStorageMessage", "Error: Cannot query database: "+
+      			 Stringx.getDefault(sqe.getMessage(),"reason unknown") );
+      	    log.error( sqe );
+	}
+	return lastPO;
     }
  
     /**
@@ -272,20 +368,26 @@ public class EditStorageProject extends InventoryCommand {
     public void execute( ZKContext context, Window wnd )
 	throws CommandException {
 
+	log.debug( "Command: "+getCommandName()+" clicked." );
+
 	UIUtils.clearMessage( wnd, "lbStorageMessage" );
 
 	if( CMD_PROJECT_ADD.equals(getCommandName()) ) {
+	    log.debug( "Creating new storage project" );
 	    clearStorageProject( wnd, "New Storage Project" );
 	    createNewProject();
 	    showMessage( wnd, "rowStorageMessage", "lbStorageMessage", "Warning: New storage project has not been saved yet." );
 	}
 	else if( CMD_PROJECT_SAVE.equals(getCommandName()) ) {
 	    StorageProject prj = saveStorageProject( wnd );
-	    saveBilling( wnd, prj );
 	    if( prj != null ) {
-		saveBilling( wnd, prj );
+		String poNum = saveBilling( wnd, prj );
 		clearNewProject();
-		updateStorageProjects( wnd );
+		updateStorageProjects( wnd, prj );
+		showMessage( wnd, "rowStorageMessage", "lbStorageMessage", "Storage project \""+
+			     prj.getTitle()+"\" has been stored. Storage groups: "+
+			     prj.getStorageGroups().length+", Purchase order: "+
+			     ((poNum != null)?poNum:"missing") );
 	    }
 	}
     }    

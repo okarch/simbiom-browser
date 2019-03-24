@@ -96,7 +96,32 @@ public class InvoicePeriodChange extends InventoryCommand {
 	return new Period( dtFrom, dtTo );
     }
 
-    private void updateInvoiceList( Window wnd, Period period ) {
+    /**
+     * Sets the invoice period and updates the list of invoices depicted.
+     *
+     * @param wnd the app window.
+     * @param period the period.
+     */
+    public void setInvoicePeriod( Window wnd, Period period ) {
+	if( period == null )
+	    return;
+	period.clearTime();
+	Datebox db = (Datebox)wnd.getFellowIfAny( CMP_INVOICE_FROM );
+	if( db != null ) 
+	    db.setValue( period.getStartDate() );
+	db = (Datebox)wnd.getFellowIfAny( CMP_INVOICE_TO );
+	if( db != null )
+	    db.setValue( period.getEndDate() );
+	updateInvoiceList( wnd, period );
+    }
+
+    /**
+     * Updates the period of displayed invoices.
+     *
+     * @param wnd the app window.
+     * @param period the period to be displayed.
+     */
+    public void updateInvoiceList( Window wnd, Period period ) {
 	log.debug( "Updating invoice period: "+period );
 	InvoiceResult invoices = (InvoiceResult)getPreferences().getResult( "grInvoices" );
 	if( invoices == null ) {
@@ -106,6 +131,7 @@ public class InvoicePeriodChange extends InventoryCommand {
 	SampleInventory dao = getSampleInventory();
 	try {
 	    Invoice[] invs = dao.findInvoiceByPeriod( period, true );
+	    log.debug( "Number of invoices found: "+invs.length );
 	    Map context = new HashMap();
 	    context.put( InvoiceResult.RESULT, invs );
 	    invoices.assignModel( wnd, context );

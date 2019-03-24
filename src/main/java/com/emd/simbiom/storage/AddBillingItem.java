@@ -58,9 +58,9 @@ public class AddBillingItem extends InventoryCommand {
     private static final String ROW_ITEM    = "rowBillingItem";
     private static final String ROWS_ID     = "rowsBillingItems";
 
-    private static final String PROJECT_CODE= "txtProjectCode";
-    private static final String PO_NUM      = "txtPurchaseOrder";
-    private static final String AMOUNT      = "decPurchaseValue";
+    public static final String PROJECT_CODE= "txtProjectCode";
+    public static final String PO_NUM      = "txtPurchaseOrder";
+    public static final String AMOUNT      = "decPurchaseValue";
 
     private static final String MESSAGE_ID  = "rowStorageMessage";
 

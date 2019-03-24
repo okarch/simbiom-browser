@@ -116,6 +116,29 @@ public class StorageProjectModel extends DefaultModelProducer implements EventLi
 	return templ;
     }
 
+    /**
+     * Selects a given storage project.
+     *
+     * @param wnd the app window.
+     * @param title the storage project title.
+     */ 
+    public void setSelectedStorageProject( Window wnd, String title ) {
+	Combobox cbTempl = (Combobox)wnd.getFellowIfAny( getModelName() );
+	ListModel model = null;
+	if( (cbTempl != null) && ((model = cbTempl.getModel()) != null) ) {
+	    int idx = -1;
+	    for( int i = 0; i < model.getSize(); i++ ) {
+		StorageProject prj = (StorageProject)model.getElementAt(i);
+		if( title.equals(prj.getTitle()) ) {
+		    idx = i;
+		    break;
+		}
+	    }
+	    if( idx >= 0 )
+		pushAfterRenderIndex( idx );
+	}
+    }
+
     private void pushAfterRenderIndex( int idx ) {
 	Session ses = Sessions.getCurrent();
 	if( ses != null )

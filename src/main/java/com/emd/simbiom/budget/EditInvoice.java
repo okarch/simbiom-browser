@@ -36,6 +36,7 @@ import com.emd.simbiom.dao.SampleInventory;
 import com.emd.simbiom.model.Billing;
 import com.emd.simbiom.model.Invoice;
 import com.emd.simbiom.model.StorageProject;
+import com.emd.simbiom.util.Period;
 import com.emd.simbiom.view.ModelProducer;
 
 import com.emd.util.Stringx;
@@ -171,19 +172,13 @@ public class EditInvoice extends InventoryCommand {
 	return ((InvoiceResult)res[0]).getDetails();
     }
 
-    private void updateModel( Window wnd ) {
-	ModelProducer[] res = getPreferences().getResult( InvoiceResult.class );
-	if( res.length <= 0 )
+    private void updateModel( Window wnd, Period period ) {
+     	InvoicePeriodChange periodChange = (InvoicePeriodChange)getPreferences().getCommand( InvoicePeriodChange.class );
+	if( periodChange == null ) {
+	    log.error( "Invalid period change command." );
 	    return;
-	// SampleResult sRes = (SampleResult)res[0];
-	// Grid results = (Grid)wnd.getFellowIfAny( sRes.getModelName() );
-	// if( results == null ) 
-	//     return;
-	// ListModelArray lm = (ListModelArray)results.getListModel();
-	// Sample[] samples = (Sample[])lm.getInnerArray();
-	// Map context = new HashMap();
-	// context.put( SampleResult.RESULT, samples );
-	// sRes.assignModel( results, context );
+	}
+	periodChange.setInvoicePeriod( wnd, period );
     }
 
     private void displayDetails( Window wnd, Invoice invoice, boolean invoiceExist ) {
@@ -201,7 +196,11 @@ public class EditInvoice extends InventoryCommand {
 	wndDetails.addEventListener( Events.ON_CLOSE, new EventListener() {
 		public void onEvent( Event evt ) {
 		    log.debug( "Closing event received" );
-		    updateModel( parentWindow );
+		    Period period = (Period)evt.getData();
+		    if( period != null )
+			updateModel( parentWindow, period );
+		    else
+			log.debug( "No change of invoice period" );
 		}
 	    });
 
