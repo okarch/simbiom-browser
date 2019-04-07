@@ -133,6 +133,10 @@
     <command config-class="com.emd.simbiom.storage.EditStorageProject"
              commandName="btStorageProjectSave"
              event="onClick" />
+    <command config-class="com.emd.simbiom.storage.UploadDocument"
+             commandName="btDocumentAdd"
+             event="onUpload" />
+
 
     <result config-class="com.emd.simbiom.search.FilterModel"
             modelName="cbFilterSelector_0">
@@ -386,6 +390,9 @@
             messageRowId="rowStorageMessage" />
     <result config-class="com.emd.simbiom.storage.StorageGroupModel"
             modelName="cbStorageGroup"
+            messageRowId="rowStorageMessage" />
+    <result config-class="com.emd.simbiom.storage.StorageDocumentModel"
+            modelName="cbStorageDocs"
             messageRowId="rowStorageMessage" />
 
 <!--

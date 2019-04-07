@@ -21,6 +21,7 @@
 /home/okarch/classes/simbiom-browser/src/main/java/com/emd/simbiom/template/SelectResultLog.java
 /home/okarch/classes/simbiom-browser/src/main/java/com/emd/simbiom/budget/BudgetPeriod.java
 /home/okarch/classes/simbiom-browser/src/main/java/com/emd/simbiom/budget/InvoiceStatusItem.java
+/home/okarch/classes/simbiom-browser/src/main/java/com/emd/simbiom/storage/UploadDocument.java
 /home/okarch/classes/simbiom-browser/src/main/java/com/emd/simbiom/template/OpenResultLog.java
 /home/okarch/classes/simbiom-browser/src/main/java/com/emd/simbiom/category/BrowseCategoryView.java
 /home/okarch/classes/simbiom-browser/src/main/java/com/emd/simbiom/search/FilterOperator.java
@@ -67,6 +68,7 @@
 /home/okarch/classes/simbiom-browser/src/main/java/com/emd/simbiom/command/InventoryCommand.java
 /home/okarch/classes/simbiom-browser/src/main/java/com/emd/simbiom/template/ResultLog.java
 /home/okarch/classes/simbiom-browser/src/main/java/com/emd/simbiom/category/CategorySelect.java
+/home/okarch/classes/simbiom-browser/src/main/java/com/emd/simbiom/storage/StorageDocumentModel.java
 /home/okarch/classes/simbiom-browser/src/main/java/com/emd/simbiom/search/AgeInputChange.java
 /home/okarch/classes/simbiom-browser/src/main/java/com/emd/simbiom/cost/RegistrationModel.java
 /home/okarch/classes/simbiom-browser/src/main/java/com/emd/simbiom/budget/UpdateInvoice.java

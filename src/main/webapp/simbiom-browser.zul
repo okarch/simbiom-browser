@@ -597,6 +597,17 @@
 
                       <row>
                         <cell style="text-align:left">
+                          <label value="Project documents"/>
+                        </cell>
+                        <hlayout>
+                          <combobox id="cbStorageDocs" autodrop="true" width="300px" mold="rounded" buttonVisible="true"/>
+                          <button id="btDocumentAdd" image="/images/add-icon.png" upload="true,maxsize=-1"/>
+                          <button id="btDocumentDelete" image="/images/delete-icon.png" />
+                        </hlayout>
+                      </row>
+
+                      <row>
+                        <cell style="text-align:left">
                           <label value="Remaining value"/>
                         </cell>
                         <decimalbox id="decBillingRemainder" width="100px"/>
