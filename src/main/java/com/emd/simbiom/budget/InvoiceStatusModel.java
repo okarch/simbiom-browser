@@ -190,7 +190,7 @@ public class InvoiceStatusModel extends DefaultModelProducer implements EventLis
 		pushAfterRenderIndex( key, 1 );
 
 	    isi = new InvoiceStatusItem( "Approved" );
-	    isi.setStatusDate( invoice.getVerified() );
+	    isi.setStatusDate( invoice.getApproved() );
 	    items.add( isi );
 	    if( isi.validStatusDate() )
 		pushAfterRenderIndex( key, 2 );
@@ -220,7 +220,7 @@ public class InvoiceStatusModel extends DefaultModelProducer implements EventLis
 	return idx;
     }
 
-    private void updateModel( Combobox cb, int index ) {
+    private void updateStatusModel( Combobox cb, int index ) {
 	ListModel model = cb.getModel();
 	if( model == null )
 	    return;
@@ -235,6 +235,7 @@ public class InvoiceStatusModel extends DefaultModelProducer implements EventLis
 	}
 	cb.setModel( new ListModelArray( items ) );
 	pushAfterRenderIndex( cb.getId()+"_chg", index );
+	pushAfterRenderIndex( cb.getId(), index );
     } 
 
     private void changeStatus( Combobox cb, int index ) {
@@ -253,7 +254,7 @@ public class InvoiceStatusModel extends DefaultModelProducer implements EventLis
 				 public void onEvent(Event event) {
 				     if( (Messagebox.ON_YES.equals(event.getName()))) {
 					 log.debug( "Review status will be reset" );
-					 updateModel( statusBox, idx );
+					 updateStatusModel( statusBox, idx );
 				     }
 				 }
 			     });
@@ -267,13 +268,13 @@ public class InvoiceStatusModel extends DefaultModelProducer implements EventLis
 				 public void onEvent(Event event) {
 				     if( (Messagebox.ON_YES.equals(event.getName()))) {
 					 log.debug( "Status about to be changed." );
-					 updateModel( statusBox, idx );
+					 updateStatusModel( statusBox, idx );
 				     }
 				 }
 			     });
 	}
 	else {
-	    updateModel( cb, index );
+	    updateStatusModel( cb, index );
 	}
     }
 
@@ -287,7 +288,9 @@ public class InvoiceStatusModel extends DefaultModelProducer implements EventLis
 	
 	// retrieve invoice
 	
-	String invId = StringUtils.substringBetween( cb.getId(), "cb_", "_chg" );
+	// String invId = StringUtils.substringBetween( cb.getId(), "cb_", "_chg" );
+	String invId = StringUtils.substringAfter( cb.getId(), "cbInvoiceStatus_" );
+	log.debug( "Extracted invoice id: "+invId );
 	if( (invId == null) || (invId.length() <= 0) ) {
 	    log.error( "Invoice id cannot be determined from "+cb.getId() );
 	    return;
@@ -344,32 +347,9 @@ public class InvoiceStatusModel extends DefaultModelProducer implements EventLis
 	if( !combobox.isListenerAvailable( Events.ON_SELECT, false ) )
 	    combobox.addEventListener( Events.ON_SELECT, this );
 
-	// SampleInventory dao = getSampleInventory();
-	// if( dao == null ) {
-	//     writeMessage( grid, "Error: No database access configured" );
-	//     return;
-	// }
-	
-	// InventoryPreferences pref = getPreferences();
-	// ColumnSetup def = getColumnSetup();
-	// if( def == null )
-	//     def = new ColumnSetup();
-	
-	// ColumnSetup cSetup = ColumnSetup.getInstance( def );
-	// log.debug( "Column setup: "+cSetup );
-
-	// InvoiceResultRenderer srr = new InvoiceResultRenderer( getColumnSet(), pref );
-	// grid.setRowRenderer( srr );
-
 	InvoiceStatusItem[] items = createModel( combobox.getId(), (Invoice)context.get( KEY_DATA ) );
-	// if( invoice == null )	    
-	//     grid.setModel( new ListModelArray( new Invoice[0] ) );
-	// else {
 	// log.debug( "Assigning model, number of invoices: "+invoices.length );
 	combobox.setModel( new ListModelArray( items ) );
-	// }
-	
-	// writeMessage( grid, String.valueOf(((invoices != null)?invoices.length:0))+" invoices match the search" );
     }
 
     /**

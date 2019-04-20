@@ -1,7 +1,10 @@
 package com.emd.simbiom.storage;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.io.StringWriter;
 
 import java.sql.SQLException;
@@ -20,6 +23,7 @@ import org.apache.commons.lang.time.DateUtils;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.io.output.TeeOutputStream;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -37,7 +41,8 @@ import org.zkoss.util.media.Media;
 // import org.zkoss.zul.Button;
 import org.zkoss.zul.Combobox;
 import org.zkoss.zul.Decimalbox;
-// import org.zkoss.zul.Grid;
+import org.zkoss.zul.Filedownload;
+import org.zkoss.zul.ListModel;
 import org.zkoss.zul.ListModelArray;
 import org.zkoss.zul.Messagebox;
 // import org.zkoss.zul.Row;
@@ -48,6 +53,7 @@ import org.zkoss.zul.Window;
 
 import com.emd.simbiom.command.InventoryCommand;
 import com.emd.simbiom.config.InventoryPreferences;
+import com.emd.simbiom.dao.DocumentLoader;
 import com.emd.simbiom.dao.SampleInventory;
 
 import com.emd.simbiom.model.StorageProject;
@@ -154,18 +160,24 @@ public class UploadDocument extends InventoryCommand {
 	    if( tempF == null )
 		throw new IOException( "Cannot prepare upload file" );
 
-	    // OutputStream outs = new FileOutputStream( tempF );
+
+	    OutputStream fOuts = new FileOutputStream( tempF );
 
 	    StringWriter sw = new StringWriter();
-	    WriterOutputStream outs = new WriterOutputStream( sw );
-	    long orgSize = DataHasher.encodeTo( media.getStreamData(), outs );
-	    outs.flush();
+	    WriterOutputStream wOuts = new WriterOutputStream( sw );
+
+	    TeeOutputStream tOuts = new TeeOutputStream( fOuts, wOuts );
+
+	    long orgSize = DataHasher.encodeTo( media.getStreamData(), tOuts );
+	    tOuts.flush();
 	    String updCont = sw.toString();
-	    outs.close();
+	    tOuts.close();
+
 	    String md5 = DataHasher.calculateMd5sum( updCont );
 	    log.debug( "Temporary upload file created ("+md5+"): "+tempF );
 	    StorageDocument sDoc = StorageDocument.fromFile( tempF, md5 );
 	    sDoc.setMime( Stringx.getDefault(media.getContentType(),"") );
+	    sDoc.setDocumentsize( orgSize );
 	    return sDoc;
 	}
 	else
@@ -230,6 +242,10 @@ public class UploadDocument extends InventoryCommand {
 
 	doc.setProjectid( sProject.getProjectid() );
 
+	log.debug( "Storing document: "+doc );
+	log.debug( "  file: "+doc.getFile() );
+	log.debug( "  md5: "+doc.getMd5sum()+" last modified: "+doc.getFiledate()+" size: "+doc.getDocumentsize() );
+
 	StorageDocument storedDoc = null;
 	try {
 	    StorageDocument[] docs = dao.findDocuments( sProject.getProjectid(), doc.getMd5sum() );
@@ -260,51 +276,134 @@ public class UploadDocument extends InventoryCommand {
 	}
     }
 
+    // private File createDownloadFile( File dir, UploadOutput[] outputs, boolean zipped )
+    // 	throws IOException {
+
+    // 	File downloadF = null;
+
+    // 	if( outputs.length > 1 )
+    // 	    downloadF = File.createTempFile( "dimpsy", ".zip", dir );
+    // 	else {
+    // 	    String fn = Stringx.getDefault(outputs[0].getFilename(), "" );
+    // 	    String ext = null;
+    // 	    if( zipped ) {
+    // 		fn = Stringx.before( fn, "." );
+    // 		ext = ".zip";
+    // 	    }
+    // 	    else {
+    // 		ext = "";
+    // 	    }
+
+    // 	    if( fn.length() > 0 )
+    // 		downloadF = new File( dir, fn+ext ); 
+    // 	    else
+    // 		downloadF = File.createTempFile( "dimpsy", ((ext.length()<=0)?".out":ext), dir );
+    // 	}
+    // 	return downloadF;
+    // }
+
+
+    private boolean sendDownload( Window wnd, StorageDocument doc ) {
+	File tempF = null;
+	try {
+	    tempF = createUploadFile( doc.getTitle() );
+	}
+	catch( IOException ioe ) {
+	    log.error( ioe );
+	    showMessage( wnd, "rowStorageMessage", "lbStorageMessage", "Error: "+
+			 Stringx.getDefault( ioe.getMessage(), "General I/O error occured" ) );
+	    return false;
+	}
+
+	log.debug( "Download file created: "+tempF );
+
+	DocumentLoader dao = doc.getDocumentLoader();
+	// SampleInventory dao = getSampleInventory();
+	if( dao == null ) {
+	    showMessage( wnd, "rowStorageMessage", "lbStorageMessage", "Error: Invalid database access." );
+	    return false;
+	}
+
+	boolean success = false;
+	String mime = Stringx.getDefault( doc.getMime(), "application/octet-stream");
+	try {
+	    OutputStream fos = new FileOutputStream( tempF );
+	    success = dao.writeContent( doc.getMd5sum(), mime, fos );
+	    fos.close();
+	    
+	}
+	catch( IOException ioe ) {
+	    log.error( ioe );
+	    showMessage( wnd, "rowStorageMessage", "lbStorageMessage", "Error: "+
+			 Stringx.getDefault( ioe.getMessage(), "General I/O error occured" ) );
+	    return false;
+	}
+
+	if( success ) {
+	    try {
+		Filedownload.save( tempF, mime );
+		return true;
+	    }
+	    catch( FileNotFoundException fnfe ) {
+		log.error( fnfe );
+		showMessage( wnd, "rowStorageMessage", "lbStorageMessage", "Error: File "+tempF+" not found." );
+	    }
+	}
+	return false;
+    }
+
+    private StorageDocument selectedDocument( Combobox cb ) {
+	int idx = cb.getSelectedIndex();
+	ListModel model = cb.getModel();
+	if( (model == null) || (idx < 0) )
+	    return null;
+	StorageDocument doc = (StorageDocument)model.getElementAt( idx );
+	if( doc.getDocumentid() == 0L )
+	    return null;
+	return doc;
+    }
+
     /**
      * Notifies this listener that an event occurs.
      */
     public void onEvent(Event event)
      	throws java.lang.Exception {
 
-	log.debug( "Upload document: "+event );
-
-	StorageDocument uploadDoc = null;
 	Window wnd = UIUtils.getWindow( event );
-	try {
-	    uploadDoc = upload( event );
+	StorageDocument uploadDoc = null;
+
+	if( event instanceof UploadEvent ) {
+	    log.debug( "Upload document: "+event );
+
+	    try {
+		uploadDoc = upload( event );
+	    }
+	    catch( IOException ioe ) {
+		showMessage( wnd, "rowStorageMessage", "lbStorageMessage", "Error: "+
+			     Stringx.getDefault( ioe.getMessage(), "General I/O error" ) );
+		log.error( ioe );
+		return;
+	    }
+
+	    if( uploadDoc != null ) 
+		storeUpload( wnd, uploadDoc );
 	}
-	catch( IOException ioe ) {
-	    showMessage( wnd, "rowStorageMessage", "lbStorageMessage", "Error: "+
-			 Stringx.getDefault( ioe.getMessage(), "General I/O error" ) );
-	    log.error( ioe );
-	    return;
+	else if( Events.ON_SELECT.equals( event.getName() ) ) {
+	    log.debug( "Download document: "+event );
+	    
+	    Component cmp = event.getTarget();
+	    if( !(cmp instanceof Combobox) ) {
+		log.error( "Invalid event component:"+cmp );
+		return;
+	    }
+	    uploadDoc = selectedDocument( (Combobox)cmp );
+	    if( uploadDoc == null )
+		return;
+	    log.debug( "Document to download: "+uploadDoc );
+	    sendDownload( wnd, uploadDoc );
 	}
-
-	if( uploadDoc != null ) 
-	    storeUpload( wnd, uploadDoc );
-
-    // 	if( ("onAfterRender".equals( event.getName() )) && 
-    // 	    ( cb != null ) &&
-    // 	    ( cb.getItemCount() > 2 ) ) {
-
-    // 	    cb.setSelectedIndex( 1 );
-    // 	    selPeriod = getSelectedPeriod( cb, 1 );
-    // 	    // int idx = popAfterRenderIndex( cb.getId(), 0 );
-    // 	    // // log.debug( "Invoice status after render index: "+idx );
-    // 	    // if( idx < cb.getItemCount() ) {
-    // 	    // 	cb.setSelectedIndex( idx );
-    // 	    // }	    
-    // 	}	
-    // 	else if( (Events.ON_SELECT.equals( event.getName() ) ) &&
-    // 		 ( cb != null ) &&
-    // 		 ( cb.getItemCount() > 0 ) ) {
-    // 	    int idx = cb.getSelectedIndex();
-    // 	    if( idx >= 0 ) 
-    // 		selPeriod = getSelectedPeriod( cb, idx );
-    // 	}
-
-
     }
+
  
     /**
      * Executes the <code>Command</code>
@@ -318,28 +417,6 @@ public class UploadDocument extends InventoryCommand {
     public void execute( ZKContext context, Window wnd )
 	throws CommandException {
 
-	// log.debug( "Command: "+getCommandName()+" clicked." );
-
-	// UIUtils.clearMessage( wnd, "lbStorageMessage" );
-
-	// if( CMD_PROJECT_ADD.equals(getCommandName()) ) {
-	//     log.debug( "Creating new storage project" );
-	//     clearStorageProject( wnd, "New Storage Project" );
-	//     createNewProject();
-	//     showMessage( wnd, "rowStorageMessage", "lbStorageMessage", "Warning: New storage project has not been saved yet." );
-	// }
-	// else if( CMD_PROJECT_SAVE.equals(getCommandName()) ) {
-	//     StorageProject prj = saveStorageProject( wnd );
-	//     if( prj != null ) {
-	// 	String poNum = saveBilling( wnd, prj );
-	// 	clearNewProject();
-	// 	updateStorageProjects( wnd, prj );
-	// 	showMessage( wnd, "rowStorageMessage", "lbStorageMessage", "Storage project \""+
-	// 		     prj.getTitle()+"\" has been stored. Storage groups: "+
-	// 		     prj.getStorageGroups().length+", Purchase order: "+
-	// 		     ((poNum != null)?poNum:"missing") );
-	//     }
-	// }
     }    
     
 } 

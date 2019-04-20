@@ -166,7 +166,6 @@ public class StorageDocumentModel extends DefaultModelProducer implements EventL
     // 	}
     // }
 
-
     private StorageDocument[] sortDocuments( StorageDocument[] templs ) {
 	Arrays.sort( templs, TITLE_SORTER );
 	return templs;
@@ -178,7 +177,10 @@ public class StorageDocumentModel extends DefaultModelProducer implements EventL
 	// create dummy entry
 	StorageDocument dd = new StorageDocument();
 	dd.setDocumentid( 0L );
-	dd.setTitle( "-- Select a document --" );
+	StringBuilder stb =  new StringBuilder( "-- Number of documents: " );
+	stb.append( String.valueOf( docs.length ) );
+	stb.append( " --" );
+	dd.setTitle( stb.toString() );
 	dList.add( dd );
 
 	if( docs.length > 0 ) {

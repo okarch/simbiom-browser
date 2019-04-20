@@ -30,6 +30,7 @@ import com.emd.simbiom.dao.SampleInventory;
 import com.emd.simbiom.view.ModelProducer;
 
 import com.emd.simbiom.model.Billing;
+import com.emd.simbiom.model.StorageDocument;
 import com.emd.simbiom.model.StorageGroup;
 import com.emd.simbiom.model.StorageProject;
 
@@ -74,16 +75,12 @@ public class SelectStorageDetails extends InventoryCommand {
       	return (StorageGroupModel)mp[0];
     }
 
-    // private BatchEntry getSelectedEntry( Window wnd ) {
-    // 	Combobox cb = (Combobox)wnd.getFellowIfAny( getCommandName() );
-    // 	if( cb != null ) {
-    // 	    int idx = cb.getSelectedIndex();
-    // 	    if( idx >= 0 ) {
-    // 		return (BatchEntry)cb.getModel().getElementAt(idx);
-    // 	    }
-    // 	}
-    // 	return null;
-    // }
+    private StorageDocumentModel getStorageDocumentModel() {
+      	ModelProducer[] mp = getPreferences().getResult( StorageDocumentModel.class );
+      	if( mp.length <= 0 )
+      	    return null;
+      	return (StorageDocumentModel)mp[0];
+    }
 
     /**
      * Selects an entry by upload id.
@@ -144,6 +141,34 @@ public class SelectStorageDetails extends InventoryCommand {
 	setText( wnd, CMP_PURCHASE_ORDER, "" );
     }
 
+    private void updateDocuments( Window wnd, StorageProject prj ) {
+	StorageDocument[] docs = null;
+	
+	SampleInventory dao = getSampleInventory();
+	if( dao != null ) {
+	    try {
+		docs = dao.findDocuments( prj.getProjectid(), null );
+	    }
+	    catch( SQLException sqe ) {
+		showMessage( wnd, "rowStorageMessage", "lbStorageMessage", "Error: "+
+			     Stringx.getDefault( sqe.getMessage(), "General database error" ) );
+	    }
+	}
+	
+	StorageDocumentModel mGroups = getStorageDocumentModel();
+	if( mGroups == null )
+	    return;
+
+	if( docs == null )
+	    docs = new StorageDocument[0];
+
+	log.debug( "Number of documents associated with "+prj+": "+docs.length );
+
+	Map ctxt = new HashMap();
+	ctxt.put( StorageDocumentModel.RESULT, docs );
+	mGroups.assignModel( wnd, ctxt );
+    }
+
     private void updateBilling( Window wnd, Billing[] bills ) {
       	AddBillingItem bItem = (AddBillingItem)getPreferences().getCommand( AddBillingItem.class );
 	if( bItem == null ) 
@@ -166,6 +191,7 @@ public class SelectStorageDetails extends InventoryCommand {
 			     Stringx.getDefault( sqe.getMessage(), "General database error" ) );
 	    }
 	}
+	updateDocuments( wnd, prj );
     }
 
     /**

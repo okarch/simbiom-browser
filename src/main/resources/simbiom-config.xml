@@ -136,7 +136,9 @@
     <command config-class="com.emd.simbiom.storage.UploadDocument"
              commandName="btDocumentAdd"
              event="onUpload" />
-
+    <command config-class="com.emd.simbiom.storage.UploadDocument"
+             commandName="cbStorageDocs"
+             event="onSelect" />
 
     <result config-class="com.emd.simbiom.search.FilterModel"
             modelName="cbFilterSelector_0">

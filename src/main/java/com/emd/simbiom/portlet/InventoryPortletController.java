@@ -230,18 +230,24 @@ public class InventoryPortletController extends GenericForwardComposer {
 	    try {
 		User usr = dao.findUserById( userId );
 		if( usr != null ) {
-		    ses.setAttribute( UserLogin.USER_KEY, usr );
-		    boolean disable = !usr.hasRole( Roles.INVENTORY_UPLOAD );
-		    Tab tab = (Tab)wndBrowser.getFellowIfAny( UserLogin.TAB_UPLOAD );
-		    if( tab != null ) 
-			tab.setDisabled( disable );
-		    for( int i = 1; i < Integer.MAX_VALUE; i++ ) {
-			Label lb = (Label)wndBrowser.getFellowIfAny( UserLogin.LABEL_USER+String.valueOf(i) );
-			if( lb != null )
-			    lb.setValue( usr.getMuid()+" - "+usr.getUsername() );
-			else
-			    break;
-		    }
+		    InventoryPreferences dp = InventoryPreferences.getInstance( portletId, userId );	
+		    UserLogin uCmd = (UserLogin)dp.getCommand( UserLogin.class );
+		    String uid = CookieUtil.getCookieValue( UserLogin.USER_COOKIE );
+		    if( uCmd != null )
+			uCmd.setupUser( wndBrowser, usr, (uid==null) );
+
+		    // ses.setAttribute( UserLogin.USER_KEY, usr );
+		    // boolean disable = !usr.hasRole( Roles.INVENTORY_UPLOAD );
+		    // Tab tab = (Tab)wndBrowser.getFellowIfAny( UserLogin.TAB_UPLOAD );
+		    // if( tab != null ) 
+		    // 	tab.setDisabled( disable );
+		    // for( int i = 1; i < Integer.MAX_VALUE; i++ ) {
+		    // 	Label lb = (Label)wndBrowser.getFellowIfAny( UserLogin.LABEL_USER+String.valueOf(i) );
+		    // 	if( lb != null )
+		    // 	    lb.setValue( usr.getMuid()+" - "+usr.getUsername() );
+		    // 	else
+		    // 	    break;
+		    // }
 		}
 	    }
 	    catch( SQLException sqe ) {

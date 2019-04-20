@@ -525,14 +525,14 @@
               </auxheader>
             </auxhead> 
             <columns id="colInvoices" menupopup="auto" sizable="true">
-              <column id="colInvoiceSelect" width="80px"/>
-              <column id="colInvoice_0" label="Period"/>
-              <column id="colInvoice_1" label="PO Number"/>
-              <column id="colInvoice_2" label="Invoice"/>
-              <column id="colInvoice_3" label="Value"/>
-              <column id="colInvoice_4" label="Samples"/>
-              <column id="colInvoice_5" label="Status"/>
-              <column id="colInvoice_6" label="Project"/>
+              <column id="colInvoiceSelect" hflex="min"/>
+              <column id="colInvoice_0" width="10%" label="Period"/>
+              <column id="colInvoice_1" width="15%" label="PO Number"/>
+              <column id="colInvoice_2" width="15%" label="Invoice"/>
+              <column id="colInvoice_3" width="15%" label="Value"/>
+              <column id="colInvoice_4" width="15%" label="Samples"/>
+              <column id="colInvoice_5" hflex="min" label="Status"/>
+              <column id="colInvoice_6" width="30%" label="Project"/>
             </columns>
           </grid>
         </groupbox>
@@ -692,6 +692,13 @@
 	        <label value="Remember me"/>
               </cell>
               <checkbox id="chkLoginRember" checked="true" />
+            </row>
+
+            <row>
+              <cell style="text-align:left">
+	        <label value="Roles"/>
+              </cell>
+              <listbox id="liLoginRole" width="200px" rows="5"/>
             </row>
 
             <row id="rowMessageLogin"/>

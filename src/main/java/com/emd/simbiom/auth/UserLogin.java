@@ -17,7 +17,10 @@ import org.zkoss.zk.ui.Session;
 import org.zkoss.zk.ui.Sessions;
 
 import org.zkoss.zul.Checkbox;
+import org.zkoss.zul.Groupbox;
 import org.zkoss.zul.Label;
+import org.zkoss.zul.Listbox;
+import org.zkoss.zul.ListModelArray;
 import org.zkoss.zul.Tab;
 import org.zkoss.zul.Textbox;
 import org.zkoss.zul.Window;
@@ -59,9 +62,14 @@ public class UserLogin extends InventoryCommand {
 
     public static final String USER_KEY     = "simbiom.login.user";
     public static final String USER_COOKIE  = "simbiomMUID";
-    public static final String TAB_UPLOAD   = "tabUpload";
     public static final String LABEL_USER   = "lbCurrentUser_";
 
+    public static final String TAB_UPLOAD   = "tabUpload";
+    public static final String TAB_STORAGE  = "tabStorage";
+
+    public static final String GBOX_INVOICE = "gInvoices";
+
+    public static final String LIST_ROLES   = "liLoginRole";
 
     /**
      * Creates a new command to login user.
@@ -128,21 +136,48 @@ public class UserLogin extends InventoryCommand {
 	return usr;
     }
 
+    /**
+     * Initializes the GUI according the user roles.
+     *
+     * @param wnd the app window.
+     * @param usr the app user.
+     *
+     */
+    public void setupUser( Window wnd, User usr, boolean checkCookie ) {
+	updateRoleList( wnd, usr );
+	storeUser( wnd, usr, checkCookie );
+	setEnableUpload( wnd, usr.hasRole( Roles.INVENTORY_UPLOAD ) );	
+	setEnableStorage( wnd, usr.hasRole( Roles.STORAGE_EDIT ) );
+	setEnableInvoice( wnd, usr.hasRole( Roles.INVOICE_EDIT ) );
+    }
+
     private void setEnableUpload( Window wnd, boolean enable ) {
 	Tab tab = (Tab)wnd.getFellowIfAny( TAB_UPLOAD );
 	if( tab != null ) 
 	    tab.setDisabled( !enable );
     }
+    private void setEnableStorage( Window wnd, boolean enable ) {
+	Tab tab = (Tab)wnd.getFellowIfAny( TAB_STORAGE );
+	if( tab != null ) 
+	    tab.setDisabled( !enable );
+    }
+    private void setEnableInvoice( Window wnd, boolean enable ) {
+	Groupbox gb = (Groupbox)wnd.getFellowIfAny( GBOX_INVOICE );
+	if( gb != null ) 
+	    gb.setVisible( enable );
+    }
 
-    private void storeUser( Window wnd, User usr ) {
+    private void storeUser( Window wnd, User usr, boolean checkCookie ) {
 	Session ses = Sessions.getCurrent();
 	if( ses != null ) {
 	    ses.setAttribute( USER_KEY, usr );
-	    Checkbox cb = (Checkbox)wnd.getFellowIfAny( CHK_REMEMBER );
-	    if( (cb != null) && (cb.isChecked()) ) {
-		String cValue = usr.getMuid()+":"+String.valueOf(usr.getUserid());
-		Cookie cookie = CookieUtil.addCookie( USER_COOKIE, cValue, COOKIE_AGE );
-		log.debug( "Cookie "+USER_COOKIE+" has been set to "+cValue );
+	    if( checkCookie ) {
+		Checkbox cb = (Checkbox)wnd.getFellowIfAny( CHK_REMEMBER );
+		if( (cb != null) && (cb.isChecked()) ) {
+		    String cValue = usr.getMuid()+":"+String.valueOf(usr.getUserid());
+		    Cookie cookie = CookieUtil.addCookie( USER_COOKIE, cValue, COOKIE_AGE );
+		    log.debug( "Cookie "+USER_COOKIE+" has been set to "+cValue );
+		}
 	    }
 	}
 	for( int i = 1; i < Integer.MAX_VALUE; i++ ) {
@@ -151,6 +186,15 @@ public class UserLogin extends InventoryCommand {
 		lb.setValue( usr.getMuid()+" - "+usr.getUsername() );
 	    else
 		break;
+	}
+    }
+
+    private void updateRoleList( Window wnd, User usr ) {
+	Listbox lBox = (Listbox)wnd.getFellowIfAny( LIST_ROLES );
+	if( lBox != null ) {
+	    String[] roles = Roles.assignedRoles( usr.getRoles() );
+	    log.debug( "Number of roles assigned to "+usr+": "+roles.length );
+	    lBox.setModel( new ListModelArray( roles ) );
 	}
     }
 
@@ -175,15 +219,13 @@ public class UserLogin extends InventoryCommand {
 	if( usr == null )
 	    return;
 
-	boolean uploadEnabled = usr.hasRole( Roles.INVENTORY_UPLOAD );
-	if( !uploadEnabled ) 
-	    showMessage( wnd, "rowMessageLogin", "lbMessageLogin", "Warning: To enable data upload user "+
-			 usr+" requires permission \""+Roles.roleToString( Roles.INVENTORY_UPLOAD )+"\"" );
-	else 
-	    showMessage( wnd, "rowMessageLogin", "lbMessageLogin", "User "+usr+" logged in sucessfully" );
+	showMessage( wnd, "rowMessageLogin", "lbMessageLogin", "User "+usr+" logged in sucessfully" );
 
-	storeUser( wnd, usr );
-	setEnableUpload( wnd, uploadEnabled );	
+	updateRoleList( wnd, usr );
+	storeUser( wnd, usr, true );
+	setEnableUpload( wnd, usr.hasRole( Roles.INVENTORY_UPLOAD ) );	
+	setEnableStorage( wnd, usr.hasRole( Roles.STORAGE_EDIT ) );
+	setEnableInvoice( wnd, usr.hasRole( Roles.INVOICE_EDIT ) );
     }    
     
 }

@@ -82,6 +82,13 @@ public class InvoiceResultRenderer implements RowRenderer {
 	bt.setHeight( "20px" );
  	bt.setParent( hl );
 
+	Button btc = new Button();
+	btc.setId( "btInvCopy_"+invoice.getInvoiceid() );
+	btc.setIconSclass( "z-icon-copy" );
+	btc.setWidth( "20px" );
+	btc.setHeight( "20px" );
+	btc.setParent( hl );
+
 	EditInvoice editInvoice = (EditInvoice)preferences.getCommand( EditInvoice.class );
 
 	if( editInvoice != null )
