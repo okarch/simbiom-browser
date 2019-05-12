@@ -158,63 +158,57 @@ public class StorageProjectModel extends DefaultModelProducer implements EventLi
     }
 
     /**
-     * Reloads the list of templates from the database and selects the given
-     * template.
+     * Reloads the list of storage projects from the database and selects the project with the given
+     * project id.
      *
      * @param wnd the app window.
-     * @param selTemplate the upload template currently selected (or null).
+     * @param projectId the storage project id.
      */ 
-    // public void reloadTemplates( Window wnd, InventoryUploadTemplate selTemplate ) {
-    // 	// SampleInventoryDAO dao = getSampleInventory();
-    // 	SampleInventory dao = getSampleInventory();
-    // 	if( dao == null ) {
-    // 	    writeMessage( wnd, "Error: No database access configured" );
-    // 	    return;
-    // 	}
+    public void reloadStorageProjects( Window wnd, long projectId ) {
+	SampleInventory dao = getSampleInventory();
+     	if( dao == null ) {
+     	    writeMessage( wnd, "Error: No database access configured" );
+     	    return;
+     	}
 
-    // 	Combobox cbTempl = (Combobox)wnd.getFellowIfAny( getModelName() );
-    // 	try {
-    // 	    InventoryUploadTemplate[] tList = dao.findTemplateByName( "" );
+     	Combobox cbTempl = (Combobox)wnd.getFellowIfAny( getModelName() );
+     	try {
+     	    StorageProject[] tList = dao.findStorageProject( "" );
 
-    // 	    if( cbTempl != null ) {
-    // 		Map context = new HashMap();
-    // 		context.put( RESULT, tList );
-    // 		assignModel( cbTempl, context );
-    // 	    } 
-    // 	}
-    // 	catch( SQLException sqe ) {
-    // 	    writeMessage( wnd, "Error: Cannot query database: "+Stringx.getDefault(sqe.getMessage(),"reason unknown") );
-    // 	    log.error( sqe );
-    // 	}
+     	    if( cbTempl != null ) {
+     		Map context = new HashMap();
+    		context.put( RESULT, tList );
+     		assignModel( cbTempl, context );
+     	    } 
+     	}
+     	catch( SQLException sqe ) {
+     	    writeMessage( wnd, "Error: Cannot query database: "+Stringx.getDefault(sqe.getMessage(),"reason unknown") );
+     	    log.error( sqe );
+     	}
 
-    // 	ListModel tModel = null;
-    // 	if( (selTemplate != null) &&
-    // 	    (cbTempl != null) && 
-    // 	    ((tModel = cbTempl.getModel()) != null) ) {
+     	ListModel tModel = null;
+     	if( (projectId != 0L) && (cbTempl != null) && 
+     	    ((tModel = cbTempl.getModel()) != null) ) {
 
-    // 	    log.debug( "Find index of template \""+selTemplate.getTemplatename()+"\"" );
-    // 	    int idx = -1;
-    // 	    InventoryUploadTemplate templ = null;
-    // 	    for( int i = 0; i < tModel.getSize(); i++ ) {
-    // 		templ = (InventoryUploadTemplate)tModel.getElementAt( i );
-    // 		if( templ.getTemplatename().equals( selTemplate.getTemplatename() ) ) {
-    // 		    idx = i;
-    // 		    break;
-    // 		}
-    // 	    }
-    // 	    if( idx >= 0 ) {
-    // 		log.debug( "Template index of \""+templ.getTemplatename()+"\": "+idx );
-    // 		pushAfterRenderIndex( idx );
-    // 		// cbTempl.setSelectedIndex( idx );
-    // 		// updateTemplateText( wnd, templ );
-    // 	    }		
-    // 	    else {
-    // 		log.error( "Template index "+idx+" could not be found for template \""+
-    // 			   selTemplate.getTemplatename()+"\"" ); 
-    // 	    }
-    // 	}
-    // }
-
+     	    log.debug( "Find index of project id "+projectId );
+     	    int idx = -1;
+     	    StorageProject templ = null;
+     	    for( int i = 0; i < tModel.getSize(); i++ ) {
+     		templ = (StorageProject)tModel.getElementAt( i );
+     		if( templ.getProjectid() == projectId ) {
+     		    idx = i;
+     		    break;
+     		}
+     	    }
+     	    if( idx >= 0 ) {
+     		log.debug( "Storage project index of \""+templ.getTitle()+"\": "+idx );
+     		pushAfterRenderIndex( idx );
+	    }		
+     	    else {
+     		log.error( "Storage project index could not be found" );
+	    }
+     	}
+    }
 
     // private void updateTemplateText( Window wnd, InventoryUploadTemplate templ ) {
     // 	Textbox txtTempl = (Textbox)wnd.getFellowIfAny( TXT_TEMPLATE );

@@ -120,6 +120,12 @@
     <command config-class="com.emd.simbiom.budget.InvoicePeriodChange"
              commandName="dbInvoiceTo"
              event="onChange" />
+    <command config-class="com.emd.simbiom.budget.InvoiceStatusFilter"
+             commandName="cbInvoiceReview"
+             event="onSelect" />
+    <command config-class="com.emd.simbiom.budget.InvoiceStatusFilter"
+             commandName="gInvoices"
+             event="onOpen" />
 
     <command config-class="com.emd.simbiom.storage.SelectStorageDetails"
              commandName="cbStorageProject"
@@ -127,6 +133,20 @@
     <command config-class="com.emd.simbiom.storage.AddBillingItem"
              commandName="btBillingAdd_0"
              event="onClick" />
+
+    <command config-class="com.emd.simbiom.storage.EditStorageGroup"
+             commandName="btStorageGroupAdd"
+             event="onClick" />
+    <command config-class="com.emd.simbiom.storage.EditStorageGroup"
+             commandName="btStorageGroupDelete"
+             event="onClick" />
+    <command config-class="com.emd.simbiom.storage.EditStorageGroup"
+             commandName="btGroupDetailsStore"
+             event="onClick" />
+    <command config-class="com.emd.simbiom.storage.EditStorageGroup"
+             commandName="btGroupDetailsClose"
+             event="onClick" />
+
     <command config-class="com.emd.simbiom.storage.EditStorageProject"
              commandName="btStorageProjectAdd"
              event="onClick" />
@@ -390,9 +410,24 @@
     <result config-class="com.emd.simbiom.storage.StorageProjectModel"
             modelName="cbBudgetProject"
             messageRowId="rowStorageMessage" />
+
     <result config-class="com.emd.simbiom.storage.StorageGroupModel"
             modelName="cbStorageGroup"
-            messageRowId="rowStorageMessage" />
+            messageRowId="rowStorageMessage">
+
+      <details config-class="com.emd.simbiom.storage.GroupDetailsView"
+               template="/template/group-details.zul"
+               detailsLayout="vlGroupDetailsView"
+               width="1000px">
+
+<!--
+        <action config-class="com.emd.simbiom.storage.EditStorageGroup"
+                component="btGroupDetailsStore"
+                event="onClick" />
+-->
+      </details>
+    </result>
+
     <result config-class="com.emd.simbiom.storage.StorageDocumentModel"
             modelName="cbStorageDocs"
             messageRowId="rowStorageMessage" />

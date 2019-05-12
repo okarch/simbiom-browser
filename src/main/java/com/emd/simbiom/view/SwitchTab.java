@@ -15,6 +15,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import org.zkoss.zk.ui.event.Event;
+import org.zkoss.zk.ui.event.Events;
 
 import org.zkoss.zul.Checkbox;
 import org.zkoss.zul.Combobox;
@@ -165,6 +166,12 @@ public class SwitchTab extends InventoryCommand {
 	return sessionId;
     }
 
+    private void sendProjectSelect( Window wnd ) {
+	Combobox cb = (Combobox)wnd.getFellowIfAny( "cbStorageProject" );
+	if( cb != null )
+	    Events.postEvent("onSelect", cb, null);
+    }
+
     /**
      * Notifies this listener that an event occurs.
      */
@@ -178,8 +185,12 @@ public class SwitchTab extends InventoryCommand {
 
 	    Tab tb = (Tab)cmp;
 	    String tabSt = Stringx.getDefault(tb.getLabel(), "" );
-	    if( "Costs".equals( tabSt ) )
+	    if( "Costs".equals( tabSt ) ) {
 		getCostEstimate( ZKUtil.findWindow(cmp) );
+	    }
+	    else if( "Storage".equals( tabSt ) ) {
+		sendProjectSelect( ZKUtil.findWindow(cmp) );
+	    }
 	}
     }
 

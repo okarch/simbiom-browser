@@ -7,6 +7,7 @@ com/emd/simbiom/category/CategorySelect.class
 com/emd/simbiom/portlet/ServletInitializer.class
 com/emd/simbiom/budget/EditInvoice$1.class
 com/emd/simbiom/template/UploadTemplate$1.class
+com/emd/simbiom/storage/EditStorageGroup$1.class
 com/emd/simbiom/cost/SampleTypeModel.class
 com/emd/simbiom/portlet/InventoryPortletController.class
 com/emd/simbiom/view/ModelProducer.class
@@ -19,6 +20,7 @@ com/emd/simbiom/budget/EditInvoice.class
 com/emd/simbiom/storage/StorageGroupModel.class
 com/emd/simbiom/category/ChartCategoryView.class
 com/emd/simbiom/search/FilterRemove.class
+com/emd/simbiom/storage/EditStorageGroup.class
 com/emd/simbiom/budget/InvoiceStatusItem.class
 com/emd/simbiom/search/SelectFilterOperator.class
 com/emd/simbiom/budget/BudgetPeriod.class
@@ -31,6 +33,7 @@ com/emd/simbiom/portlet/InventoryCleanup.class
 com/emd/simbiom/search/SampleRow.class
 com/emd/simbiom/budget/InvoiceResultRenderer.class
 com/emd/simbiom/category/GoogleChartCategoryView.class
+com/emd/simbiom/storage/GroupDetailsView.class
 com/emd/simbiom/search/AgeInputChange.class
 com/emd/simbiom/budget/InvoiceDetailsView.class
 com/emd/simbiom/search/SearchSamples.class
@@ -51,8 +54,10 @@ com/emd/simbiom/budget/InvoiceSummary.class
 com/emd/simbiom/search/SelectSample$1.class
 com/emd/simbiom/budget/InvoiceResult.class
 com/emd/simbiom/search/SampleResult.class
+com/emd/simbiom/storage/EditStorageGroup$2.class
 com/emd/simbiom/category/CategoryViewNode.class
 com/emd/simbiom/search/SampleDetailsView.class
+com/emd/simbiom/budget/InvoiceStatusFilter.class
 com/emd/simbiom/view/CategoryTreeModel.class
 com/emd/simbiom/template/TemplateModel$1.class
 com/emd/simbiom/template/UploadSelector.class

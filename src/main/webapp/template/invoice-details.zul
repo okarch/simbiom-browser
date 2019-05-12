@@ -100,7 +100,7 @@
         <hbox pack="center">
           <button id="btInvDetailsStore" label="Store" iconSclass="z-icon-save"/>
           <button id="btInvDetailsDelete" label="Delete" iconSclass="z-icon-minus-circle"/>
-          <button id="btInvDetailsClose" label="Close" />
+          <button id="btInvDetailsClose" label="Close" iconSclass="z-icon-times"/>
         </hbox>
       </row>
 

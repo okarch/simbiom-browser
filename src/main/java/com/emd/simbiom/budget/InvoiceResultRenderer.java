@@ -78,14 +78,14 @@ public class InvoiceResultRenderer implements RowRenderer {
  	Button bt = new Button();
  	bt.setId( "btInvInfo_"+invoice.getInvoiceid() );
 	bt.setIconSclass( "z-icon-info" );
-	bt.setWidth( "20px" );
+	bt.setWidth( "25px" );
 	bt.setHeight( "20px" );
  	bt.setParent( hl );
 
 	Button btc = new Button();
 	btc.setId( "btInvCopy_"+invoice.getInvoiceid() );
 	btc.setIconSclass( "z-icon-copy" );
-	btc.setWidth( "20px" );
+	btc.setWidth( "25px" );
 	btc.setHeight( "20px" );
 	btc.setParent( hl );
 

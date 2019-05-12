@@ -45,6 +45,7 @@ import com.emd.zk.ZKUtil;
  * @version 1.0
  */
 public class StorageGroupModel extends DefaultModelProducer implements EventListener {
+    private GroupDetailsView details;
 
     private static Log log = LogFactory.getLog(StorageGroupModel.class);
 
@@ -61,6 +62,9 @@ public class StorageGroupModel extends DefaultModelProducer implements EventList
 	}
     };
 
+    /**
+     * Creates a new storage group model.
+     */
     public StorageGroupModel() {
 	super();
 	setModelName( "unknown" );
@@ -120,17 +124,16 @@ public class StorageGroupModel extends DefaultModelProducer implements EventList
      * @param wnd the app window.
      * @param selTemplate the upload template currently selected (or null).
      */ 
-    // public void reloadTemplates( Window wnd, InventoryUploadTemplate selTemplate ) {
-    // 	// SampleInventoryDAO dao = getSampleInventory();
+    // public void reloadGroups( Window wnd, StorageGroup selGroup ) {
     // 	SampleInventory dao = getSampleInventory();
-    // 	if( dao == null ) {
-    // 	    writeMessage( wnd, "Error: No database access configured" );
-    // 	    return;
-    // 	}
+    //  	if( dao == null ) {
+    //  	    writeMessage( wnd, "Error: No database access configured" );
+    //  	    return;
+    //  	}
 
-    // 	Combobox cbTempl = (Combobox)wnd.getFellowIfAny( getModelName() );
-    // 	try {
-    // 	    InventoryUploadTemplate[] tList = dao.findTemplateByName( "" );
+    //  	Combobox cbTempl = (Combobox)wnd.getFellowIfAny( getModelName() );
+    //  	try {
+    //  	    StorageGroup[] tList = dao.findTemplateByName( "" );
 
     // 	    if( cbTempl != null ) {
     // 		Map context = new HashMap();
@@ -181,6 +184,41 @@ public class StorageGroupModel extends DefaultModelProducer implements EventList
     // 	    txtTempl.setValue( templ.getTemplatename() );
     // 	}
     // }
+
+    /**
+     * Returns the selected storage project.
+     *
+     * @param wnd the app window.
+     * @return the upload template currently selected (or null).
+     */ 
+    public StorageGroup getSelectedStorageGroup( Window wnd ) {
+	Combobox cbTempl = (Combobox)wnd.getFellowIfAny( getModelName() );
+	StorageGroup templ = null;
+	if( cbTempl != null ) {
+	    int sel = cbTempl.getSelectedIndex();
+	    if( sel >= 0 )
+		templ = (StorageGroup)cbTempl.getModel().getElementAt( sel );
+	}
+	return templ;
+    }
+
+    /**
+     * Get the <code>Details</code> value.
+     *
+     * @return a <code>GroupDetailsView</code> value
+     */
+    public final GroupDetailsView getDetails() {
+	return details;
+    }
+
+    /**
+     * Set the <code>Details</code> value.
+     *
+     * @param details The new Details value.
+     */
+    public final void setDetails(final GroupDetailsView details) {
+	this.details = details;
+    }
 
     private StorageGroup[] sortStorageGroups( StorageGroup[] templs ) {
 	Arrays.sort( templs, GROUP_SORTER );

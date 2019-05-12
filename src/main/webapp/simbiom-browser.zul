@@ -506,7 +506,7 @@
                   </menu>
                 </menubar>
               </auxheader>
-              <auxheader colspan="5">		      
+              <auxheader colspan="6">		      
                 <textbox id="txtInvoiceSearch" width="200px"/>
                 <button id="btInvoiceSearch" label="Search"/>
                 <label value="Period from"/>
@@ -516,11 +516,11 @@
                 <label value="Invoice status"/>
                 <combobox id="cbInvoiceReview" autodrop="true" width="150px" mold="rounded" buttonVisible="true">
                   <attribute name="onCreate">self.setSelectedIndex(0);</attribute>
-                  <comboitem label="All" value="All" />
-                  <comboitem label="Not reviewed" value="Not reviewed" />
-                  <comboitem label="Checked" value="Checked" />
-                  <comboitem label="Approved" value="Approved" />
-                  <comboitem label="Rejected" value="Rejected" />
+                  <comboitem label="All" value="0.All" />
+                  <comboitem label="Not reviewed" value="1.Not reviewed" />
+                  <comboitem label="Checked" value="2.Checked" />
+                  <comboitem label="Approved" value="3.Approved" />
+                  <comboitem label="Rejected" value="4.Rejected" />
                 </combobox>
               </auxheader>
             </auxhead> 
@@ -624,6 +624,7 @@
                           <rows id="rowsBillingItems">
                             <row id="rowBillingItem_0">
                               <hlayout>
+                                <button iconSclass="z-icon-check" />
                                 <hlayout>
                                   <label value="Project code"/>
                                   <textbox id="txtProjectCode_0" width="150px"/>
@@ -635,6 +636,12 @@
                                 <hlayout>
                                   <label value="Value"/>
                                   <decimalbox id="decPurchaseValue_0" width="100px" format="###,###.##"/>
+                                  <combobox id="cbPurchaseCurrency" autodrop="true" width="80px" mold="rounded" buttonVisible="true">
+                                    <attribute name="onCreate">self.setSelectedIndex(0);</attribute>
+                                    <comboitem label="EUR" value="EUR" />
+                                    <comboitem label="USD" value="USD" />
+                                    <comboitem label="SGD" value="SGD" />
+                                  </combobox>
                                 </hlayout>
                                 <hlayout>
                                   <button id="btBillingAdd_0" disabled="true" image="/images/add-icon.png" />

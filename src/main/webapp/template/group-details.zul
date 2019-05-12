@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<vlayout>
+  <grid id="grGroupDetails" fixedLayout="true" style="overflow: hidden;" >
+    <columns>
+      <column width="20%" />
+      <column width="80%" />
+    </columns>
+
+    <rows id="rsGroup_${storageGroup.groupid}_${groupExist}">
+
+      <row id="rowGroupDetailsMessage"/>
+
+      <row>
+        <cell style="text-align:left">
+	  <label value="Storage project"/>
+        </cell>
+        <hlayout>        
+          <label id="lbGroupProjectName" width="200px" value="$!storageProject.title"/>
+          <label id="lbGroupProjectId" visible="false" value="$!storageProject.projectid"/>
+        </hlayout>  
+      </row>
+
+      <row>
+        <cell style="text-align:left">
+	  <label value="Storage group"/>
+        </cell>
+        <textbox id="txtGroupName" width="200px" value="$storageGroup.groupname"/>
+      </row>
+
+      <row>
+        <cell style="text-align:left">
+	  <label value="Group reference"/>
+        </cell>
+        <textbox id="txtGroupRef" width="100px" value="$!storageGroup.groupref"/>
+      </row>
+
+      <row>
+        <cell style="text-align:left"/>
+        <hbox pack="center">
+          <button id="btGroupDetailsStore" label="Store" iconSclass="z-icon-save"/>
+          <button id="btGroupDetailsClose" label="Close" iconSclass="z-icon-times"/>
+        </hbox>
+      </row>
+
+    </rows>
+  </grid>
+</vlayout>

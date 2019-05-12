@@ -83,13 +83,45 @@ public class InvoiceSummary extends InventoryCommand {
 	StringBuilder stb = new StringBuilder();
 	stb.append( "Number of invoices: " );
 	stb.append( String.valueOf( invoices.length ) );
-
-	float totalAmt = 0f;
+	
+	float totalEUR = 0f;
+	float totalUSD = 0f;
+	float totalSGD = 0f;
 	for( int i = 0; i < invoices.length; i++ ) {
-	    totalAmt+=invoices[i].getAmount();
+	    String cur = Stringx.getDefault(invoices[i].getCurrency(),"EUR");
+	    if( "EUR".equals(cur) ) {
+		totalEUR+=invoices[i].getAmount();
+	    }
+	    else if( "USD".equals(cur) ) {
+		totalUSD+=invoices[i].getAmount();
+	    }
+	    else if( "SGD".equals(cur) ) {
+		totalSGD+=invoices[i].getAmount();
+	    }
 	}
+
+	boolean addComma = false;
 	stb.append( ", Total invoice amount: " );
-	stb.append( totalAmt );
+	if( totalEUR > 0f ) {
+	    stb.append( String.format( "%.2f", totalEUR ) );
+	    stb.append( " EUR" );
+	    addComma = true;
+	}
+	if( totalUSD > 0f ) {
+	    if( addComma )
+		stb.append( ", " );
+	    stb.append( String.format( "%.2f", totalUSD ) );
+	    stb.append( " USD" );
+	    addComma = true;
+	}
+	if( totalSGD > 0f ) {
+	    if( addComma )
+		stb.append( ", " );
+	    stb.append( String.format( "%f.2f", totalSGD ) );
+	    stb.append( " SGD" );
+	    addComma = true;
+	}
+
 	Label lb = (Label)wnd.getFellowIfAny( LB_TOTAL );
 	if( lb != null ) 
 	    lb.setValue( stb.toString() );

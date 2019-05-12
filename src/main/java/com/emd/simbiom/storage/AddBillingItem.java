@@ -61,32 +61,9 @@ public class AddBillingItem extends InventoryCommand {
     public static final String PROJECT_CODE= "txtProjectCode";
     public static final String PO_NUM      = "txtPurchaseOrder";
     public static final String AMOUNT      = "decPurchaseValue";
+    public static final String CURRENCY    = "cbPurchaseCurrency";
 
     private static final String MESSAGE_ID  = "rowStorageMessage";
-
-                          // <rows id="rowsBillingItems">
-                          //   <row id="rowBillingItem_0">
-                          //     <hlayout>
-                          //       <hlayout>
-                          //         <label value="Project code"/>
-                          //         <textbox id="txtProjectCode_0" width="150px"/>
-		          //       </hlayout>
-                          //       <hlayout>
-                          //         <label value="Purchase order"/>
-                          //         <textbox id="txtPurchaseOrder_0" width="150px"/>
-                          //       </hlayout>
-                          //       <hlayout>
-                          //         <label value="Value"/>
-                          //         <decimalbox id="decPurchaseValue_0" width="100px" format="###,###.##"/>
-                          //       </hlayout>
-                          //       <hlayout>
-                          //         <button id="btBillingAdd_0" disabled="true" image="/images/add-icon.png" />
-                          //         <button id="btBillingRemove_0" disabled="true" image="/images/delete-icon.png" />
-		          //       </hlayout>
-                          //     </hlayout>
-                          //   </row>
-                          // </rows>
-
 
     public AddBillingItem() {
 	super();
@@ -145,13 +122,42 @@ public class AddBillingItem extends InventoryCommand {
 	return hl;
     }
 
-    private Hlayout createDecimalbox( String lbTitle, String cmpId, String width ) {
+    // private Hlayout createDecimalbox( String lbTitle, String cmpId, String width ) {
+    // 	Hlayout hl = new Hlayout();
+    // 	(new Label( lbTitle )).setParent( hl );
+    // 	Decimalbox ib = new Decimalbox();
+    // 	ib.setId( cmpId );
+    // 	ib.setWidth( width );
+    // 	ib.setParent( hl );
+    // 	return hl;
+    // }
+
+    private Hlayout createValuebox( String lbTitle, String suff, String width ) {
 	Hlayout hl = new Hlayout();
 	(new Label( lbTitle )).setParent( hl );
 	Decimalbox ib = new Decimalbox();
-	ib.setId( cmpId );
+	ib.setId( AMOUNT+suff );
 	ib.setWidth( width );
 	ib.setParent( hl );
+
+                                //     <attribute name="onCreate">self.setSelectedIndex(0);</attribute>
+
+	Combobox cb = new Combobox();
+     	cb.setId( CURRENCY+suff );
+     	cb.setAutodrop( true );
+     	cb.setWidth( "80px" );
+     	cb.setMold( "rounded" );
+	cb.setButtonVisible( true );
+
+	Comboitem cbi = cb.appendItem( "EUR" );
+	cbi.setValue( "EUR" );
+	cbi = cb.appendItem( "USD" );
+	cbi.setValue( "USD" );
+	cbi = cb.appendItem( "SGD" );
+	cbi.setValue( "SGD" );
+
+     	cb.setParent( hl );
+
 	return hl;
     }
 
@@ -185,10 +191,25 @@ public class AddBillingItem extends InventoryCommand {
 	Hlayout parent = createRow( wnd, ROW_ITEM+suff  );
 	(createTextbox( "Project code", PROJECT_CODE+suff, "150px" )).setParent( parent );
 	(createTextbox( "Purchase order", PO_NUM+suff, "150px" )).setParent( parent );
-	(createDecimalbox( "Value", AMOUNT+suff, "100px" )).setParent( parent );
+	(createValuebox( "Value", suff, "100px" )).setParent( parent );
 	(createButtons( suff ) ).setParent( parent );
 
 	return suff;
+    }
+
+    private void selectCurrency( Combobox cb, String currency ) {
+	int idx = -1;
+	for( int i = 0; i < cb.getItemCount(); i++ ) {
+	    Comboitem ci = cb.getItemAtIndex( i );
+	    if( currency.equals(ci.getValue().toString()) ) {
+		idx = i;
+		break;
+	    }
+	}
+	if( idx >= 0 )
+	    cb.setSelectedIndex( idx );
+	else
+	    log.error( "Currency "+currency+" cannot be selected" );
     }
 
     private void initBillingRow( Window wnd, String suf, Billing bill ) {
@@ -201,6 +222,10 @@ public class AddBillingItem extends InventoryCommand {
 	Decimalbox dec = (Decimalbox)wnd.getFellowIfAny( AMOUNT+suf );
 	if( dec != null )
 	    dec.setValue( String.valueOf(bill.getTotal()) );
+
+	Combobox cb = (Combobox)wnd.getFellowIfAny( CURRENCY+suf );
+	if( cb != null )
+	    selectCurrency( cb, Stringx.getDefault(bill.getCurrency(),"EUR") );
     }
 
     private boolean billingRowExists( Window wnd, int idx ) {
@@ -228,6 +253,10 @@ public class AddBillingItem extends InventoryCommand {
 	Decimalbox dec = (Decimalbox)wnd.getFellowIfAny( AMOUNT+"_0" );
 	if( dec != null )
 	    dec.setValue( new BigDecimal(0d) );
+
+	Combobox cb = (Combobox)wnd.getFellowIfAny( CURRENCY+"_0" );
+	if( cb != null )
+	    selectCurrency( cb, "EUR" );
     }
 
     /**

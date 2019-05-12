@@ -116,7 +116,13 @@ public class SelectStorageDetails extends InventoryCommand {
 	txt.setValue( title );
     }
 
-    private void setGroups( Window wnd, StorageProject prj ) {
+    /**
+     * Initializes the storage group list.
+     *
+     * @param wnd the app window.
+     * @param prj the storage project.
+     */
+    public void setGroups( Window wnd, StorageProject prj ) {
 	StorageGroupModel mGroups = getStorageGroupModel();
 	if( mGroups == null )
 	    return;

@@ -196,7 +196,13 @@ public class InvoiceStatusModel extends DefaultModelProducer implements EventLis
 		pushAfterRenderIndex( key, 2 );
 
 	    items.add( new InvoiceStatusItem( "Issues" ) );
-     	    items.add( new InvoiceStatusItem( "Rejected" ) );
+     	    // items.add( new InvoiceStatusItem( "Rejected" ) );
+
+	    isi = new InvoiceStatusItem( "Rejected" );
+	    isi.setStatusDate( invoice.getRejected() );
+	    items.add( isi );
+	    if( isi.validStatusDate() )
+		pushAfterRenderIndex( key, 4 );
 	}
 	InvoiceStatusItem[] iArray = new InvoiceStatusItem[ items.size() ];
 	return (InvoiceStatusItem[])items.toArray( iArray );
