@@ -343,6 +343,7 @@
                 </cell>
                 <combobox id="cbDuration" autodrop="true" width="250px" mold="rounded" buttonVisible="true">
                   <attribute name="onCreate">self.setSelectedIndex(0);</attribute>
+                  <comboitem label="5 years (60 months)" value="60"/>
                   <comboitem label="3 years (36 months)" value="36"/>
                   <comboitem label="1 year (12 months)" value="12" />
                   <comboitem label="6 months" value="6" />
@@ -624,7 +625,7 @@
                           <rows id="rowsBillingItems">
                             <row id="rowBillingItem_0">
                               <hlayout>
-                                <button iconSclass="z-icon-check" />
+                                <button id="btBillingActive_0" iconSclass="z-icon-check" />
                                 <hlayout>
                                   <label value="Project code"/>
                                   <textbox id="txtProjectCode_0" width="150px"/>

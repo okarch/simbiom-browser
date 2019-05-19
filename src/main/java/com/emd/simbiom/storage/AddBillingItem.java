@@ -58,6 +58,7 @@ public class AddBillingItem extends InventoryCommand {
     private static final String ROW_ITEM    = "rowBillingItem";
     private static final String ROWS_ID     = "rowsBillingItems";
 
+    public static final String BILL_ACTIVE = "btBillingActive";
     public static final String PROJECT_CODE= "txtProjectCode";
     public static final String PO_NUM      = "txtPurchaseOrder";
     public static final String AMOUNT      = "decPurchaseValue";
@@ -98,6 +99,29 @@ public class AddBillingItem extends InventoryCommand {
 	    row.detach();
 	}
     }
+                              //   <button id="btBillingActive_0" iconSclass="z-icon-check" />
+                              //   <hlayout>
+                              //     <label value="Project code"/>
+                              //     <textbox id="txtProjectCode_0" width="150px"/>
+		              //   </hlayout>
+                              //   <hlayout>
+                              //     <label value="Purchase order"/>
+                              //     <textbox id="txtPurchaseOrder_0" width="150px"/>
+                              //   </hlayout>
+                              //   <hlayout>
+                              //     <label value="Value"/>
+                              //     <decimalbox id="decPurchaseValue_0" width="100px" format="###,###.##"/>
+                              //     <combobox id="cbPurchaseCurrency" autodrop="true" width="80px" mold="rounded" buttonVisible="true">
+                              //       <attribute name="onCreate">self.setSelectedIndex(0);</attribute>
+                              //       <comboitem label="EUR" value="EUR" />
+                              //       <comboitem label="USD" value="USD" />
+                              //       <comboitem label="SGD" value="SGD" />
+                              //     </combobox>
+                              //   </hlayout>
+                              //   <hlayout>
+                              //     <button id="btBillingAdd_0" disabled="true" image="/images/add-icon.png" />
+                              //     <button id="btBillingRemove_0" disabled="true" image="/images/delete-icon.png" />
+		              //   </hlayout>
 
     // private Hlayout createCombobox( String lbTitle, String cmpId, String width ) {
     // 	Hlayout hl = new Hlayout();
@@ -111,6 +135,14 @@ public class AddBillingItem extends InventoryCommand {
     // 	cb.setParent( hl );
     // 	return hl;
     // }
+
+    private Button createEnableButton( String suff ) {
+	Button bt = new Button();
+	bt.setId( BILL_ACTIVE+suff );
+	bt.setIconSclass( "z-icon-check" );
+	bt.addEventListener( "onClick", this );
+	return bt;
+    }
 
     private Hlayout createTextbox( String lbTitle, String cmpId, String width ) {
 	Hlayout hl = new Hlayout();
@@ -139,8 +171,6 @@ public class AddBillingItem extends InventoryCommand {
 	ib.setId( AMOUNT+suff );
 	ib.setWidth( width );
 	ib.setParent( hl );
-
-                                //     <attribute name="onCreate">self.setSelectedIndex(0);</attribute>
 
 	Combobox cb = new Combobox();
      	cb.setId( CURRENCY+suff );
@@ -189,6 +219,7 @@ public class AddBillingItem extends InventoryCommand {
 	log.debug( "Maximum billing row suffix: "+suff );
 
 	Hlayout parent = createRow( wnd, ROW_ITEM+suff  );
+	(createEnableButton( suff ) ).setParent( parent );
 	(createTextbox( "Project code", PROJECT_CODE+suff, "150px" )).setParent( parent );
 	(createTextbox( "Purchase order", PO_NUM+suff, "150px" )).setParent( parent );
 	(createValuebox( "Value", suff, "100px" )).setParent( parent );

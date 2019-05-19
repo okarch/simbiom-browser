@@ -231,11 +231,29 @@ public class DefaultModelProducer implements ModelProducer {
 	//     this.assignModel( cmp, ((context==null)?new HashMap():context) );
     }
 
+    // The following logic was in place.  However it looks weird.
+    // Let's see what happens when we tweak it (see below)...
+    //
+    // private void initFromContext( Map context ) {
+    // 	if( getPortletId() == null )
+    // 	    setPortletId(Stringx.getDefault((String)context.get( "portletid" ),"UNKNOWN"));
+    // 	if( getUserId() <= 0 )
+    // 	    setUserId( Stringx.toLong(Stringx.getDefault((String)context.get( "userid" ),"-1"),-1L) );
+    // 	setResult( context.get( "result" ) );
+    // }
+
     private void initFromContext( Map context ) {
+	String st =(String)context.get( "portletid" );
+	if( st != null )
+	    setPortletId( st );
 	if( getPortletId() == null )
-	    setPortletId(Stringx.getDefault((String)context.get( "portletid" ),"UNKNOWN"));
-	if( getUserId() <= 0 )
-	    setUserId( Stringx.toLong(Stringx.getDefault((String)context.get( "userid" ),"-1"),-1L) );
+	    setPortletId( "UNKNOWN" );
+	
+	String uSt = (String)context.get( "userid" );
+	if( uSt != null ) 
+	    setUserId( Stringx.toLong( uSt, -1L ) );
+	// if( getUserId() <= 0 )
+	//     setUserId( Stringx.toLong(Stringx.getDefault((String)context.get( "userid" ),"-1"),-1L) );
 	setResult( context.get( "result" ) );
     }
 

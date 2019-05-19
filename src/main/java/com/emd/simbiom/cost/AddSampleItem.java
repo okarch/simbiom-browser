@@ -136,10 +136,7 @@ public class AddSampleItem extends InventoryCommand {
 	return hl;
     }
 
-    private String addSampleCostRow( Window wnd ) {
-	String suff = getSuffix( wnd );
-	log.debug( "Maximum cost row suffix: "+suff );
-
+    private String addSampleCostRow( Window wnd, String suff ) {
 	Hlayout parent = createRow( wnd, ROW_ITEM+suff  );
 	(createCombobox( "Type", SAMPLE_TYPE+suff, "150px" )).setParent( parent );
 	(createCombobox( "Volume", VOLUME+suff, "200px" )).setParent( parent );
@@ -149,32 +146,83 @@ public class AddSampleItem extends InventoryCommand {
 	return suff;
     }
 
-    private void registerPreferences( Window wnd, String suffix ) {	
+    // private void registerPreferences( Window wnd, String suffix ) {	
+    // 	InventoryPreferences pref = InventoryPreferences.getInstance( getPortletId(), getUserId() );
+    // 	AmountChange amt = (AmountChange)pref.getCommand( AMOUNT+"_0");
+    // 	if( amt != null ) {
+    // 	    log.debug( "Copying action using new suffix: "+suffix );
+    // 	    AmountChange cAmt = amt.copyAction( suffix.substring(1) );
+    // 	    cAmt.wireComponent( wnd );
+    // 	    pref.addCommand( cAmt );
+    // 	}
+
+    // 	VolumeSelector vModel = new VolumeSelector();
+    // 	vModel.setModelName( VOLUME+suffix );
+    // 	vModel.setPortletId( this.getPortletId() );
+    // 	vModel.setUserId( this.getUserId() );
+    // 	vModel.setMessageRowId( MESSAGE_ID );
+    // 	pref.addResult( vModel );
+
+    // 	SampleTypeModel model = new SampleTypeModel();
+    // 	model.setModelName( SAMPLE_TYPE+suffix );
+    // 	model.setPortletId( this.getPortletId() );
+    // 	model.setUserId( this.getUserId() );
+    // 	model.setMessageRowId( MESSAGE_ID );
+    // 	pref.addResult( model );
+
+    // 	vModel.initModel( wnd, null );
+    // 	model.initModel( wnd, null );
+    // }
+
+    private void registerPreferences( String suffix ) {	
 	InventoryPreferences pref = InventoryPreferences.getInstance( getPortletId(), getUserId() );
-	AmountChange amt = (AmountChange)pref.getCommand( AMOUNT+"_0");
-	if( amt != null ) {
-	    log.debug( "Copying action using new suffix: "+suffix );
-	    AmountChange cAmt = amt.copyAction( suffix.substring(1) );
-	    cAmt.wireComponent( wnd );
-	    pref.addCommand( cAmt );
-	}
+     	AmountChange amt = (AmountChange)pref.getCommand( AMOUNT+"_0");
+     	if( amt != null ) {
+     	    log.debug( "Copying action using new suffix: "+suffix );
+     	    AmountChange cAmt = amt.copyAction( suffix.substring(1) );
+     	    pref.addCommand( cAmt );
+     	}
 
-	VolumeSelector vModel = new VolumeSelector();
-	vModel.setModelName( VOLUME+suffix );
-	vModel.setPortletId( this.getPortletId() );
-	vModel.setUserId( this.getUserId() );
-	vModel.setMessageRowId( MESSAGE_ID );
-	pref.addResult( vModel );
+     	VolumeSelector vModel = new VolumeSelector();
+     	vModel.setModelName( VOLUME+suffix );
+     	vModel.setPortletId( this.getPortletId() );
+     	vModel.setUserId( this.getUserId() );
+     	vModel.setMessageRowId( MESSAGE_ID );
+     	pref.addResult( vModel );
 
-	SampleTypeModel model = new SampleTypeModel();
-	model.setModelName( SAMPLE_TYPE+suffix );
-	model.setPortletId( this.getPortletId() );
-	model.setUserId( this.getUserId() );
-	model.setMessageRowId( MESSAGE_ID );
-	pref.addResult( model );
+     	SampleTypeModel model = new SampleTypeModel();
+     	model.setModelName( SAMPLE_TYPE+suffix );
+     	model.setPortletId( this.getPortletId() );
+     	model.setUserId( this.getUserId() );
+     	model.setMessageRowId( MESSAGE_ID );
+     	pref.addResult( model );
 
-	vModel.initModel( wnd, null );
-	model.initModel( wnd, null );
+	ModelProducer[] mp = pref.getResults();
+	log.debug( "Result models: "+mp.length );
+	for( int i = 0; i < mp.length; i++ ) 
+	    log.debug( "  "+mp[i]+" class: "+mp[i].getClass().getName() );
+    }
+
+    private void initModels( Window wnd, String suffix ) {
+	log.debug( "Initializing models, suffix: "+suffix );
+	InventoryPreferences pref = InventoryPreferences.getInstance( getPortletId(), getUserId() );
+
+	ModelProducer[] mp = pref.getResults();
+	log.debug( "Result models: "+mp.length );
+	for( int i = 0; i < mp.length; i++ ) 
+	    log.debug( "  "+mp[i]+" class: "+mp[i].getClass().getName() );
+
+     	AmountChange amt = (AmountChange)pref.getCommand( AMOUNT+suffix );
+     	if( amt != null ) 
+     	    amt.wireComponent( wnd );
+
+     	VolumeSelector vModel = (VolumeSelector)pref.getResult( VOLUME+suffix );
+	if( vModel != null )
+	    vModel.initModel( wnd, null );
+       
+     	SampleTypeModel model = (SampleTypeModel)pref.getResult( SAMPLE_TYPE+suffix );
+	if( model != null )
+	    model.initModel( wnd, null );
     }
 
     /**
@@ -189,8 +237,16 @@ public class AddSampleItem extends InventoryCommand {
     public void execute( ZKContext context, Window wnd )
 	throws CommandException {
 
-	String suff = addSampleCostRow( wnd );
-	registerPreferences( wnd, suff );
+	String suff = getSuffix( wnd );
+	log.debug( "Maximum cost row suffix: "+suff );
+
+	// String suff = addSampleCostRow( wnd, suff );
+	// registerPreferences( wnd, suff );
+
+	registerPreferences( suff );
+
+	addSampleCostRow( wnd, suff );
+	initModels( wnd, suff );
 
 	showMessage( wnd, "rowMessageCost", "lbMessageCost", "Another sample cost position added" );
     }

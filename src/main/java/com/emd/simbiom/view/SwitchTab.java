@@ -119,6 +119,12 @@ public class SwitchTab extends InventoryCommand {
 	}
     }
 
+    private void sendSelectRegion( Window wnd ) {
+     	Combobox cb = (Combobox)wnd.getFellowIfAny( "cbRegion" );
+     	if( cb != null )
+     	    Events.postEvent("onSelect", cb, null);
+    }
+
     /**
      * Returns the current sessions cost estimate.
      *
@@ -185,11 +191,13 @@ public class SwitchTab extends InventoryCommand {
 
 	    Tab tb = (Tab)cmp;
 	    String tabSt = Stringx.getDefault(tb.getLabel(), "" );
+	    Window wnd = ZKUtil.findWindow(cmp);
 	    if( "Costs".equals( tabSt ) ) {
-		getCostEstimate( ZKUtil.findWindow(cmp) );
+		getCostEstimate( wnd );
+		// sendSelectRegion( wnd );
 	    }
 	    else if( "Storage".equals( tabSt ) ) {
-		sendProjectSelect( ZKUtil.findWindow(cmp) );
+		sendProjectSelect( wnd );
 	    }
 	}
     }

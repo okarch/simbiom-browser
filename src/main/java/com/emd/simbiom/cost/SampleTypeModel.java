@@ -59,7 +59,6 @@ public class SampleTypeModel extends DefaultModelProducer implements EventListen
      * @param context the execution context.
      */
     public void initModel( Window wnd, Map context ) {
-	// SampleInventoryDAO dao = getSampleInventory();
 	SampleInventory dao = getSampleInventory();
 	if( dao == null ) {
 	    writeMessage( wnd, "Error: No database access configured" );
@@ -123,7 +122,12 @@ public class SampleTypeModel extends DefaultModelProducer implements EventListen
     }
 
     private VolumeSelector getVolumeSelector() {
-     	ModelProducer[] mp = getPreferences().getResult( VolumeSelector.class );
+     	ModelProducer[] mp = getPreferences().getResults();
+	log.debug( "Result models: "+mp.length );
+	for( int i = 0; i < mp.length; i++ ) 
+	    log.debug( "  "+mp[i]+" class: "+mp[i].getClass().getName() );
+
+     	mp = getPreferences().getResult( VolumeSelector.class );
      	if( mp.length <= 0 )
      	    return null;
 	int k = -1;
@@ -133,6 +137,7 @@ public class SampleTypeModel extends DefaultModelProducer implements EventListen
 	    suff = st.substring( k );
 	else
 	    suff = "";
+	log.debug( "Searching suffix \""+suff+"\", number of volume selectors: "+mp.length );
 	for( int i = 0; i < mp.length; i++ ) {
 	    if( (mp[i] instanceof DefaultModelProducer) && 
 		(((DefaultModelProducer)mp[i]).getModelName().endsWith( suff )) )
@@ -184,16 +189,25 @@ public class SampleTypeModel extends DefaultModelProducer implements EventListen
 
 	log.debug( "Sample type model selected: "+event );
 
-	if( "onAfterRender".equals( event.getName() ) ) {
-	    Combobox cb = (Combobox)event.getTarget();
-	    if( cb.getItemCount() > 0 ) {
-		cb.setSelectedIndex( 0 );
-		CostSample cs = (CostSample)cb.getModel().getElementAt( 0 );
-		Window wnd = ZKUtil.findWindow( cb );
-		selectVolume( wnd, cs );
-	    }
-	}
-	else if( Events.ON_SELECT.equals( event.getName() ) ) {
+	// if( "onAfterRender".equals( event.getName() ) ) {
+	//     Combobox cb = (Combobox)event.getTarget();
+	//     if( cb.getItemCount() > 0 ) {
+	// 	cb.setSelectedIndex( 0 );
+	// 	CostSample cs = (CostSample)cb.getModel().getElementAt( 0 );
+	// 	Window wnd = ZKUtil.findWindow( cb );
+	// 	selectVolume( wnd, cs );
+	//     }
+	// }
+	// else if( Events.ON_SELECT.equals( event.getName() ) ) {
+	//     Combobox cb = (Combobox)event.getTarget();
+	//     if( cb.getItemCount() > 0 ) {
+	// 	int idx = cb.getSelectedIndex();
+	// 	CostSample cs = (CostSample)cb.getModel().getElementAt( idx );
+	// 	Window wnd = ZKUtil.findWindow( cb );
+	// 	selectVolume( wnd, cs );
+	//     }
+	// }
+	if( Events.ON_SELECT.equals( event.getName() ) ) {
 	    Combobox cb = (Combobox)event.getTarget();
 	    if( cb.getItemCount() > 0 ) {
 		int idx = cb.getSelectedIndex();
