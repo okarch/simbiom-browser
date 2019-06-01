@@ -12,6 +12,7 @@ import org.apache.commons.logging.LogFactory;
 
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.event.Event;
+import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.InputEvent;
 
 import org.zkoss.zul.Button;
@@ -144,14 +145,22 @@ public class AddBillingItem extends InventoryCommand {
 	return bt;
     }
 
-    private Hlayout createTextbox( String lbTitle, String cmpId, String width ) {
+    private Hlayout createTextbox( String lbTitle, String cmpId, String width, String event, EventListener listener ) {
 	Hlayout hl = new Hlayout();
 	(new Label( lbTitle )).setParent( hl );
 	Textbox ib = new Textbox();
 	ib.setId( cmpId );
 	ib.setWidth( width );
 	ib.setParent( hl );
+
+	if( event != null )
+	    ib.addEventListener( event, listener );
+
 	return hl;
+    }
+
+    private Hlayout createTextbox( String lbTitle, String cmpId, String width ) {
+	return createTextbox( lbTitle, cmpId, width, null, null );
     }
 
     // private Hlayout createDecimalbox( String lbTitle, String cmpId, String width ) {
@@ -218,10 +227,13 @@ public class AddBillingItem extends InventoryCommand {
 	String suff = getSuffix( wnd );
 	log.debug( "Maximum billing row suffix: "+suff );
 
+	InventoryPreferences pref = InventoryPreferences.getInstance( getPortletId(), getUserId() );
+	PurchaseChange amt = (PurchaseChange)pref.getCommand( PO_NUM+"_0");
+
 	Hlayout parent = createRow( wnd, ROW_ITEM+suff  );
 	(createEnableButton( suff ) ).setParent( parent );
 	(createTextbox( "Project code", PROJECT_CODE+suff, "150px" )).setParent( parent );
-	(createTextbox( "Purchase order", PO_NUM+suff, "150px" )).setParent( parent );
+	(createTextbox( "Purchase order", PO_NUM+suff, "150px", "onChanging", amt )).setParent( parent );
 	(createValuebox( "Value", suff, "100px" )).setParent( parent );
 	(createButtons( suff ) ).setParent( parent );
 
@@ -248,8 +260,13 @@ public class AddBillingItem extends InventoryCommand {
 	if( txt != null )
 	    txt.setValue( Stringx.getDefault(bill.getProjectcode(),"") );
 	txt = (Textbox)wnd.getFellowIfAny( PO_NUM+suf );
-	if( txt != null )
-	    txt.setValue( Stringx.getDefault(bill.getPurchase(),"") );
+	if( txt != null ) {
+	    String poNum = Stringx.getDefault(bill.getPurchase(),""); 
+	    txt.setValue( poNum  );
+	    Button bt = (Button)wnd.getFellowIfAny( BILL_ADD+suf );
+	    if( poNum.length() > 0 )
+		bt.setDisabled( false );
+	}
 	Decimalbox dec = (Decimalbox)wnd.getFellowIfAny( AMOUNT+suf );
 	if( dec != null )
 	    dec.setValue( String.valueOf(bill.getTotal()) );
@@ -257,6 +274,7 @@ public class AddBillingItem extends InventoryCommand {
 	Combobox cb = (Combobox)wnd.getFellowIfAny( CURRENCY+suf );
 	if( cb != null )
 	    selectCurrency( cb, Stringx.getDefault(bill.getCurrency(),"EUR") );
+	
     }
 
     private boolean billingRowExists( Window wnd, int idx ) {

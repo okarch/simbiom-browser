@@ -114,5 +114,6 @@ com/emd/simbiom/budget/SearchInvoice.class
 com/emd/simbiom/budget/InvoicePeriodChange.class
 com/emd/simbiom/storage/StorageProjectModel$1.class
 com/emd/simbiom/storage/StorageDocumentModel$1.class
+com/emd/simbiom/storage/PurchaseChange.class
 com/emd/simbiom/view/UIUtils.class
 com/emd/simbiom/search/TextFilter.class

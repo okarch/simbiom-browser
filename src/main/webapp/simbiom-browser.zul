@@ -528,12 +528,13 @@
             <columns id="colInvoices" menupopup="auto" sizable="true">
               <column id="colInvoiceSelect" hflex="min"/>
               <column id="colInvoice_0" width="10%" label="Period"/>
-              <column id="colInvoice_1" width="15%" label="PO Number"/>
-              <column id="colInvoice_2" width="15%" label="Invoice"/>
-              <column id="colInvoice_3" width="15%" label="Value"/>
-              <column id="colInvoice_4" width="15%" label="Samples"/>
-              <column id="colInvoice_5" hflex="min" label="Status"/>
-              <column id="colInvoice_6" width="30%" label="Project"/>
+              <column id="colInvoice_1" width="13%" label="PO Number"/>
+              <column id="colInvoice_2" width="13%" label="Invoice"/>
+              <column id="colInvoice_3" width="13%" label="Projectcode"/>
+              <column id="colInvoice_4" width="13%" label="Value"/>
+              <column id="colInvoice_5" width="13%" label="Samples"/>
+              <column id="colInvoice_6" hflex="min" label="Status"/>
+              <column id="colInvoice_7" width="20%" label="Project"/>
             </columns>
           </grid>
         </groupbox>
