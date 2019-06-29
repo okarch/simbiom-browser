@@ -17,6 +17,7 @@ import org.zkoss.zk.ui.event.Event;
 // import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.Events;
 
+import org.zkoss.zul.Button;
 import org.zkoss.zul.Combobox;
 import org.zkoss.zul.Label;
 import org.zkoss.zul.ListModel;
@@ -28,6 +29,7 @@ import com.emd.simbiom.command.InventoryCommand;
 import com.emd.simbiom.config.InventoryPreferences;
 import com.emd.simbiom.dao.SampleInventory;
 import com.emd.simbiom.view.ModelProducer;
+import com.emd.simbiom.view.UIUtils;
 
 import com.emd.simbiom.model.Billing;
 import com.emd.simbiom.model.StorageDocument;
@@ -52,10 +54,13 @@ public class SelectStorageDetails extends InventoryCommand {
 
     private static Log log = LogFactory.getLog(SelectStorageDetails.class);
 
-    private static final String CMP_PROJECT_TITLE = "txtProjectName";
-    private static final String CMP_PROJECT_CODE  = "txtProjectCode";
-    private static final String CMP_PURCHASE_ORDER= "txtPurchaseOrder";
-    private static final String CMP_STORAGE_GROUP = "cbStorageGroup";
+    private static final String CMP_PROJECT_TITLE     = "txtProjectName";
+    private static final String CMP_PROJECT_CODE      = "txtProjectCode";
+    private static final String CMP_PURCHASE_ORDER    = "txtPurchaseOrder";
+    private static final String CMP_STORAGE_GROUP     = "cbStorageGroup";
+    private static final String CMP_STORAGE_GROUP_ADD = "btStorageGroupAdd";
+    private static final String CMP_STORAGE_GROUP_DEL = "btStorageGroupDelete";
+    private static final String CMP_STORAGE_MSG       = "lbStorageMessage";
  
     /**
      * Creates a new command to select from the result log.
@@ -140,9 +145,20 @@ public class SelectStorageDetails extends InventoryCommand {
 	mGroups.assignModel( wnd, ctxt );
     }
 
+    private void changeStorageGroup( Window wnd, boolean enable ) {
+	Button bt = (Button)wnd.getFellowIfAny( CMP_STORAGE_GROUP_ADD );
+	if( bt != null )
+	    bt.setDisabled( !enable );
+	bt = (Button)wnd.getFellowIfAny( CMP_STORAGE_GROUP_DEL );
+	if( bt != null )
+	    bt.setDisabled( !enable );
+    }
+
     private void clearDetails( Window wnd ) {
+	UIUtils.clearMessage( wnd, CMP_STORAGE_MSG );
 	setText( wnd, CMP_PROJECT_TITLE, "" );
 	setGroups( wnd, null );
+	changeStorageGroup( wnd, true );
 	setText( wnd, CMP_PROJECT_CODE, "" );
 	setText( wnd, CMP_PURCHASE_ORDER, "" );
     }

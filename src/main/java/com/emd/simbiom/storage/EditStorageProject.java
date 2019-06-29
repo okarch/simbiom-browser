@@ -26,7 +26,7 @@ import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.event.Events;
 
-// import org.zkoss.zul.Button;
+import org.zkoss.zul.Button;
 import org.zkoss.zul.Combobox;
 import org.zkoss.zul.Decimalbox;
 // import org.zkoss.zul.Grid;
@@ -355,6 +355,15 @@ public class EditStorageProject extends InventoryCommand {
 	}
 	return lastPO;
     }
+
+    private void changeStorageGroup( Window wnd, boolean enable ) {
+	Button bt = (Button)wnd.getFellowIfAny( "btStorageGroupAdd" );
+	if( bt != null )
+	    bt.setDisabled( !enable );
+	bt = (Button)wnd.getFellowIfAny( "btStorageGroupDelete" );
+	if( bt != null )
+	    bt.setDisabled( !enable );
+    }
  
     /**
      * Executes the <code>Command</code>
@@ -376,9 +385,11 @@ public class EditStorageProject extends InventoryCommand {
 	    log.debug( "Creating new storage project" );
 	    clearStorageProject( wnd, "New Storage Project" );
 	    createNewProject();
+	    changeStorageGroup( wnd, false );
 	    showMessage( wnd, "rowStorageMessage", "lbStorageMessage", "Warning: New storage project has not been saved yet." );
 	}
 	else if( CMD_PROJECT_SAVE.equals(getCommandName()) ) {
+	    changeStorageGroup( wnd, true );
 	    StorageProject prj = saveStorageProject( wnd );
 	    if( prj != null ) {
 		String poNum = saveBilling( wnd, prj );

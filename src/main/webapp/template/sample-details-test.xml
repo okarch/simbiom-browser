@@ -1,0 +1,291 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sample-details>
+  <sampleid>524ccf99-8091-4d52-aa1d-5bdbd3138aa3</sampleid>
+  <created>2019-06-22 10:51:00.888</created>
+  <sampletype>Whole Blood</sampletype>
+<accessions>
+<accession><property name="trackid">2023883436785834457</property>
+<property name="acctype">primary</property>
+<property name="orgid">-615416831887441344</property>
+<property name="class">class com.emd.simbiom.model.Accession</property>
+<property name="propertyid">0</property>
+<property name="attributes">[]</property>
+<property name="accession">A249BL661-001</property>
+<property name="sampleid">524ccf99-8091-4d52-aa1d-5bdbd3138aa3</property>
+<property name="properties">[Lcom.emd.simbiom.model.Property;@7103441c</property>
+<property name="item">accession</property>
+<property name="propertyContentId">-4953706369002393500</property>
+<organization><property name="orgtype">central laboratory</property>
+<property name="countryid">0</property>
+<property name="class">class com.emd.simbiom.model.Organization</property>
+<property name="orgname">Biostorage EU</property>
+<property name="orgid">-615416831887441344</property>
+</organization>
+</accession>
+<accession><property name="trackid">-2902495890684804835</property>
+<property name="acctype">secondary</property>
+<property name="orgid">-1738924731272924280</property>
+<property name="class">class com.emd.simbiom.model.Accession</property>
+<property name="propertyid">0</property>
+<property name="attributes">[]</property>
+<property name="accession">020323011</property>
+<property name="sampleid">524ccf99-8091-4d52-aa1d-5bdbd3138aa3</property>
+<property name="properties">[Lcom.emd.simbiom.model.Property;@77b72a17</property>
+<property name="item">accession</property>
+<property name="propertyContentId">-4953706369002393500</property>
+<organization><property name="orgtype">central laboratory</property>
+<property name="countryid">0</property>
+<property name="class">class com.emd.simbiom.model.Organization</property>
+<property name="orgname">RBMI Ivrea</property>
+<property name="orgid">-1738924731272924280</property>
+</organization>
+</accession>
+</accessions>
+<studies>
+<study><property name="started">2018-09-18 16:59:27.0</property>
+<property name="expire">2028-09-15 16:59:27.0</property>
+<property name="studyname">EMR200095-003</property>
+<property name="class">class com.emd.simbiom.model.Study</property>
+<property name="studyid">276824506959258871</property>
+<subject><property name="orgid">0</property>
+<property name="studyid">276824506959258871</property>
+<property name="subjectid">002-0003</property>
+<property name="class">class com.emd.simbiom.model.Subject</property>
+<property name="taxon">9606</property>
+<property name="propertyid">0</property>
+<property name="attributes">[]</property>
+<property name="enrolled">1970-01-01 01:00:01.0</property>
+<property name="donorid">6623339415324927489</property>
+<property name="properties">[Lcom.emd.simbiom.model.Property;@370df2e9</property>
+<property name="age">0</property>
+<property name="species">human</property>
+<property name="propertyContentId">-4953706369002393500</property>
+</subject>
+</study>
+</studies>
+<sample-properties>
+<sample-attr><property name="typeid">4</property>
+<property name="maxoccurs">0</property>
+<property name="typename">string</property>
+<property name="valueid">3804656964505724972</property>
+<property name="propertyContentId">-4953706369002393500</property>
+<property name="propertyname">Container</property>
+<property name="properties">[Lcom.emd.simbiom.model.Property;@75c2bc7c</property>
+<property name="label">Container</property>
+<property name="attributes">[]</property>
+<property name="numvalue">0.0</property>
+<property name="digits">0</property>
+<property name="class">class com.emd.simbiom.model.Property</property>
+<property name="columnsize">0</property>
+<property name="parentid">0</property>
+<property name="minoccurs">0</property>
+<property name="item">property</property>
+<property name="propertyid">4451158069291080912</property>
+<property name="trackid">9006489369095507431</property>
+<property name="columnid">0</property>
+<property name="charvalue">6 mL K2EDTA Tube</property>
+</sample-attr>
+<sample-attr><property name="typeid">4</property>
+<property name="maxoccurs">0</property>
+<property name="typename">string</property>
+<property name="valueid">57784799299614184</property>
+<property name="propertyContentId">-4953706369002393500</property>
+<property name="propertyname">Storage Condition</property>
+<property name="properties">[Lcom.emd.simbiom.model.Property;@3e2ba881</property>
+<property name="label">Storage Condition</property>
+<property name="attributes">[]</property>
+<property name="numvalue">0.0</property>
+<property name="digits">0</property>
+<property name="class">class com.emd.simbiom.model.Property</property>
+<property name="columnsize">0</property>
+<property name="parentid">0</property>
+<property name="minoccurs">0</property>
+<property name="item">property</property>
+<property name="propertyid">4991272456089973458</property>
+<property name="trackid">-2042347856262237790</property>
+<property name="columnid">0</property>
+<property name="charvalue">-80C</property>
+</sample-attr>
+<sample-attr><property name="typeid">2</property>
+<property name="maxoccurs">0</property>
+<property name="typename">number</property>
+<property name="valueid">-2010651024771359457</property>
+<property name="propertyContentId">-4953706369002393500</property>
+<property name="propertyname">Volume</property>
+<property name="properties">[Lcom.emd.simbiom.model.Property;@90d1faa</property>
+<property name="label">Volume</property>
+<property name="attributes">[]</property>
+<property name="numvalue">6.0</property>
+<property name="digits">0</property>
+<property name="class">class com.emd.simbiom.model.Property</property>
+<property name="columnsize">0</property>
+<property name="parentid">0</property>
+<property name="minoccurs">0</property>
+<property name="item">property</property>
+<property name="propertyid">1548256603278021752</property>
+<property name="trackid">3931764648210393343</property>
+<property name="columnid">0</property>
+</sample-attr>
+<sample-attr><property name="typeid">2</property>
+<property name="maxoccurs">0</property>
+<property name="typename">number</property>
+<property name="valueid">2788151561694481543</property>
+<property name="propertyContentId">-4953706369002393500</property>
+<property name="propertyname">Aliqout</property>
+<property name="properties">[Lcom.emd.simbiom.model.Property;@2173a6b3</property>
+<property name="label">Aliqout</property>
+<property name="attributes">[]</property>
+<property name="numvalue">1.0</property>
+<property name="digits">0</property>
+<property name="class">class com.emd.simbiom.model.Property</property>
+<property name="columnsize">0</property>
+<property name="parentid">0</property>
+<property name="minoccurs">0</property>
+<property name="item">property</property>
+<property name="propertyid">3058457305153967746</property>
+<property name="trackid">-8196811110885534273</property>
+<property name="columnid">0</property>
+</sample-attr>
+<sample-attr><property name="typeid">4</property>
+<property name="maxoccurs">0</property>
+<property name="typename">string</property>
+<property name="valueid">-8644275683057604894</property>
+<property name="propertyContentId">-4953706369002393500</property>
+<property name="propertyname">Patient Choice Sample Use</property>
+<property name="properties">[Lcom.emd.simbiom.model.Property;@4a59de55</property>
+<property name="label">Patient Choice Sample Use</property>
+<property name="attributes">[]</property>
+<property name="numvalue">0.0</property>
+<property name="digits">0</property>
+<property name="class">class com.emd.simbiom.model.Property</property>
+<property name="columnsize">0</property>
+<property name="parentid">0</property>
+<property name="minoccurs">0</property>
+<property name="item">property</property>
+<property name="propertyid">4740595836113088578</property>
+<property name="trackid">944709514101494954</property>
+<property name="columnid">0</property>
+<property name="charvalue">Yes</property>
+</sample-attr>
+<sample-attr><property name="typeid">4</property>
+<property name="maxoccurs">0</property>
+<property name="typename">string</property>
+<property name="valueid">4119714590055770243</property>
+<property name="propertyContentId">-4953706369002393500</property>
+<property name="propertyname">Volume Unit</property>
+<property name="properties">[Lcom.emd.simbiom.model.Property;@4f6b4935</property>
+<property name="label">Volume Unit</property>
+<property name="attributes">[]</property>
+<property name="numvalue">0.0</property>
+<property name="digits">0</property>
+<property name="class">class com.emd.simbiom.model.Property</property>
+<property name="columnsize">0</property>
+<property name="parentid">0</property>
+<property name="minoccurs">0</property>
+<property name="item">property</property>
+<property name="propertyid">-8443874156851254050</property>
+<property name="trackid">-5309056388902429532</property>
+<property name="columnid">0</property>
+<property name="charvalue">mL</property>
+</sample-attr>
+<sample-attr><property name="typeid">4</property>
+<property name="maxoccurs">0</property>
+<property name="typename">string</property>
+<property name="valueid">-7414919628934474856</property>
+<property name="propertyContentId">-4953706369002393500</property>
+<property name="propertyname">Sample Category</property>
+<property name="properties">[Lcom.emd.simbiom.model.Property;@23c25be3</property>
+<property name="label">Sample Category</property>
+<property name="attributes">[]</property>
+<property name="numvalue">0.0</property>
+<property name="digits">0</property>
+<property name="class">class com.emd.simbiom.model.Property</property>
+<property name="columnsize">0</property>
+<property name="parentid">0</property>
+<property name="minoccurs">0</property>
+<property name="item">property</property>
+<property name="propertyid">3699741376325145489</property>
+<property name="trackid">6634343288944880688</property>
+<property name="columnid">0</property>
+<property name="charvalue">ADME Genetic Analyses</property>
+</sample-attr>
+<sample-attr><property name="typeid">4</property>
+<property name="maxoccurs">0</property>
+<property name="typename">string</property>
+<property name="valueid">-7766117769448037632</property>
+<property name="propertyContentId">-4953706369002393500</property>
+<property name="propertyname">Sample expiry</property>
+<property name="properties">[Lcom.emd.simbiom.model.Property;@4c600750</property>
+<property name="label">Sample expiry</property>
+<property name="attributes">[]</property>
+<property name="numvalue">0.0</property>
+<property name="digits">0</property>
+<property name="class">class com.emd.simbiom.model.Property</property>
+<property name="columnsize">0</property>
+<property name="parentid">0</property>
+<property name="minoccurs">0</property>
+<property name="item">property</property>
+<property name="propertyid">1381943898754293413</property>
+<property name="trackid">-2862437693896146538</property>
+<property name="columnid">0</property>
+<property name="charvalue">6-Feb-2020</property>
+</sample-attr>
+<sample-attr><property name="typeid">4</property>
+<property name="maxoccurs">0</property>
+<property name="typename">string</property>
+<property name="valueid">6828002627879487059</property>
+<property name="propertyContentId">-4953706369002393500</property>
+<property name="propertyname">Patient Group</property>
+<property name="properties">[Lcom.emd.simbiom.model.Property;@36fb46c1</property>
+<property name="label">Patient Group</property>
+<property name="attributes">[]</property>
+<property name="numvalue">0.0</property>
+<property name="digits">0</property>
+<property name="class">class com.emd.simbiom.model.Property</property>
+<property name="columnsize">0</property>
+<property name="parentid">0</property>
+<property name="minoccurs">0</property>
+<property name="item">property</property>
+<property name="propertyid">-4309903440753706891</property>
+<property name="trackid">-3559348351057629376</property>
+<property name="columnid">0</property>
+<property name="charvalue">DL3</property>
+</sample-attr>
+<sample-attr><property name="typeid">2</property>
+<property name="maxoccurs">0</property>
+<property name="typename">number</property>
+<property name="valueid">5043722018633794430</property>
+<property name="propertyContentId">-4953706369002393500</property>
+<property name="propertyname">Unique Vial ID</property>
+<property name="properties">[Lcom.emd.simbiom.model.Property;@1d20127e</property>
+<property name="label">Unique Vial ID</property>
+<property name="attributes">[]</property>
+<property name="numvalue">2.0323011E7</property>
+<property name="digits">0</property>
+<property name="class">class com.emd.simbiom.model.Property</property>
+<property name="columnsize">0</property>
+<property name="parentid">0</property>
+<property name="minoccurs">0</property>
+<property name="item">property</property>
+<property name="propertyid">4103331162895277496</property>
+<property name="trackid">-7409422568461390227</property>
+<property name="columnid">0</property>
+</sample-attr>
+</sample-properties>
+<processing>
+<visit><property name="trackid">8302717714543579880</property>
+<property name="timeid">4788853044680690752</property>
+<property name="treatid">5</property>
+<property name="step">0</property>
+<property name="processed">2013-08-28 00:00:00.0</property>
+<property name="class">class com.emd.simbiom.model.SampleProcess</property>
+<property name="propertyid">0</property>
+<property name="attributes">[]</property>
+<property name="sampleid">524ccf99-8091-4d52-aa1d-5bdbd3138aa3</property>
+<property name="properties">[Lcom.emd.simbiom.model.Property;@29d06b38</property>
+<property name="visit">Cycle 1 Day 1</property>
+<property name="item">processing</property>
+<property name="propertyContentId">-4953706369002393500</property>
+</visit>
+</processing>
+</sample-details>

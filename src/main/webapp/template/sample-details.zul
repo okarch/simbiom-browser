@@ -86,6 +86,35 @@
           <label id="lbProperty_accessions" value="Known as" />
           <label id="lbValue_accessions" value="$accessions" />
         </row>
+#set( $pNames = [ "Unique Vial ID", "Sample Category", "Sample expiry" ] )
+#set( $attrNodes = ${xmlDetails.find( "//sample-details/sample-properties/sample-attr/property[@name='propertyname']" )} )
+#foreach( $attrNode in $attrNodes )
+#set( $aName = "$attrNode.text" )
+#set( $sAttrVal = "" )
+#foreach( $pName in $pNames )
+#if( $pName == "$aName" )
+#set( $sAttr = ${attrNode.find( "../property[@name='charvalue']" )} )
+#set( $sAttrId = ${strings.replace( "$pName", " ", "_" )} )
+#if( $sAttr )
+#set( $sAttrVal = "$sAttr.text" )
+#end
+#if( $sAttrVal.length() <= 0 )
+#set( $sAttr = ${attrNode.find( "../property[@name='numvalue']" )} )
+#if( $Attr )
+#set( $sAttrVal = "$sAttr.text" )
+#end
+#end
+        <row>
+          <checkbox id="chkShow_${sAttrId}" 
+                    checked="${columnSetup.getChecked($pName)}" 
+                    value="$pName"/>
+          <checkbox id="chkFilter_${sAttrId}" checked="false" />
+          <label id="lbProperty_${sAttrId}" value="$pName" />
+          <label id="lbValue_${sAttrId}" value="$sAttrVal" />
+        </row>
+#end
+#end
+#end
       </rows>
     </grid>
   </groupbox>
@@ -245,6 +274,32 @@
           <label id="lbProperty_collected" value="Collected" />
           <label id="lbValue_collected" value="$sname" />
         </row>
+#set( $pNames = [ "Container", "Aliquot", "Storage Condition", "Volume" ] )
+#set( $attrNodes = ${xmlDetails.find( "//sample-details/sample-properties/sample-attr/property[@name='propertyname']" )} )
+#foreach( $attrNode in $attrNodes )
+#set( $aName = "$attrNode.text" )
+#set( $sAttrVal = "" )
+#foreach( $pName in $pNames )
+#if( $pName == "$aName" )
+#set( $sAttr = ${attrNode.find( "../property[@name='charvalue']" )} )
+#set( $sAttrId = ${strings.replace( "$pName", " ", "_" )} )
+#if( !$sAttr )
+#set( $sAttr = ${attrNode.find( "../property[@name='numvalue']" )} )
+#end
+#if( $sAttr )
+#set( $sAttrVal = "$sAttr.text" )
+#end
+        <row>
+          <checkbox id="chkShow_${sAttrId}" 
+                    checked="${columnSetup.getChecked($pName)}" 
+                    value="$pName"/>
+          <checkbox id="chkFilter_${sAttrId}" checked="false" />
+          <label id="lbProperty_${sAttrId}" value="$pName" />
+          <label id="lbValue_${sAttrId}" value="$sAttrVal" />
+        </row>
+#end
+#end
+#end
       </rows>
     </grid>
   </groupbox>
