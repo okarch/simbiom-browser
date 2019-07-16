@@ -65,7 +65,10 @@ public class UpdateInvoice extends InventoryViewAction {
 
     private static Log log = LogFactory.getLog(UpdateInvoice.class);
 
+    private static final String ACTION_BACKWARD= "btInvDetailsBackward";
     private static final String ACTION_CLOSE   = "btInvDetailsClose";
+    private static final String ACTION_COPY    = "btInvDetailsCopy";
+    private static final String ACTION_FORWARD = "btInvDetailsForward";
     private static final String ACTION_STORE   = "btInvDetailsStore";
 
     private static final String KEY_ISSUES     = "invoiceIssues";
@@ -291,6 +294,184 @@ public class UpdateInvoice extends InventoryViewAction {
 		    log.debug( "New invoice: "+invoiceId );
 	    }
 	}
+	return inv;
+    }
+
+    private void initInvoiceDetails( Window wnd, Invoice inv ) {
+	Decimalbox dec = (Decimalbox)wnd.getFellowIfAny( "decInvoiceAmount" );
+	if( dec != null ) {
+	    dec.setValue( String.format( "%.2f", inv.getAmount()) );
+	}
+	dec = (Decimalbox)wnd.getFellowIfAny( "decInvoiceNumsamples" );
+	if( dec != null )
+	    dec.setValue( new BigDecimal( (double)inv.getNumsamples() ) );
+
+	Combobox cb = (Combobox)wnd.getFellowIfAny( "cbInvoiceCurrency" );
+	if( cb != null ) {
+	    String currSt = Stringx.getDefault(inv.getCurrency(),"");
+	    int idx = 0;
+	    boolean foundIt = false;
+	    for( Comboitem cbi : cb.getItems() ) {
+		if( cbi.getValue().equals( currSt ) ) {
+		    cb.setSelectedIndex( idx );
+		    break;
+		}
+		idx++;
+	    }
+	}
+    }
+
+    private Invoice loadLastInvoice( Window wnd ) {
+	Button btForward = (Button)wnd.getFellowIfAny( "btInvDetailsForward" );
+	btForward.setDisabled( true );
+	Button btBack = (Button)wnd.getFellowIfAny( "btInvDetailsBackward" );
+	btBack.setDisabled( true );
+
+	Invoice inv = null;
+	String billingId = getSelectedItem( wnd, "cbInvoicePO", "" );
+	if( billingId.length() <= 0 ) {
+	    showMessage( wnd, "rowInvoiceDetailsMessage", "lbInvoiceDetailsMessage", "Error: Purchase order must not be empty" );
+	    return null;
+	}
+	Billing bill = loadBilling( wnd, billingId );
+	if( bill == null )
+	    return null;
+	String poNum = Stringx.getDefault( bill.getPurchase(), "" );
+	log.debug( "Selected PO Number: "+poNum );
+	    
+	SampleInventory sInv = getSampleInventory();
+	if( sInv == null ) {
+	    showMessage( wnd, "rowInvoiceDetailsMessage", "lbInvoiceDetailsMessage", "Error: Invalid data access" );
+	    return null;
+	}
+	List<Invoice> invoices = new ArrayList<Invoice>();
+	int lastMonth = -1;
+	try {
+	    Invoice[] invs = sInv.findInvoiceByPurchase( poNum, true );
+	    log.debug( "Number of invoices refering to "+poNum+": "+invs.length );
+	    if( invs.length <= 0 ) {
+		showMessage( wnd, "rowInvoiceDetailsMessage", "lbInvoiceDetailsMessage", "Warning: No recent invoices found for "+poNum );
+		return null;
+	    }
+	    int i = 0;
+	    int pMonth = -1;
+	    do {
+		Timestamp ts = invs[i].getEnded();
+		if( ts != null )
+		    pMonth = ts.getMonth();
+		if( (lastMonth < 0) || (pMonth == lastMonth) ) {
+		    invoices.add( invs[i] );
+		    lastMonth = pMonth;
+		}
+		i++;
+	    }
+	    while( (i < invs.length) && (pMonth == lastMonth) );
+	}
+	catch( SQLException sqe ) {
+	    showMessage( wnd, "rowInvoiceDetailsMessage", "lbInvoiceDetailsMessage", "Error: "+
+			 Stringx.getDefault( sqe.getMessage(), "General database error" ) );
+	    log.error( sqe );
+	    return null;
+	}
+	log.debug( "Number of recent invoices PO "+poNum+": "+invoices.size() );
+	if( invoices.size() <= 0 ) {
+	    showMessage( wnd, "rowInvoiceDetailsMessage", "lbInvoiceDetailsMessage", "Warning: No recent invoices found for "+poNum );
+	    return null;
+	}
+	inv = invoices.get( 0 );
+	
+	if( (invoices.size() >= 2) && (btForward != null) ) 
+	    btForward.setDisabled( false );
+
+	String pSt = Stringx.getDateString( "MMM-yyyy", inv.getEnded() );
+	showMessage( wnd, "rowInvoiceDetailsMessage", "lbInvoiceDetailsMessage", "Warning: Invoice details loaded from "+
+		     Stringx.getDefault(inv.getInvoice(),"unknown")+
+		     " period: "+pSt );
+
+	Label lb = (Label)wnd.getFellowIfAny( "lbInvDetailsCopy" );
+	if( lb != null ) 
+	    lb.setValue( String.format( "1 / %d", invoices.size() ) );
+	lb = (Label)wnd.getFellowIfAny( "lbInvDetailsMoreInv" );
+	if( lb != null ) {
+	    StringBuilder stb = new StringBuilder();
+	    for(  Invoice i : invoices ) {
+		stb.append( String.valueOf(i.getInvoiceid()) );
+		stb.append( "," );
+	    }
+	    lb.setValue( stb.toString() );
+	}
+	
+	return inv;
+    }
+
+    private Invoice loadLabelInvoice( Window wnd, boolean forward ) {
+	Button btForward = (Button)wnd.getFellowIfAny( "btInvDetailsForward" );
+	btForward.setDisabled( true );
+	Button btBackward = (Button)wnd.getFellowIfAny( "btInvDetailsBackward" );
+	btBackward.setDisabled( true );
+
+	Invoice inv = null;
+
+	Label lb = (Label)wnd.getFellowIfAny( "lbInvDetailsCopy" );
+	int currInvIdx = 0; 
+	int maxInv = 0;
+	String[] idxs = null;
+	if( lb != null ) {
+	    idxs = Stringx.getDefault(lb.getValue(),"").split( "[/]" );
+	    if( idxs.length > 1 ) {
+		currInvIdx = Stringx.toInt( idxs[0].trim(), 0 );
+		maxInv = Stringx.toInt( idxs[1].trim(), 0 );
+	    }
+	}
+	log.debug( "Invoice copy forward, current: "+String.valueOf(currInvIdx)+" count: "+String.valueOf( maxInv ) );
+
+	lb = (Label)wnd.getFellowIfAny( "lbInvDetailsMoreInv" );
+	if( lb != null ) 
+	    idxs = Stringx.getDefault(lb.getValue(),"").split( "[,]" );
+
+	log.debug( "Invoice copy forward, invoice ids: "+String.valueOf( idxs.length ) );
+	int invIdx = currInvIdx-1;
+
+	SampleInventory sInv = getSampleInventory();
+	if( sInv == null ) {
+	    showMessage( wnd, "rowInvoiceDetailsMessage", "lbInvoiceDetailsMessage", "Error: Invalid data access" );
+	    return null;
+	}
+
+	if( forward  && (invIdx+1 < idxs.length) ) {
+	    invIdx++;
+	}
+	else if( !forward && (invIdx-1 >= 0) ) {
+	    invIdx--;
+	}
+	    
+	long invoiceId = Stringx.toLong( idxs[invIdx].trim(), 0L );
+
+	try {
+	    inv = sInv.findInvoiceById( invoiceId );
+	}
+	catch( SQLException sqe ) {
+	    showMessage( wnd, "rowInvoiceDetailsMessage", "lbInvoiceDetailsMessage", "Error: "+
+			 Stringx.getDefault( sqe.getMessage(), "General database error" ) );
+	    log.error( sqe );
+	    return null;
+	}
+
+	currInvIdx = invIdx+1;
+	lb = (Label)wnd.getFellowIfAny( "lbInvDetailsCopy" );
+	if( lb != null ) 
+	    lb.setValue( String.format( "%d / %d", currInvIdx, idxs.length ) );
+
+	if( currInvIdx > 1 )
+	    btBackward.setDisabled( false );
+	if( currInvIdx < idxs.length )
+	    btForward.setDisabled( false );
+
+	String pSt = Stringx.getDateString( "MMM-yyyy", inv.getEnded() );
+	showMessage( wnd, "rowInvoiceDetailsMessage", "lbInvoiceDetailsMessage", "Warning: Invoice details loaded from "+
+	 	     Stringx.getDefault(inv.getInvoice(),"unknown")+
+	 	     " period: "+pSt );
+
 	return inv;
     }
 
@@ -650,6 +831,27 @@ public class UpdateInvoice extends InventoryViewAction {
 	if( ACTION_CLOSE.equals(cmpId) ) {
 	    Events.postEvent("onClose", wnd, null);
 	    return;
+	}
+	else if( ACTION_FORWARD.equals(cmpId) ) {
+	    log.debug( "Invoice forward action launched" );
+	    UIUtils.clearMessage( wnd, "lbInvoiceDetailsMessage" );
+	    preEdit = loadLabelInvoice( wnd, true );
+	    if( preEdit != null )
+		initInvoiceDetails( wnd, preEdit );
+	}
+	else if( ACTION_BACKWARD.equals(cmpId) ) {
+	    log.debug( "Invoice backward action launched" );
+	    UIUtils.clearMessage( wnd, "lbInvoiceDetailsMessage" );
+	    preEdit = loadLabelInvoice( wnd, false );
+	    if( preEdit != null )
+		initInvoiceDetails( wnd, preEdit );
+	}
+	else if( ACTION_COPY.equals(cmpId) ) {
+	    log.debug( "Invoice copy action launched" );
+	    UIUtils.clearMessage( wnd, "lbInvoiceDetailsMessage" );
+	    preEdit = loadLastInvoice( wnd );
+	    if( preEdit != null )
+		initInvoiceDetails( wnd, preEdit );
 	}
 	else if( ACTION_STORE.equals(cmpId) ) {
 	    log.debug( "Invoice store action launched" );

@@ -686,6 +686,15 @@
         <action config-class="com.emd.simbiom.budget.UpdateInvoice"
                 component="btInvDetailsClose"
                 event="onClick" />
+        <action config-class="com.emd.simbiom.budget.UpdateInvoice"
+                component="btInvDetailsCopy"
+                event="onClick" />
+        <action config-class="com.emd.simbiom.budget.UpdateInvoice"
+                component="btInvDetailsForward"
+                event="onClick" />
+        <action config-class="com.emd.simbiom.budget.UpdateInvoice"
+                component="btInvDetailsBackward"
+                event="onClick" />
 
       </details>
 

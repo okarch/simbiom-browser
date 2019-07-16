@@ -24,14 +24,21 @@
         <cell style="text-align:left">
 	  <label value="Purchase order"/>
         </cell>
-        <combobox id="cbInvoicePO" autodrop="true" width="200px" mold="rounded" buttonVisible="true">
+        <hlayout>
+          <combobox id="cbInvoicePO" autodrop="true" width="200px" mold="rounded" buttonVisible="true">
 #if( $details.invoiceExist )
-          <attribute name="onCreate">self.setSelectedIndex($details.purchaseIndex);</attribute>
+            <attribute name="onCreate">self.setSelectedIndex($details.purchaseIndex);</attribute>
 #end
 #foreach( $pItem in $details.allPurchases )
-          <comboitem label="$esc.xml($pItem.purchase)" value="$pItem.billid" />
+            <comboitem label="$esc.xml($pItem.purchase)" value="$pItem.billid" />
 #end
-        </combobox>
+          </combobox>
+          <button id="btInvDetailsCopy" label="Last Invoice" iconSclass="z-icon-copy"/>
+          <button id="btInvDetailsBackward" width="25px" disabled="true" iconSclass="z-icon-angle-left"/>
+          <button id="btInvDetailsForward" width="25px" disabled="true" iconSclass="z-icon-angle-right"/>
+          <label id="lbInvDetailsCopy" value="" />
+          <label id="lbInvDetailsMoreInv" visible="false" value="" />
+        </hlayout>
       </row>
 
       <row>
