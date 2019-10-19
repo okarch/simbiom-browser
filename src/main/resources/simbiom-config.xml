@@ -63,6 +63,10 @@
              commandName="btTemplateUpload"
              event="onUpload" />
 
+    <command config-class="com.emd.simbiom.template.GenerateReport"
+             commandName="btOutputGenerate"
+             event="onClick" />
+
 
 <!--
     <command config-class="com.emd.simbiom.category.CategorySelect"

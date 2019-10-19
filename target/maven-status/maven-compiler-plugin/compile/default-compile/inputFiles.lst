@@ -84,6 +84,7 @@
 /home/okarch/classes/simbiom-browser/src/main/java/com/emd/simbiom/portlet/InventoryCleanup.java
 /home/okarch/classes/simbiom-browser/src/main/java/com/emd/simbiom/template/ResultLog.java
 /home/okarch/classes/simbiom-browser/src/main/java/com/emd/simbiom/category/CategorySelect.java
+/home/okarch/classes/simbiom-browser/src/main/java/com/emd/simbiom/template/GenerateReport.java
 /home/okarch/classes/simbiom-browser/src/main/java/com/emd/simbiom/view/UIUtils.java
 /home/okarch/classes/simbiom-browser/src/main/java/com/emd/simbiom/search/UseFilter.java
 /home/okarch/classes/simbiom-browser/src/main/java/com/emd/simbiom/category/GoogleChartCategoryView.java

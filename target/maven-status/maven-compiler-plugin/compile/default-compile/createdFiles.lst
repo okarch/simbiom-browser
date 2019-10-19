@@ -38,6 +38,7 @@ com/emd/simbiom/search/AgeInputChange.class
 com/emd/simbiom/budget/InvoiceDetailsView.class
 com/emd/simbiom/search/SearchSamples.class
 com/emd/simbiom/template/UploadSamples.class
+com/emd/simbiom/template/GenerateReport.class
 com/emd/simbiom/category/BrowseSamples.class
 com/emd/simbiom/view/BarChartEngine.class
 com/emd/simbiom/storage/EditStorageProject.class

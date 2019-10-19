@@ -285,6 +285,64 @@
 
             <row>
               <cell colspan="2">
+                <groupbox id="gbOutputLog" mold="3d" open="false">
+                    <caption image="/images/Document-16.png" label="Report" />                  
+		    <vlayout>
+                      <hlayout>
+                        <grid id="grOutputGroup" fixedLayout="true" span="true">
+                          <columns>
+	                    <column hflex="min" />
+	                    <column hflex="min" />
+                          </columns>
+                          <rows>
+                            <row>
+                              <cell style="text-align:left">
+	                        <label value="Report name"/>
+                              </cell>
+                              <textbox id="txtReportName" width="250px"/>
+                            </row>
+                            <row>
+                              <cell style="text-align:left">
+	                        <label value="Report parameters"/>
+                              </cell>
+	                      <vlayout id="vlReportParameter_0"/>
+                            </row>
+                            <row>
+                              <cell style="text-align:left">
+	                        <label value="Report columns"/>
+                              </cell>
+	                      <vlayout id="vlReportGroup_0"/>
+                            </row>
+                            <row>
+                              <cell style="text-align:left">
+	                        <label value=""/>
+                              </cell>
+                              <button id="btOutputGenerate" label="Generate"/>
+                            </row>
+                          </rows>
+                        </grid>
+                        <combobox id="cbOutputSelector" autodrop="true" width="400px" mold="rounded" buttonVisible="true"/>		      
+			<label value="Report"/>
+                        <combobox id="cbOutputFileSelector" autodrop="true" width="250px" mold="rounded" buttonVisible="true"/>		      
+		      </hlayout>
+                      <hlayout>
+			<label value="Format"/>
+                        <combobox id="cbOutputFormatSelector" autodrop="true" width="150px" mold="rounded" buttonVisible="true">
+                          <attribute name="onCreate">self.setSelectedIndex(0);</attribute>
+                          <comboitem label="Original file" value="original" />
+                          <comboitem label="Compressed file" value="zipped" />
+                          <comboitem label="All files compressed" value="all-zipped" />
+                          <comboitem label="PDF file" value="pdf" />
+                        </combobox>
+                        <button id="btOutputDownload" label="Download"/>
+		      </hlayout>
+                    </vlayout>
+                </groupbox>
+	      </cell>
+	    </row>
+
+            <row>
+              <cell colspan="2">
                 <groupbox id="gbResultLog" mold="3d" open="false">
                     <caption image="/images/status.png" label="Message log" />                  
                     <grid id="grResultLog" fixedLayout="true" span="true" mold="paging" pageSize="20">
@@ -606,6 +664,13 @@
                           <button id="btDocumentAdd" image="/images/add-icon.png" upload="true,maxsize=-1"/>
                           <button id="btDocumentDelete" image="/images/delete-icon.png" />
                         </hlayout>
+                      </row>
+
+                      <row>
+                        <cell style="text-align:left">
+                          <label value="Samples expected"/>
+                        </cell>
+                        <intbox id="intStorageExpected" width="100px"/>
                       </row>
 
                       <row>
