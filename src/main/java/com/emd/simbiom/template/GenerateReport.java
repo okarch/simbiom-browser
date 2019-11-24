@@ -38,8 +38,9 @@ import org.zkoss.zul.Messagebox;
 import org.zkoss.zul.Row;
 import org.zkoss.zul.Rows;
 
-// import org.zkoss.zul.Checkbox;
+import org.zkoss.zul.Checkbox;
 import org.zkoss.zul.Grid;
+import org.zkoss.zul.Spinner;
 import org.zkoss.zul.Textbox;
 import org.zkoss.zul.Window;
 
@@ -51,8 +52,11 @@ import com.emd.simbiom.dao.SampleInventory;
 import com.emd.simbiom.view.ModelProducer;
 import com.emd.simbiom.view.UIUtils;
 
+import com.emd.simbiom.model.StorageDocument;
 import com.emd.simbiom.model.Roles;
 import com.emd.simbiom.model.User;
+
+import com.emd.simbiom.report.ReportStrategies;
 
 import com.emd.simbiom.upload.InventoryUploadTemplate;
 import com.emd.simbiom.upload.UploadBatch;
@@ -60,6 +64,8 @@ import com.emd.simbiom.upload.UploadException;
 import com.emd.simbiom.upload.UploadProcessor;
 
 import com.emd.util.Stringx;
+
+import com.emd.vutils.report.ReportStrategy;
 
 import com.emd.zk.ZKContext;
 import com.emd.zk.command.CommandException;
@@ -90,15 +96,6 @@ public class GenerateReport extends InventoryCommand {
     // private File createUploadFile( Window wnd, InventoryUploadTemplate templ ) 
     //  	throws IOException {
 
-    // 	Textbox txt = (Textbox)wnd.getFellowIfAny( TemplateModel.CMP_REPORT_NAME );
-    // 	String repName = null;
-    // 	if( txt != null ) 
-    // 	    repName = Stringx.getDefault( txt.getValue(), "" );
-    // 	else
-    // 	    repName = "";
-
-    // 	if( repName.trim().length() <= 0 )
-    // 	    repName = "Report "+Stringx.currentDateString(  "dd-MMM-YYYY" );
 
     //  	File tempF = File.createTempFile( "simbiom", null );
     //  	File dir = new File( tempF.getParentFile(), "simbiom" );
@@ -178,31 +175,101 @@ public class GenerateReport extends InventoryCommand {
 	}
 	if( addDelim )
 	    stb.append( "|" );
-	stb.append( "Output Columns" );
+	stb.append( "Output Columns\n" );
 
 	String[] header = new String[ colNames.size() ];
 	return (String[])colNames.toArray( header );
     }
 
-    private void addOutputColumns( Grid grid, StringBuilder stb ) {
+	// chk.setId( "chkOutputColumns_"+i+"_"+colName );
+
+    private String[] getOutputColumns( Grid grid ) {
+	Collection<Component> children = grid.getFellows();
+	Map<Integer,String> outColumns = new HashMap<Integer,String>();
+	for( Component cmp : children ) {
+	    String cmpId = cmp.getId();
+	    if( (cmpId != null) && 
+		(cmpId.startsWith( "chkOutputColumns_" )) &&
+		(cmp instanceof Checkbox) ) {
+
+		int idx = Stringx.toInt(StringUtils.substringBetween( cmpId, "_" ),-1);
+		String colName = StringUtils.substringAfterLast( cmpId, "_" );
+
+		Spinner sp = (Spinner)grid.getFellowIfAny( "spOutputColumns_"+idx+"_"+colName ); 
+		if( sp != null )
+		    idx = sp.getValue();
+		
+		if( ((Checkbox)cmp).isChecked() )
+		    outColumns.put( new Integer(idx), colName );
+
+		log.debug( "Output column: "+cmpId+" idx: "+idx+" column: "+colName );
+	    }
+	}
+	String[] outputCols = new String[ outColumns.size() ];
+	int j = 0;
+	for( int i = 0; i < outColumns.size(); i++ ) {
+	    String outCol = outColumns.get( new Integer(i+1) );
+	    if( outCol != null ) {
+		outputCols[j] = outCol;
+		j++;
+	    }
+	}
+	return outputCols;
+    }
+
+    private void addReportParameters( Grid grid, StringBuilder stb, String[] inputCols, String[] outputCols ) {
+	for( int i = 0; i < inputCols.length; i++ ) {
+	    Collection<Component> children = grid.getFellows();
+	    for( Component cmp : children ) {
+		String cmpId = cmp.getId();
+		if( (cmpId != null) && (cmpId.startsWith( "cmpInputColumn_" )) && 
+		    (cmpId.endsWith( "_"+inputCols[i])) &&
+		    (cmp instanceof InputElement) ) {
+
+		    String val = Stringx.getDefault(((InputElement)cmp).getText(), "" );
+
+		    log.debug( "Input column: "+cmpId+" column: "+inputCols[i]+" value: "+val );
+		    if( i > 0 )
+			stb.append( "|" );
+		    stb.append( val );
+		}
+	    }
+	}
+	if( outputCols != null ) {
+	    stb.append( "|" );
+	    for( int i = 0; i < outputCols.length; i++ ) {
+		if( i > 0 )
+		    stb.append( "," );
+		stb.append( outputCols[i] );
+	    }
+	}
     }
 
     private UploadBatch createUploadBatch( Window wnd, InventoryUploadTemplate templ ) {
      	UploadBatch uBatch = new UploadBatch();
      	uBatch.setTemplateid( templ.getTemplateid() );
 
+	// collect output columns
+
+	Grid grid = (Grid)wnd.getFellowIfAny( TemplateModel.CMP_REPORT_OUTPUT );
+	String[] outColumns = null;
+	if( grid != null ) {
+	    outColumns = getOutputColumns( grid );
+	    log.debug( "Number of output columns: "+outColumns.length );
+	}
+	else 
+	    outColumns = new String[0];
+
 	// collect input columns
 
-	Grid grid = (Grid)wnd.getFellowIfAny( TemplateModel.CMP_REPORT_INPUT );
+	grid = (Grid)wnd.getFellowIfAny( TemplateModel.CMP_REPORT_INPUT );
 	StringBuilder updContent = new StringBuilder();
 	String[] columns = null;
-	if( grid != null ) 
+	if( grid != null ) {
 	    columns = addHeader( grid, updContent );
+	    addReportParameters( grid, updContent, columns, outColumns );
+	}
 
-	grid = (Grid)wnd.getFellowIfAny( TemplateModel.CMP_REPORT_OUTPUT );
-	if( grid != null ) 
-	    addOutputColumns( grid, updContent);
-	
 	if( updContent.length() > 0 ) {
 	    uBatch.setUpload( updContent.toString() );
 	    log.debug( "Upload content: "+updContent.toString() );
@@ -212,68 +279,131 @@ public class GenerateReport extends InventoryCommand {
 	return uBatch;
     }
 
-    // private User validateUser( Window wnd, long reqRole ) {
-    // 	User user = null;
-    // 	try {
-    // 	    // SampleInventoryDAO dao = getSampleInventory();
-    // 	    SampleInventory dao = getSampleInventory();
-    // 	    user = dao.findUserById( getUserId() );
-    // 	}
-    // 	catch( SQLException sqe ) {
-    // 	    showMessage( wnd, "rowMessageUpload", "lbMessageUpload", "Error: "+
-    // 			 Stringx.getDefault( sqe.getMessage(), "General database error" ) );
-    // 	    log.error( sqe );
-    // 	    return null;
-    // 	}
+    private User validateUser( Window wnd, long reqRole ) {
+     	User user = null;
+     	try {
+     	    SampleInventory dao = getSampleInventory();
+     	    user = dao.findUserById( getUserId() );
+     	}
+     	catch( SQLException sqe ) {
+     	    showMessage( wnd, "rowMessageUpload", "lbMessageUpload", "Error: "+
+     			 Stringx.getDefault( sqe.getMessage(), "General database error" ) );
+     	    log.error( sqe );
+     	    return null;
+     	}
 
-    // 	if( user == null ) {
-    // 	    showMessage( wnd, "rowMessageUpload", "lbMessageUpload", "Error: User id "+
-    // 			 getUserId()+" is unknown" );
-    // 	    return null;
-    // 	}
+     	if( user == null ) {
+     	    showMessage( wnd, "rowMessageUpload", "lbMessageUpload", "Error: User id "+
+     			 getUserId()+" is unknown" );
+     	    return null;
+     	}
 
-    // 	if( !user.hasRole( reqRole ) ) {
-    // 	    showMessage( wnd, "rowMessageUpload", "lbMessageUpload", "Error: User "+
-    // 			 user+" requires permission \""+Roles.roleToString( reqRole )+"\"" );
-    // 	    return null;
-    // 	}
-    // 	return user;
-    // }
+     	if( !user.hasRole( reqRole ) ) {
+     	    showMessage( wnd, "rowMessageUpload", "lbMessageUpload", "Error: User "+
+     			 user+" requires permission \""+Roles.roleToString( reqRole )+"\"" );
+     	    return null;
+     	}
+     	return user;
+    }
 
-    // private void runUpload( Window wnd,
-    // 			    User user, 
-    // 			    InventoryUploadTemplate templ, 
-    // 			    long batchId )
-    // 	throws UploadException {
+    private String createReportName( Window wnd, InventoryUploadTemplate templ ) {
+	Textbox txt = (Textbox)wnd.getFellowIfAny( TemplateModel.CMP_REPORT_NAME );
+	String repName = null;
+	if( txt != null ) 
+     	    repName = Stringx.getDefault( txt.getValue(), "" );
+     	else
+     	    repName = "";
 
-    //  	UploadProcessor uProcessor = UploadProcessor.getInstance();
-    // 	Map ctxt = new HashMap();
-    // 	ctxt.put( "user", user );
-    // 	uProcessor.processUpload( templ, batchId, ctxt );
-    // }	
+     	if( repName.trim().length() <= 0 )
+     	    repName = templ.getTemplatename()+" "+Stringx.currentDateString(  "dd-MMM-YYYY" );
+	return repName;
+    }
 
-    // private void updateLog( Window wnd, InventoryUploadTemplate templ, long uploadid ) {
-    // 	OpenResultLog orl = (OpenResultLog)getPreferences().getCommand( OpenResultLog.class );
-    // 	if( orl != null ) {
-    // 	    try {
-    // 		orl.initLogs( wnd, templ );
-    // 	    }
-    // 	    catch( SQLException sqe ) {
-    // 		showMessage( wnd, "rowMessageUpload", "lbMessageUpload", "Error: "+
-    // 			     Stringx.getDefault( sqe.getMessage(), "General database error" ) );
-    // 		log.error( sqe );
-    // 	    }
-    // 	}
-    // 	SelectResultLog selLog = (SelectResultLog)getPreferences().getCommand( SelectResultLog.class );
-    // 	if( (selLog != null) && (selLog.selectUploadid( wnd, uploadid ) != null) ) {
-    // 	    try {
-    // 		selLog.execute( ZKContext.getInstance(), wnd );
-    // 	    }
-    // 	    catch( CommandException cex ) {
-    // 		log.error( cex );
-    // 	    }
-    // 	}
-    // }
+    private void runUpload( Window wnd,
+			    User user, 
+      			    InventoryUploadTemplate templ, 
+     			    long batchId )
+     	throws UploadException {
+
+      	UploadProcessor uProcessor = UploadProcessor.getInstance();
+     	Map ctxt = new HashMap();
+     	ctxt.put( "user", user );
+	ReportStrategy strategy = ReportStrategies.getInstance( templ.getTemplatename() );
+	if( strategy != null )
+	    ctxt.put( "reportStrategy", strategy );
+	ctxt.put( "reportName", createReportName( wnd, templ ) );
+
+     	// try {
+     	//     SampleInventory dao = getSampleInventory();
+     	//     Invoice[] invs = dao.findInvoiceByPeriod( "01JAN2019..31DEC2019", false );
+	//     log.debug( "Invoices found: "+invs.size() );
+     	// }
+     	// catch( SQLException sqe ) {
+     	//     // showMessage( wnd, "rowMessageUpload", "lbMessageUpload", "Error: "+
+     	//     // 		 Stringx.getDefault( sqe.getMessage(), "General database error" ) );
+     	//     log.error( sqe );
+     	//     return null;
+     	// }
+
+     	uProcessor.processUpload( templ, batchId, ctxt );
+    }	
+
+    private void updateLog( Window wnd, InventoryUploadTemplate templ, long uploadid ) {
+     	OpenResultLog orl = (OpenResultLog)getPreferences().getCommand( OpenResultLog.class );
+     	if( orl != null ) {
+	    try {
+     		orl.initLogs( wnd, templ );
+     	    }
+     	    catch( SQLException sqe ) {
+     		showMessage( wnd, "rowMessageUpload", "lbMessageUpload", "Error: "+
+     			     Stringx.getDefault( sqe.getMessage(), "General database error" ) );
+     		log.error( sqe );
+     	    }
+     	}
+     	SelectResultLog selLog = (SelectResultLog)getPreferences().getCommand( SelectResultLog.class );
+     	if( (selLog != null) && (selLog.selectUploadid( wnd, uploadid ) != null) ) {
+     	    try {
+     		selLog.execute( ZKContext.getInstance(), wnd );
+     	    }
+     	    catch( CommandException cex ) {
+     		log.error( cex );
+     	    }
+     	}
+    }
+
+    private OutputSelector getOutputSelector() {
+	ModelProducer[] mp = getPreferences().getResult( OutputSelector.class );
+	if( mp.length <= 0 )
+	    return null;
+	return (OutputSelector)mp[0];
+    }
+
+    private void updateOutputs( Window wnd, InventoryUploadTemplate templ ) {
+	OutputSelector outS = getOutputSelector();
+	if( outS == null ) {
+	    log.error( "Cannot determine output selection" );
+	    return;
+	}
+
+	SampleInventory dao = getSampleInventory();
+	if( dao == null ) {
+	    showMessage( wnd, "rowMessageUpload", "lbMessageUpload", "Error: Invalid database access" );
+	    return;
+	}
+
+	try {
+	    StorageDocument[] tList = dao.findOutputByTemplate( templ );
+	    log.debug( "Report outputs available: "+tList.length );
+	    Map context = new HashMap();
+	    context.put( OutputSelector.RESULT, tList );
+	    outS.updateModel( wnd, context );
+	}
+	catch( SQLException sqe ) {
+	    showMessage( wnd, "rowMessageUpload", "lbMessageUpload", "Error: "+
+			 Stringx.getDefault( sqe.getMessage(), "General database error" ) );
+	    log.error( sqe );
+	}
+    }
 
     /**
      * Notifies this listener that an event occurs.
@@ -366,6 +496,38 @@ public class GenerateReport extends InventoryCommand {
 	    return;
 	}
 
+	User user = validateUser( wnd, Roles.INVENTORY_REPORT );
+	if( user == null ) 
+     	    return;
+
 	UploadBatch uBatch = createUploadBatch( wnd, templ );
+     	templ.addUploadBatch( uBatch );
+     	log.info( "Upload batch registered: "+uBatch.getUploadid() );
+
+	try {
+	    SampleInventory dao = getSampleInventory();
+     	    templ = dao.storeTemplate( templ );
+     	}
+	catch( SQLException sqe ) {
+     	    showMessage( wnd, "rowMessageUpload", "lbMessageUpload", "Error: "+
+     			 Stringx.getDefault( sqe.getMessage(), "General database error" ) );
+     	    log.error( sqe );
+     	    return;
+	}
+
+	showMessage( wnd, "rowMessageUpload", "lbMessageUpload", "Batch registered, starting upload "+uBatch.getUploadid()+"..." );
+     	try {
+     	    runUpload( wnd, user, templ, uBatch.getUploadid() );
+     	}
+     	catch( UploadException uex ) {
+     	    showMessage( wnd, "rowMessageUpload", "lbMessageUpload", "Error: "+
+     			 Stringx.getDefault( uex.getMessage(), "General upload error" ) );
+     	    log.error( uex );
+     	    return;
+     	}
+
+	updateOutputs( wnd, templ );
+     	updateLog( wnd, templ, uBatch.getUploadid() );
+
     }        
 } 

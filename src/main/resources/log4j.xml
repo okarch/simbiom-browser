@@ -15,6 +15,10 @@
 	<category name="com.emd.zk">
 		<priority value="DEBUG" />
 	</category>
+
+	<category name="com.emd.vutils">
+		<priority value="DEBUG" />
+	</category>
 <!--
 	<category name="com.emd.portal.liferay">
 		<priority value="DEBUG" />

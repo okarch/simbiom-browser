@@ -411,6 +411,10 @@
             modelName="grResultLog"
             messageRowId="rowMessageUpload" />
 
+    <result config-class="com.emd.simbiom.template.OutputSelector"
+            modelName="cbOutputSelector"
+            messageRowId="rowMessageUpload" />
+
     <result config-class="com.emd.simbiom.storage.StorageProjectModel"
             modelName="cbStorageProject"
             messageRowId="rowStorageMessage" />

@@ -287,8 +287,7 @@
               <cell colspan="2">
                 <groupbox id="gbOutputLog" mold="3d" open="false">
                     <caption image="/images/Document-16.png" label="Report" />                  
-		    <vlayout>
-                      <hlayout>
+
                         <grid id="grOutputGroup" fixedLayout="true" span="true">
                           <columns>
 	                    <column hflex="min" />
@@ -299,7 +298,10 @@
                               <cell style="text-align:left">
 	                        <label value="Report name"/>
                               </cell>
-                              <textbox id="txtReportName" width="250px"/>
+                              <hlayout>
+                                <textbox id="txtReportName" width="250px"/>
+                                <button id="btOutputGenerate" label="Generate"/>
+                              </hlayout>
                             </row>
                             <row>
                               <cell style="text-align:left">
@@ -315,28 +317,16 @@
                             </row>
                             <row>
                               <cell style="text-align:left">
-	                        <label value=""/>
+	                        <label value="Report output"/>
                               </cell>
-                              <button id="btOutputGenerate" label="Generate"/>
+                              <hlayout>
+                                <combobox id="cbOutputSelector" autodrop="true" width="400px" mold="rounded" buttonVisible="true"/>		      
+                                <button id="btOutputDownload" label="Download"/>
+                              </hlayout>
                             </row>
                           </rows>
                         </grid>
-                        <combobox id="cbOutputSelector" autodrop="true" width="400px" mold="rounded" buttonVisible="true"/>		      
-			<label value="Report"/>
-                        <combobox id="cbOutputFileSelector" autodrop="true" width="250px" mold="rounded" buttonVisible="true"/>		      
-		      </hlayout>
-                      <hlayout>
-			<label value="Format"/>
-                        <combobox id="cbOutputFormatSelector" autodrop="true" width="150px" mold="rounded" buttonVisible="true">
-                          <attribute name="onCreate">self.setSelectedIndex(0);</attribute>
-                          <comboitem label="Original file" value="original" />
-                          <comboitem label="Compressed file" value="zipped" />
-                          <comboitem label="All files compressed" value="all-zipped" />
-                          <comboitem label="PDF file" value="pdf" />
-                        </combobox>
-                        <button id="btOutputDownload" label="Download"/>
-		      </hlayout>
-                    </vlayout>
+
                 </groupbox>
 	      </cell>
 	    </row>

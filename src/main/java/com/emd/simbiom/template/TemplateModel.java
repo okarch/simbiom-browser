@@ -5,8 +5,11 @@ import java.io.StringReader;
 
 import java.util.Arrays;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Collection;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -21,6 +24,7 @@ import org.apache.commons.logging.LogFactory;
 
 import org.apache.commons.io.IOUtils;
 
+import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.Session;
 import org.zkoss.zk.ui.Sessions;
 
@@ -42,16 +46,20 @@ import org.zkoss.zul.ListModel;
 import org.zkoss.zul.ListModelArray;
 import org.zkoss.zul.Row;
 import org.zkoss.zul.Rows;
+import org.zkoss.zul.Spinner;
 import org.zkoss.zul.Textbox;
 import org.zkoss.zul.Vlayout;
 import org.zkoss.zul.Window;
 
-// import com.emd.simbiom.dao.SampleInventoryDAO;
 import com.emd.simbiom.dao.SampleInventory;
+import com.emd.simbiom.config.InventoryPreferences;
+
+import com.emd.simbiom.model.StorageDocument;
 
 import com.emd.simbiom.upload.InventoryUploadTemplate;
 
 import com.emd.simbiom.view.DefaultModelProducer;
+import com.emd.simbiom.view.ModelProducer;
 
 import com.emd.util.Stringx;
 
@@ -132,6 +140,13 @@ public class TemplateModel extends DefaultModelProducer implements EventListener
 	    writeMessage( wnd, "Error: Cannot query database: "+Stringx.getDefault(sqe.getMessage(),"reason unknown") );
 	    log.error( sqe );
 	}
+    }
+
+    private OutputSelector getOutputSelector() {
+	ModelProducer[] mp = getPreferences().getResult( OutputSelector.class );
+	if( mp.length <= 0 )
+	    return null;
+	return (OutputSelector)mp[0];
     }
 
     /**
@@ -360,15 +375,38 @@ public class TemplateModel extends DefaultModelProducer implements EventListener
 
 		Integer colIdx = inputOrder.get( inColumn );
 
+		String[] tspecs = colSpec.split( ";" );
 		if( colSpec.startsWith( "txt" ) ) {
 		    Textbox txt = new Textbox();
 		    txt.setId( "cmpInputColumn_"+colIdx+"_"+inColumn );
+		    for( int l = 0; l < tspecs.length; l++ ) {
+			if( tspecs[l].startsWith( "width" ) ) {
+			    txt.setWidth( StringUtils.substringAfter(tspecs[l],"=").trim() );
+			}
+			else if( tspecs[l].startsWith( "init" ) ) {
+			    txt.setValue( StringUtils.substringAfter(tspecs[l],"=").trim() );
+			}
+		    }
 		    txt.setParent( hl );
 		}
 		else if( colSpec.startsWith( "dt" ) ) {
 		    Datebox dt = new Datebox();
 		    dt.setId( "cmpInputColumn_"+colIdx+"_"+inColumn );
 		    dt.setParent( hl );
+		    for( int l = 0; l < tspecs.length; l++ ) {
+			if( tspecs[l].startsWith( "init" ) ) {
+			    String dtp = StringUtils.substringAfter(tspecs[l],"=").trim();
+			    Calendar cal = Calendar.getInstance();
+			    if( "yearstart".equals(dtp) ) {
+				cal.set( Calendar.DAY_OF_MONTH, 1 );
+				cal.set( Calendar.MONTH, 0 );
+				dt.setValue( cal.getTime() );
+			    }
+			    else if( "currentdate".equals( dtp ) ) {
+				dt.setValue( cal.getTime() );
+			    }
+			}
+		    }
 		}
 		i++;
 	    }
@@ -396,6 +434,7 @@ public class TemplateModel extends DefaultModelProducer implements EventListener
 	Rows rows = new Rows();
 	Row row = null;
 	int k = -1;
+	int nOrder = 0;
 	for( int i = 0; i < columns.length; i++) {
 	    if( ((i+4) % 4) == 0 ) {
 		row = new Row();
@@ -409,13 +448,61 @@ public class TemplateModel extends DefaultModelProducer implements EventListener
 	    }
 	    if( (k = colName.indexOf( "[" )) > 0 )
 		colName = colName.substring( 0, k ).trim();
-	    Checkbox chk = new Checkbox( colName );
+	    Hlayout hl = new Hlayout();
+	    hl.setParent( row );
+	    Checkbox chk = new Checkbox();
 	    chk.setId( "chkOutputColumns_"+i+"_"+colName );
 	    chk.setChecked( checked );
-	    chk.setParent( row );
+	    chk.addEventListener( Events.ON_CHECK, this );
+	    chk.setParent( hl );
+	    Spinner spOrder = new Spinner( 0 );
+	    if( checked ) {
+		nOrder++;
+		spOrder.setValue( nOrder ); 
+	    }
+	    else
+		spOrder.setDisabled( true );
+	    spOrder.setWidth( "50px" );
+	    spOrder.setId( "spOutputColumns_"+i+"_"+colName );
+	    spOrder.setParent( hl );
+	    Label lb = new Label( colName );
+	    lb.setParent( hl );
 	}
 	rows.setParent( grid );
 	return grid;
+    }
+
+    private int nextFreeOrder( Window wnd ) {
+	Grid grid = (Grid)wnd.getFellowIfAny( CMP_REPORT_OUTPUT );
+	int colOrder = 0;
+	if( grid != null ) {
+	    Set<Integer> occupied = new HashSet<Integer>();
+	    Collection<Component> children = grid.getFellows();
+	    int maxCols = 0;
+	    for( Component cmp : children ) {
+		String cmpId = cmp.getId();
+		if( (cmpId != null) && 
+		    (cmpId.startsWith( "spOutputColumns_" )) &&
+		    (cmp instanceof Spinner) ) {
+		    
+		    int idx = ((Spinner)cmp).getValue();
+		    if( idx > 0 )
+			occupied.add( new Integer(idx) );
+		    maxCols++;
+		}
+	    }
+	    log.debug( "Occupied places: "+occupied );
+
+	    for( int i = 1; i <= maxCols; i++ ) {
+		if( !occupied.contains( new Integer(i) ) ) {
+		    colOrder = i;
+		    break;
+		}
+	    }
+	    if( colOrder == 0 )
+		colOrder = maxCols+1;
+	}
+	return colOrder;
     }
 
     private void initReportName( Window wnd, InventoryUploadTemplate templ ) {
@@ -426,6 +513,32 @@ public class TemplateModel extends DefaultModelProducer implements EventListener
 		repName = repName.substring( 8 ).trim();
 	    repName = repName+" "+Stringx.currentDateString( "dd-MMM-YYYY" );
 	    txt.setValue( repName );
+	}
+    }
+
+    private void appendReportOutputs( Window wnd, InventoryUploadTemplate templ ) {
+	OutputSelector outS = getOutputSelector();
+	if( outS == null ) {
+	    log.error( "Cannot determine output selection" );
+	    return;
+	}
+
+	SampleInventory dao = getSampleInventory();
+	if( dao == null ) {
+	    writeMessage( wnd, "Error: No database access configured" );
+	    return;
+	}
+
+	try {
+	    StorageDocument[] tList = dao.findOutputByTemplate( templ );
+	    log.debug( "Report outputs available: "+tList.length );
+	    Map context = new HashMap();
+	    context.put( RESULT, tList );
+	    outS.updateModel( wnd, context );
+	}
+	catch( SQLException sqe ) {
+	    writeMessage( wnd, "Error: Cannot query database: "+Stringx.getDefault(sqe.getMessage(),"reason unknown") );
+	    log.error( sqe );
 	}
     }
  
@@ -439,6 +552,9 @@ public class TemplateModel extends DefaultModelProducer implements EventListener
 	Button bt = (Button)wnd.getFellowIfAny( CMP_REPORT_GENERATE );
 	if( bt != null )
 	    bt.setDisabled( true );
+	OutputSelector outS = getOutputSelector();
+	if( outS == null ) 
+	    outS.updateModel( wnd, null );
 	Vlayout vlg = (Vlayout)wnd.getFellowIfAny( CMP_REPORT_GROUP );
 	Vlayout vlp = (Vlayout)wnd.getFellowIfAny( CMP_REPORT_PARAM );
 	if( (vlg == null) || (vlp == null) )
@@ -461,6 +577,8 @@ public class TemplateModel extends DefaultModelProducer implements EventListener
 	// initialize report name
 
 	initReportName( wnd, templ );
+
+	appendReportOutputs( wnd, templ );
     }
 
     private InventoryUploadTemplate[] sortTemplates( InventoryUploadTemplate[] templs ) {
@@ -485,6 +603,15 @@ public class TemplateModel extends DefaultModelProducer implements EventListener
 	}
     }
 
+    private void initSpinner( Window wnd, Checkbox chk ) {
+	String colName = StringUtils.substringAfter( chk.getId(), "_" );
+	Spinner spOrder = (Spinner)wnd.getFellowIfAny( "spOutputColumns_"+colName );
+	if( spOrder != null ) {
+	    spOrder.setDisabled( !chk.isChecked() );
+	    spOrder.setValue( ((chk.isChecked())?nextFreeOrder(wnd):0) );
+	}
+    }
+
     /**
      * Notifies this listener that an event occurs.
      */
@@ -495,27 +622,34 @@ public class TemplateModel extends DefaultModelProducer implements EventListener
 
 	InventoryUploadTemplate templ = null;
 
-	Combobox cb = (Combobox)event.getTarget();
+	Component cmp = event.getTarget();
+	Window wnd = ZKUtil.findWindow( cmp );
+	if( cmp instanceof Combobox ) {
+	    Combobox cb = (Combobox)cmp;
 
-	if( "onAfterRender".equals( event.getName() ) ) {
-	    int idx = popAfterRenderIndex( 0 );
-	    if( idx < cb.getItemCount() ) {
-		cb.setSelectedIndex( idx );
-		templ = (InventoryUploadTemplate)cb.getModel().getElementAt( idx );
-	    }	    
-	}	
-	else if( Events.ON_SELECT.equals( event.getName() ) ) {
-	    if( cb.getItemCount() > 0 ) {
-		int idx = cb.getSelectedIndex();
-		if( idx >= 0 )
+	    if( "onAfterRender".equals( event.getName() ) ) {
+		int idx = popAfterRenderIndex( 0 );
+		if( idx < cb.getItemCount() ) {
+		    cb.setSelectedIndex( idx );
 		    templ = (InventoryUploadTemplate)cb.getModel().getElementAt( idx );
+		}	    
+	    }	
+	    else if( Events.ON_SELECT.equals( event.getName() ) ) {
+		if( cb.getItemCount() > 0 ) {
+		    int idx = cb.getSelectedIndex();
+		    if( idx >= 0 )
+			templ = (InventoryUploadTemplate)cb.getModel().getElementAt( idx );
+		}
+	    }
+
+	    if( templ != null ) {
+		updateTemplateText( wnd, templ );
+		updateReportSection( wnd, templ );
 	    }
 	}
-
-	if( templ != null ) {
-	    Window wnd = ZKUtil.findWindow( cb );
-	    updateTemplateText( wnd, templ );
-	    updateReportSection( wnd, templ );
+	else if( cmp instanceof Checkbox ) {
+	    Checkbox chk = (Checkbox)cmp;
+	    initSpinner( wnd, chk );
 	}
     }
 }

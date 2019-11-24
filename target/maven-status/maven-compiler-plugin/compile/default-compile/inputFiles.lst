@@ -7,6 +7,7 @@
 /home/okarch/classes/simbiom-browser/src/main/java/com/emd/simbiom/storage/SelectStorageDetails.java
 /home/okarch/classes/simbiom-browser/src/main/java/com/emd/simbiom/budget/InvoiceStatusModel.java
 /home/okarch/classes/simbiom-browser/src/main/java/com/emd/simbiom/category/BrowseSamples.java
+/home/okarch/classes/simbiom-browser/src/main/java/com/emd/simbiom/report/PurchaseSummary.java
 /home/okarch/classes/simbiom-browser/src/main/java/com/emd/simbiom/storage/GroupDetailsView.java
 /home/okarch/classes/simbiom-browser/src/main/java/com/emd/simbiom/budget/InvoiceDetailsView.java
 /home/okarch/classes/simbiom-browser/src/main/java/com/emd/simbiom/budget/BudgetPeriod.java
@@ -27,6 +28,7 @@
 /home/okarch/classes/simbiom-browser/src/main/java/com/emd/simbiom/view/ColumnSet.java
 /home/okarch/classes/simbiom-browser/src/main/java/com/emd/simbiom/view/DefaultModelProducer.java
 /home/okarch/classes/simbiom-browser/src/main/java/com/emd/simbiom/view/ChartColors.java
+/home/okarch/classes/simbiom-browser/src/main/java/com/emd/simbiom/report/ReportStrategies.java
 /home/okarch/classes/simbiom-browser/src/main/java/com/emd/simbiom/search/DisplayColumn.java
 /home/okarch/classes/simbiom-browser/src/main/java/com/emd/simbiom/view/ColumnFormatter.java
 /home/okarch/classes/simbiom-browser/src/main/java/com/emd/simbiom/view/DateComparator.java
@@ -35,9 +37,12 @@
 /home/okarch/classes/simbiom-browser/src/main/java/com/emd/simbiom/budget/InvoiceSummary.java
 /home/okarch/classes/simbiom-browser/src/main/java/com/emd/simbiom/budget/EditInvoice.java
 /home/okarch/classes/simbiom-browser/src/main/java/com/emd/simbiom/budget/InvoiceStatusFilter.java
+/home/okarch/classes/simbiom-browser/src/main/java/com/emd/simbiom/template/OutputSelector.java
+/home/okarch/classes/simbiom-browser/src/main/java/com/emd/simbiom/report/PurchaseEntry.java
 /home/okarch/classes/simbiom-browser/src/main/java/com/emd/simbiom/template/LogLevelFilter.java
 /home/okarch/classes/simbiom-browser/src/main/java/com/emd/simbiom/command/InventoryCommand.java
 /home/okarch/classes/simbiom-browser/src/main/java/com/emd/simbiom/storage/StorageDocumentModel.java
+/home/okarch/classes/simbiom-browser/src/main/java/com/emd/simbiom/report/AbstractReportStrategy.java
 /home/okarch/classes/simbiom-browser/src/main/java/com/emd/simbiom/search/AgeInputChange.java
 /home/okarch/classes/simbiom-browser/src/main/java/com/emd/simbiom/cost/RegistrationModel.java
 /home/okarch/classes/simbiom-browser/src/main/java/com/emd/simbiom/budget/UpdateInvoice.java
@@ -88,6 +93,7 @@
 /home/okarch/classes/simbiom-browser/src/main/java/com/emd/simbiom/view/UIUtils.java
 /home/okarch/classes/simbiom-browser/src/main/java/com/emd/simbiom/search/UseFilter.java
 /home/okarch/classes/simbiom-browser/src/main/java/com/emd/simbiom/category/GoogleChartCategoryView.java
+/home/okarch/classes/simbiom-browser/src/main/java/com/emd/simbiom/report/DefaultStrategy.java
 /home/okarch/classes/simbiom-browser/src/main/java/com/emd/simbiom/category/ChartCategoryView.java
 /home/okarch/classes/simbiom-browser/src/main/java/com/emd/simbiom/search/ResultMenu.java
 /home/okarch/classes/simbiom-browser/src/main/java/com/emd/simbiom/cost/AddSampleItem.java
