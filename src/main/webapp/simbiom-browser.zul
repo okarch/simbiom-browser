@@ -285,10 +285,10 @@
 
             <row>
               <cell colspan="2">
-                <groupbox id="gbOutputLog" mold="3d" open="false">
+                <groupbox id="gbReportLog" mold="3d" open="false">
                     <caption image="/images/Document-16.png" label="Report" />                  
 
-                        <grid id="grOutputGroup" fixedLayout="true" span="true">
+                        <grid id="grReportGroup" fixedLayout="true" span="true">
                           <columns>
 	                    <column hflex="min" />
 	                    <column hflex="min" />
@@ -300,7 +300,7 @@
                               </cell>
                               <hlayout>
                                 <textbox id="txtReportName" width="250px"/>
-                                <button id="btOutputGenerate" label="Generate"/>
+                                <button id="btReportGenerate" label="Generate"/>
                               </hlayout>
                             </row>
                             <row>
@@ -321,7 +321,7 @@
                               </cell>
                               <hlayout>
                                 <combobox id="cbOutputSelector" autodrop="true" width="400px" mold="rounded" buttonVisible="true"/>		      
-                                <button id="btOutputDownload" label="Download"/>
+                                <button id="btReportDownload" label="Download"/>
                               </hlayout>
                             </row>
                           </rows>
@@ -547,9 +547,9 @@
                       <menuitem label="Delete Invoice" image="/images/delete-icon.png"/>
                     </menupopup>
                   </menu>
-                  <menu label="Export">
+                  <menu label="Report">
                     <menupopup>
-                      <menuitem label="Excel" image="/images/excel-24.png"/>
+                      <menuitem id="miReportPurchase" label="Purchase summary..." image="/images/excel-24.png"/>
                       <menuitem label="PDF" image="/images/pdf2-24.png"/>
                     </menupopup>
                   </menu>

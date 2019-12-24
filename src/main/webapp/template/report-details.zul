@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<vlayout>
+  <grid id="grReportGroup" fixedLayout="true" style="overflow: hidden;" span="true">
+    <columns>
+      <column width="15%" />
+      <column width="85%" />
+    </columns>
+
+    <rows>
+
+      <row id="rowReportDetailsMessage"/>
+
+      <row>
+        <cell style="text-align:left">
+	  <label value="Report name"/>
+        </cell>
+        <hlayout>
+          <textbox id="txtReportDetailsName" width="250px"/>
+          <button id="btReportDetailsGenerate" label="Generate"/>
+        </hlayout>
+      </row>
+      <row>
+        <cell style="text-align:left">
+          <label value="Report parameters"/>
+        </cell>
+	<vlayout id="vlReportDetailsParameter_0"/>
+      </row>
+      <row>
+        <cell style="text-align:left">
+          <label value="Report columns"/>
+        </cell>
+        <vlayout id="vlReportDetailsGroup_0"/>
+      </row>
+      <row>
+        <cell style="text-align:left">
+	  <label value="Report output"/>
+        </cell>
+        <hlayout>
+          <combobox id="cbReportDetailsOutputSelector" autodrop="true" width="400px" mold="rounded" buttonVisible="true"/>		      
+          <button id="btReportDetailsDownload" label="Download"/>
+        </hlayout>
+      </row>
+    </rows>
+  </grid>
+</vlayout>

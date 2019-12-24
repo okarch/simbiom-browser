@@ -1,8 +1,5 @@
 package com.emd.simbiom.template;
 
-import java.io.IOException;
-import java.io.StringReader;
-
 import java.util.Arrays;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -21,8 +18,6 @@ import org.apache.commons.lang.StringUtils;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
-import org.apache.commons.io.IOUtils;
 
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.Session;
@@ -56,6 +51,8 @@ import com.emd.simbiom.config.InventoryPreferences;
 
 import com.emd.simbiom.model.StorageDocument;
 
+import com.emd.simbiom.report.ReportDetailsView;
+
 import com.emd.simbiom.upload.InventoryUploadTemplate;
 
 import com.emd.simbiom.view.DefaultModelProducer;
@@ -74,19 +71,18 @@ import com.emd.zk.ZKUtil;
  * @version 1.0
  */
 public class TemplateModel extends DefaultModelProducer implements EventListener {
+    private ReportDetailsView details;
 
     private static Log log = LogFactory.getLog(TemplateModel.class);
 
-    private static final String TAG_HEADER       = "## Header structure supported:";
-    private static final String TAG_OUTPUT       = "## Output columns supported:";
-    private static final String TAG_END          = "## ##########";
-
-    public static final String CMP_REPORT_OUTPUT= "grOutputColumns";
-    public static final String CMP_REPORT_INPUT = "grInputColumns";
+    public static final String CMP_REPORT_OUTPUT= "grReportOutputColumns";
+    public static final String CMP_REPORT_INPUT = "grReportInputColumns";
     public static final String CMP_REPORT_GROUP = "vlReportGroup_0";
     public static final String CMP_REPORT_PARAM = "vlReportParameter_0";
     public static final String CMP_REPORT_NAME  = "txtReportName";
-    public static final String CMP_REPORT_GENERATE = "btOutputGenerate";
+    public static final String CMP_REPORT_GENERATE = "btReportGenerate";
+
+    public static final String CMP_REPORT_PREFIX= "Report";
 
     public static final String COMPONENT_ID      = "cbTemplate";
     public static final String RESULT            = "result";
@@ -143,11 +139,15 @@ public class TemplateModel extends DefaultModelProducer implements EventListener
     }
 
     private OutputSelector getOutputSelector() {
-	ModelProducer[] mp = getPreferences().getResult( OutputSelector.class );
-	if( mp.length <= 0 )
-	    return null;
-	return (OutputSelector)mp[0];
+	return (OutputSelector)getPreferences().getResult( "cbOutputSelector" );
     }
+
+    // private OutputSelector getOutputSelector() {
+    // 	ModelProducer[] mp = getPreferences().getResult( "cbOutputSelector" );
+    // 	if( mp.length <= 0 )
+    // 	    return null;
+    // 	return (OutputSelector)mp[0];
+    // }
 
     /**
      * Returns the selected upload template.
@@ -256,221 +256,221 @@ public class TemplateModel extends DefaultModelProducer implements EventListener
 	}
     }
 
-    private String[] parseColumns( InventoryUploadTemplate templ, String columnTag ) {
-	String tCont = toEditText(templ.getTemplate());
-	int k = -1;
-	String[] columns = null;
-	if( (k = tCont.indexOf( columnTag )) >= 0 ) {
-	    k+=columnTag.length();
-	    int l = -1;
-	    if( (l = tCont.indexOf( TAG_END, k )) > k ) {
-		List<String> lines = null;
-		try {
-		    lines = IOUtils.readLines( new StringReader( tCont.substring( k, l ) ));
-		}
-		catch( IOException ioe ) {
-		    lines = null;
-		    return new String[0];
-		}
-		for( String ln : lines ) {
-		    ln = ln.trim();
-		    if( ln.length() > 2 ) 
-			columns = ln.split( "[|]" );
-		}
-	    }
-	}
-	if( columns == null )
-	    return new String[0];
-	if( (columns.length > 0) && (columns[0].startsWith( "##" )) ) 
-	    columns[0] = columns[0].substring(2).trim();
-	return columns;
-    }
+    // private String[] parseColumns( InventoryUploadTemplate templ, String columnTag ) {
+    // 	String tCont = toEditText(templ.getTemplate());
+    // 	int k = -1;
+    // 	String[] columns = null;
+    // 	if( (k = tCont.indexOf( columnTag )) >= 0 ) {
+    // 	    k+=columnTag.length();
+    // 	    int l = -1;
+    // 	    if( (l = tCont.indexOf( TAG_END, k )) > k ) {
+    // 		List<String> lines = null;
+    // 		try {
+    // 		    lines = IOUtils.readLines( new StringReader( tCont.substring( k, l ) ));
+    // 		}
+    // 		catch( IOException ioe ) {
+    // 		    lines = null;
+    // 		    return new String[0];
+    // 		}
+    // 		for( String ln : lines ) {
+    // 		    ln = ln.trim();
+    // 		    if( ln.length() > 2 ) 
+    // 			columns = ln.split( "[|]" );
+    // 		}
+    // 	    }
+    // 	}
+    // 	if( columns == null )
+    // 	    return new String[0];
+    // 	if( (columns.length > 0) && (columns[0].startsWith( "##" )) ) 
+    // 	    columns[0] = columns[0].substring(2).trim();
+    // 	return columns;
+    // }
 
-    private Grid createInputOptions( String[] inColumns, String[] outColumns ) {
-	Grid grid = new Grid();
-	grid.setId( CMP_REPORT_INPUT );
-	grid.setFixedLayout( true );
-	grid.setSpan( true );
+    // private Grid createInputOptions( String[] inColumns, String[] outColumns ) {
+    // 	Grid grid = new Grid();
+    // 	grid.setId( CMP_REPORT_INPUT );
+    // 	grid.setFixedLayout( true );
+    // 	grid.setSpan( true );
 
-	// <columns>
-	Columns cols = new Columns();
-	for( int i = 0; i < 2; i++ ) {
-	    Column col = new Column();
-	    col.setHflex( "min" );
-	    col.setParent( cols );
-	}
-	cols.setParent( grid );
+    // 	// <columns>
+    // 	Columns cols = new Columns();
+    // 	for( int i = 0; i < 2; i++ ) {
+    // 	    Column col = new Column();
+    // 	    col.setHflex( "min" );
+    // 	    col.setParent( cols );
+    // 	}
+    // 	cols.setParent( grid );
 
-	// sort the colspecs first
+    // 	// sort the colspecs first
 
-	TreeMap<Integer,List<String>> sortedSpecs = new TreeMap<Integer,List<String>>();
-	Map<String,Integer> inputOrder = new HashMap<String,Integer>();
-	int nIdx = 0;
-	int orderIndex = 0;
-	for( int i = 0; i < inColumns.length; i++) {
-	    if( !inColumns[i].startsWith( "Output Columns" ) ) {
-		String colSpec = null;
-		for( int j = 0; j < outColumns.length; j++ ) {
-		    int k = -1;
-		    if( (outColumns[j].startsWith(inColumns[i])) &&
-			((k = outColumns[j].indexOf( "[" )) > 0) ) {
-			colSpec = StringUtils.substringBetween( outColumns[j], "[", "]" ).trim();
-			break;
-		    }
-		}
-                inputOrder.put( inColumns[i], new Integer(i) );
-		colSpec = Stringx.getDefault( colSpec, "txt" );
-		int actualIndex = nIdx;
-		boolean orderSet = false;
-		String[] toks = colSpec.split( ";" );
-		for( int k = 0; k < toks.length; k++ ) {
-		    int l = -1;
-		    int m = -1;
-		    if( ((l = toks[k].indexOf( "order" )) >= 0) &&
-			((m = toks[k].indexOf( "=" )) > 0 ) ) {
-			actualIndex = Stringx.toInt(toks[k].substring(m+1).trim(),actualIndex);
-			if( actualIndex > orderIndex )
-			    orderIndex = actualIndex;
-			orderSet = true;
-			break;
-		    }
-		}
+    // 	TreeMap<Integer,List<String>> sortedSpecs = new TreeMap<Integer,List<String>>();
+    // 	Map<String,Integer> inputOrder = new HashMap<String,Integer>();
+    // 	int nIdx = 0;
+    // 	int orderIndex = 0;
+    // 	for( int i = 0; i < inColumns.length; i++) {
+    // 	    if( !inColumns[i].startsWith( "Output Columns" ) ) {
+    // 		String colSpec = null;
+    // 		for( int j = 0; j < outColumns.length; j++ ) {
+    // 		    int k = -1;
+    // 		    if( (outColumns[j].startsWith(inColumns[i])) &&
+    // 			((k = outColumns[j].indexOf( "[" )) > 0) ) {
+    // 			colSpec = StringUtils.substringBetween( outColumns[j], "[", "]" ).trim();
+    // 			break;
+    // 		    }
+    // 		}
+    //             inputOrder.put( inColumns[i], new Integer(i) );
+    // 		colSpec = Stringx.getDefault( colSpec, "txt" );
+    // 		int actualIndex = nIdx;
+    // 		boolean orderSet = false;
+    // 		String[] toks = colSpec.split( ";" );
+    // 		for( int k = 0; k < toks.length; k++ ) {
+    // 		    int l = -1;
+    // 		    int m = -1;
+    // 		    if( ((l = toks[k].indexOf( "order" )) >= 0) &&
+    // 			((m = toks[k].indexOf( "=" )) > 0 ) ) {
+    // 			actualIndex = Stringx.toInt(toks[k].substring(m+1).trim(),actualIndex);
+    // 			if( actualIndex > orderIndex )
+    // 			    orderIndex = actualIndex;
+    // 			orderSet = true;
+    // 			break;
+    // 		    }
+    // 		}
 
-		if( !orderSet && (orderIndex >= nIdx) ) {
-		    nIdx = orderIndex+1;
-		    actualIndex = nIdx; 
-		}
-		Integer key = new Integer( actualIndex );
-		List<String> specs = sortedSpecs.get( key );
-		if( specs == null ) {
-		    // log.debug( "Creating option key : "+key );
-		    specs = new ArrayList<String>();
-		    sortedSpecs.put( key, specs );
-		    nIdx++;
-		}
-		specs.add( inColumns[i]+";"+colSpec );
-		// log.debug( "Adding specs : "+key+" specs: "+inColumns[i]+";"+colSpec );
-	    }
-	}
+    // 		if( !orderSet && (orderIndex >= nIdx) ) {
+    // 		    nIdx = orderIndex+1;
+    // 		    actualIndex = nIdx; 
+    // 		}
+    // 		Integer key = new Integer( actualIndex );
+    // 		List<String> specs = sortedSpecs.get( key );
+    // 		if( specs == null ) {
+    // 		    // log.debug( "Creating option key : "+key );
+    // 		    specs = new ArrayList<String>();
+    // 		    sortedSpecs.put( key, specs );
+    // 		    nIdx++;
+    // 		}
+    // 		specs.add( inColumns[i]+";"+colSpec );
+    // 		// log.debug( "Adding specs : "+key+" specs: "+inColumns[i]+";"+colSpec );
+    // 	    }
+    // 	}
 
-	// <rows>
-	Rows rows = new Rows();
-	int k = -1;
-	Set<Integer> keys = sortedSpecs.keySet();
-	for( Integer idx : keys ) {
-	    Row row = new Row();
-	    row.setParent( rows );
-	    Hlayout hl = new Hlayout();
-	    hl.setParent( row );
-	    List<String> specs = sortedSpecs.get( idx );
-	    int i = 0;
-	    for( String cSpec : specs ) {
-		String inColumn = StringUtils.substringBefore(cSpec,";");
-		String colSpec = StringUtils.substringAfter(cSpec,";");
+    // 	// <rows>
+    // 	Rows rows = new Rows();
+    // 	int k = -1;
+    // 	Set<Integer> keys = sortedSpecs.keySet();
+    // 	for( Integer idx : keys ) {
+    // 	    Row row = new Row();
+    // 	    row.setParent( rows );
+    // 	    Hlayout hl = new Hlayout();
+    // 	    hl.setParent( row );
+    // 	    List<String> specs = sortedSpecs.get( idx );
+    // 	    int i = 0;
+    // 	    for( String cSpec : specs ) {
+    // 		String inColumn = StringUtils.substringBefore(cSpec,";");
+    // 		String colSpec = StringUtils.substringAfter(cSpec,";");
 		
-		log.debug( "Index: "+idx+" column: "+inColumn+" specs: "+colSpec );
+    // 		log.debug( "Index: "+idx+" column: "+inColumn+" specs: "+colSpec );
 
-		Label lb = new Label( inColumn );
-		lb.setParent( hl );
+    // 		Label lb = new Label( inColumn );
+    // 		lb.setParent( hl );
 
-		Integer colIdx = inputOrder.get( inColumn );
+    // 		Integer colIdx = inputOrder.get( inColumn );
 
-		String[] tspecs = colSpec.split( ";" );
-		if( colSpec.startsWith( "txt" ) ) {
-		    Textbox txt = new Textbox();
-		    txt.setId( "cmpInputColumn_"+colIdx+"_"+inColumn );
-		    for( int l = 0; l < tspecs.length; l++ ) {
-			if( tspecs[l].startsWith( "width" ) ) {
-			    txt.setWidth( StringUtils.substringAfter(tspecs[l],"=").trim() );
-			}
-			else if( tspecs[l].startsWith( "init" ) ) {
-			    txt.setValue( StringUtils.substringAfter(tspecs[l],"=").trim() );
-			}
-		    }
-		    txt.setParent( hl );
-		}
-		else if( colSpec.startsWith( "dt" ) ) {
-		    Datebox dt = new Datebox();
-		    dt.setId( "cmpInputColumn_"+colIdx+"_"+inColumn );
-		    dt.setParent( hl );
-		    for( int l = 0; l < tspecs.length; l++ ) {
-			if( tspecs[l].startsWith( "init" ) ) {
-			    String dtp = StringUtils.substringAfter(tspecs[l],"=").trim();
-			    Calendar cal = Calendar.getInstance();
-			    if( "yearstart".equals(dtp) ) {
-				cal.set( Calendar.DAY_OF_MONTH, 1 );
-				cal.set( Calendar.MONTH, 0 );
-				dt.setValue( cal.getTime() );
-			    }
-			    else if( "currentdate".equals( dtp ) ) {
-				dt.setValue( cal.getTime() );
-			    }
-			}
-		    }
-		}
-		i++;
-	    }
-	}
-	rows.setParent( grid );
-	return grid;
-    }
+    // 		String[] tspecs = colSpec.split( ";" );
+    // 		if( colSpec.startsWith( "txt" ) ) {
+    // 		    Textbox txt = new Textbox();
+    // 		    txt.setId( "cmpInputColumn_"+colIdx+"_"+inColumn );
+    // 		    for( int l = 0; l < tspecs.length; l++ ) {
+    // 			if( tspecs[l].startsWith( "width" ) ) {
+    // 			    txt.setWidth( StringUtils.substringAfter(tspecs[l],"=").trim() );
+    // 			}
+    // 			else if( tspecs[l].startsWith( "init" ) ) {
+    // 			    txt.setValue( StringUtils.substringAfter(tspecs[l],"=").trim() );
+    // 			}
+    // 		    }
+    // 		    txt.setParent( hl );
+    // 		}
+    // 		else if( colSpec.startsWith( "dt" ) ) {
+    // 		    Datebox dt = new Datebox();
+    // 		    dt.setId( "cmpInputColumn_"+colIdx+"_"+inColumn );
+    // 		    dt.setParent( hl );
+    // 		    for( int l = 0; l < tspecs.length; l++ ) {
+    // 			if( tspecs[l].startsWith( "init" ) ) {
+    // 			    String dtp = StringUtils.substringAfter(tspecs[l],"=").trim();
+    // 			    Calendar cal = Calendar.getInstance();
+    // 			    if( "yearstart".equals(dtp) ) {
+    // 				cal.set( Calendar.DAY_OF_MONTH, 1 );
+    // 				cal.set( Calendar.MONTH, 0 );
+    // 				dt.setValue( cal.getTime() );
+    // 			    }
+    // 			    else if( "currentdate".equals( dtp ) ) {
+    // 				dt.setValue( cal.getTime() );
+    // 			    }
+    // 			}
+    // 		    }
+    // 		}
+    // 		i++;
+    // 	    }
+    // 	}
+    // 	rows.setParent( grid );
+    // 	return grid;
+    // }
 
-    private Grid createOutputOptions( String[] columns ) {
-	Grid grid = new Grid();
-	grid.setId( CMP_REPORT_OUTPUT );
-	grid.setFixedLayout( true );
-	grid.setSpan( true );
+    // private Grid createOutputOptions( String[] columns ) {
+    // 	Grid grid = new Grid();
+    // 	grid.setId( CMP_REPORT_OUTPUT );
+    // 	grid.setFixedLayout( true );
+    // 	grid.setSpan( true );
 
-	// <columns>
-	Columns cols = new Columns();
-	for( int i = 0; i < 4; i++ ) {
-	    Column col = new Column();
-	    col.setHflex( "min" );
-	    col.setParent( cols );
-	}
-	cols.setParent( grid );
+    // 	// <columns>
+    // 	Columns cols = new Columns();
+    // 	for( int i = 0; i < 4; i++ ) {
+    // 	    Column col = new Column();
+    // 	    col.setHflex( "min" );
+    // 	    col.setParent( cols );
+    // 	}
+    // 	cols.setParent( grid );
 
-	// <rows>
-	Rows rows = new Rows();
-	Row row = null;
-	int k = -1;
-	int nOrder = 0;
-	for( int i = 0; i < columns.length; i++) {
-	    if( ((i+4) % 4) == 0 ) {
-		row = new Row();
-		row.setParent( rows );
-	    }
-	    String colName = columns[i];
-	    boolean checked = false;
-	    if( columns[i].endsWith( "*" ) ) {
-		colName = columns[i].substring(0,columns[i].length()-1).trim();
-		checked = true;
-	    }
-	    if( (k = colName.indexOf( "[" )) > 0 )
-		colName = colName.substring( 0, k ).trim();
-	    Hlayout hl = new Hlayout();
-	    hl.setParent( row );
-	    Checkbox chk = new Checkbox();
-	    chk.setId( "chkOutputColumns_"+i+"_"+colName );
-	    chk.setChecked( checked );
-	    chk.addEventListener( Events.ON_CHECK, this );
-	    chk.setParent( hl );
-	    Spinner spOrder = new Spinner( 0 );
-	    if( checked ) {
-		nOrder++;
-		spOrder.setValue( nOrder ); 
-	    }
-	    else
-		spOrder.setDisabled( true );
-	    spOrder.setWidth( "50px" );
-	    spOrder.setId( "spOutputColumns_"+i+"_"+colName );
-	    spOrder.setParent( hl );
-	    Label lb = new Label( colName );
-	    lb.setParent( hl );
-	}
-	rows.setParent( grid );
-	return grid;
-    }
+    // 	// <rows>
+    // 	Rows rows = new Rows();
+    // 	Row row = null;
+    // 	int k = -1;
+    // 	int nOrder = 0;
+    // 	for( int i = 0; i < columns.length; i++) {
+    // 	    if( ((i+4) % 4) == 0 ) {
+    // 		row = new Row();
+    // 		row.setParent( rows );
+    // 	    }
+    // 	    String colName = columns[i];
+    // 	    boolean checked = false;
+    // 	    if( columns[i].endsWith( "*" ) ) {
+    // 		colName = columns[i].substring(0,columns[i].length()-1).trim();
+    // 		checked = true;
+    // 	    }
+    // 	    if( (k = colName.indexOf( "[" )) > 0 )
+    // 		colName = colName.substring( 0, k ).trim();
+    // 	    Hlayout hl = new Hlayout();
+    // 	    hl.setParent( row );
+    // 	    Checkbox chk = new Checkbox();
+    // 	    chk.setId( "chkOutputColumns_"+i+"_"+colName );
+    // 	    chk.setChecked( checked );
+    // 	    chk.addEventListener( Events.ON_CHECK, this );
+    // 	    chk.setParent( hl );
+    // 	    Spinner spOrder = new Spinner( 0 );
+    // 	    if( checked ) {
+    // 		nOrder++;
+    // 		spOrder.setValue( nOrder ); 
+    // 	    }
+    // 	    else
+    // 		spOrder.setDisabled( true );
+    // 	    spOrder.setWidth( "50px" );
+    // 	    spOrder.setId( "spOutputColumns_"+i+"_"+colName );
+    // 	    spOrder.setParent( hl );
+    // 	    Label lb = new Label( colName );
+    // 	    lb.setParent( hl );
+    // 	}
+    // 	rows.setParent( grid );
+    // 	return grid;
+    // }
 
     private int nextFreeOrder( Window wnd ) {
 	Grid grid = (Grid)wnd.getFellowIfAny( CMP_REPORT_OUTPUT );
@@ -505,16 +505,16 @@ public class TemplateModel extends DefaultModelProducer implements EventListener
 	return colOrder;
     }
 
-    private void initReportName( Window wnd, InventoryUploadTemplate templ ) {
-	Textbox txt = (Textbox)wnd.getFellowIfAny( CMP_REPORT_NAME );
-	if( txt != null ) {
-	    String repName = Stringx.getDefault( templ.getTemplatename(), "Report" );
-	    if( repName.startsWith( "Report -" ) )
-		repName = repName.substring( 8 ).trim();
-	    repName = repName+" "+Stringx.currentDateString( "dd-MMM-YYYY" );
-	    txt.setValue( repName );
-	}
-    }
+    // private void initReportName( Window wnd, InventoryUploadTemplate templ ) {
+    // 	Textbox txt = (Textbox)wnd.getFellowIfAny( CMP_REPORT_NAME );
+    // 	if( txt != null ) {
+    // 	    String repName = Stringx.getDefault( templ.getTemplatename(), "Report" );
+    // 	    if( repName.startsWith( "Report -" ) )
+    // 		repName = repName.substring( 8 ).trim();
+    // 	    repName = repName+" "+Stringx.currentDateString( "dd-MMM-YYYY" );
+    // 	    txt.setValue( repName );
+    // 	}
+    // }
 
     private void appendReportOutputs( Window wnd, InventoryUploadTemplate templ ) {
 	OutputSelector outS = getOutputSelector();
@@ -553,30 +553,30 @@ public class TemplateModel extends DefaultModelProducer implements EventListener
 	if( bt != null )
 	    bt.setDisabled( true );
 	OutputSelector outS = getOutputSelector();
-	if( outS == null ) 
+	if( outS != null ) 
 	    outS.updateModel( wnd, null );
 	Vlayout vlg = (Vlayout)wnd.getFellowIfAny( CMP_REPORT_GROUP );
 	Vlayout vlp = (Vlayout)wnd.getFellowIfAny( CMP_REPORT_PARAM );
 	if( (vlg == null) || (vlp == null) )
 	    return;
-	String[] headerColumns = parseColumns( templ, TAG_HEADER );
+	String[] headerColumns = ReportDetailsView.parseColumns( templ, ReportDetailsView.TAG_HEADER );
 	log.debug( "Number of report header columns: "+headerColumns.length );
-	String[] outputColumns = parseColumns( templ, TAG_OUTPUT );
+	String[] outputColumns = ReportDetailsView.parseColumns( templ, ReportDetailsView.TAG_OUTPUT );
 	log.debug( "Number of report output columns: "+outputColumns.length );
 	if( outputColumns.length > 0 ) {
-	    grid = createOutputOptions( outputColumns );
+	    grid = ReportDetailsView.createOutputOptions( CMP_REPORT_PREFIX, outputColumns, this );
 	    grid.setParent( vlg );
 	    bt.setDisabled( false );
 	}
 	if( headerColumns.length > 0 ) {
-	    grid = createInputOptions( headerColumns, outputColumns );
+	    grid = ReportDetailsView.createInputOptions( CMP_REPORT_PREFIX, headerColumns, outputColumns, this );
 	    grid.setParent( vlp );
 	    bt.setDisabled( false );
 	}
 	
 	// initialize report name
 
-	initReportName( wnd, templ );
+	ReportDetailsView.initReportName( wnd, CMP_REPORT_PREFIX, templ );
 
 	appendReportOutputs( wnd, templ );
     }
@@ -610,6 +610,24 @@ public class TemplateModel extends DefaultModelProducer implements EventListener
 	    spOrder.setDisabled( !chk.isChecked() );
 	    spOrder.setValue( ((chk.isChecked())?nextFreeOrder(wnd):0) );
 	}
+    }
+
+    /**
+     * Get the <code>Details</code> value.
+     *
+     * @return a <code>ReportDetailsView</code> value
+     */
+    public final ReportDetailsView getDetails() {
+	return details;
+    }
+
+    /**
+     * Set the <code>Details</code> value.
+     *
+     * @param details The new Details value.
+     */
+    public final void setDetails(final ReportDetailsView details) {
+	this.details = details;
     }
 
     /**

@@ -117,21 +117,22 @@ public class OutputSelector extends DefaultModelProducer implements EventListene
     }	
 
     /**
-     * Returns the selected upload template.
+     * Returns the selected output.
      *
      * @param wnd the app window.
-     * @return the upload template currently selected (or null).
+     * @return the output currently selected (or null).
      */ 
-    // public InventoryUploadTemplate getSelectedTemplate( Window wnd ) {
-    // 	Combobox cbTempl = (Combobox)wnd.getFellowIfAny( getModelName() );
-    // 	InventoryUploadTemplate templ = null;
-    // 	if( cbTempl != null ) {
-    // 	    int sel = cbTempl.getSelectedIndex();
-    // 	    if( sel >= 0 )
-    // 		templ = cbTempl.getModel().getElementAt( sel );
-    // 	}
-    // 	return templ;
-    // }
+    public StorageDocument getSelectedOutput( Window wnd ) {
+	Combobox cbTempl = (Combobox)wnd.getFellowIfAny( getModelName() );
+	StorageDocument templ = null;
+	if( cbTempl != null ) {
+	    int sel = cbTempl.getSelectedIndex();
+	    log.debug( "Selected document index: "+sel );
+	    if( sel >= 0 )
+		templ = (StorageDocument)cbTempl.getModel().getElementAt( sel );
+	}
+	return templ;
+    }
 
     protected void assignCombobox( Combobox combobox, Map context ) {
 	log.debug( "Upload selector context: "+context );

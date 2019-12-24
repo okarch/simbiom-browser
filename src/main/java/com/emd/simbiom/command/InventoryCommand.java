@@ -15,8 +15,10 @@ import org.apache.commons.logging.LogFactory;
 import org.zkoss.zk.ui.Component;
 
 import org.zkoss.zul.Cell;
+import org.zkoss.zul.Combobox;
 import org.zkoss.zul.Grid;
 import org.zkoss.zul.Label;
+import org.zkoss.zul.Listbox;
 import org.zkoss.zul.Row;
 import org.zkoss.zul.Rows;
 import org.zkoss.zul.Window;
@@ -33,9 +35,12 @@ import com.emd.zk.ZKContext;
 import com.emd.zk.command.CommandException;
 import com.emd.zk.command.ListenerCommand;
 
+import com.emd.util.Stringx;
+
 public class InventoryCommand extends ListenerCommand {
     private String               portletId;
     private long                 userId;
+    private String messageRowId;
 
     private static Log log = LogFactory.getLog(InventoryCommand.class);
 
@@ -116,6 +121,48 @@ public class InventoryCommand extends ListenerCommand {
 				String labelId, 
 				String msg ) {
 	UIUtils.showMessage( wnd, parentId, labelId, msg );
+    }
+
+    /**
+     * Get the <code>MessageRowId</code> value.
+     *
+     * @return a <code>String</code> value
+     */
+    public final String getMessageRowId() {
+	return messageRowId;
+    }
+
+    /**
+     * Set the <code>MessageRowId</code> value.
+     *
+     * @param messageRowId The new MessageRowId value.
+     */
+    public final void setMessageRowId(final String messageRowId) {
+	this.messageRowId = messageRowId;
+    }
+
+    private String getLabelId() {
+	return Stringx.getDefault(getMessageRowId(),"rowMessage").replace( "row", "lb" );
+    }
+
+    protected void writeMessage( Window wnd, String msg ) {
+	UIUtils.showMessage( wnd, Stringx.getDefault(getMessageRowId(),"rowMessage"), getLabelId(), msg );
+    }
+
+    protected void writeMessage( Grid grid, String msg ) {
+	Window wnd = ZKContext.findWindow( grid );
+	if( wnd != null )
+	    writeMessage( wnd, msg );
+    }
+    protected void writeMessage( Listbox listbox, String msg ) {
+	Window wnd = ZKContext.findWindow( listbox );
+	if( wnd != null )
+	    writeMessage( wnd, msg );
+    }
+    protected void writeMessage( Combobox combobox, String msg ) {
+	Window wnd = ZKContext.findWindow( combobox );
+	if( wnd != null )
+	    writeMessage( wnd, msg );
     }
 
     /**

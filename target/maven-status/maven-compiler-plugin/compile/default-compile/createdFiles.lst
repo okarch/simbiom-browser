@@ -63,6 +63,7 @@ com/emd/simbiom/category/CategoryViewNode.class
 com/emd/simbiom/search/SampleDetailsView.class
 com/emd/simbiom/budget/InvoiceStatusFilter.class
 com/emd/simbiom/view/CategoryTreeModel.class
+com/emd/simbiom/report/ReportEngine.class
 com/emd/simbiom/template/TemplateModel$1.class
 com/emd/simbiom/template/UploadSelector.class
 com/emd/simbiom/budget/InvoiceStatusModel.class
@@ -115,12 +116,15 @@ com/emd/simbiom/view/ChartColors.class
 com/emd/simbiom/template/BatchEntry$1.class
 com/emd/simbiom/cost/CostItemRenderer.class
 com/emd/simbiom/cost/AddSampleItem.class
+com/emd/simbiom/template/GenerateReport$1.class
 com/emd/simbiom/storage/AddBillingItem.class
 com/emd/simbiom/template/EditTemplate$2.class
 com/emd/simbiom/budget/SearchInvoice.class
 com/emd/simbiom/budget/InvoicePeriodChange.class
 com/emd/simbiom/storage/StorageProjectModel$1.class
+com/emd/simbiom/report/ReportDetailsView.class
 com/emd/simbiom/storage/StorageDocumentModel$1.class
 com/emd/simbiom/storage/PurchaseChange.class
+com/emd/simbiom/template/DownloadOutput.class
 com/emd/simbiom/view/UIUtils.class
 com/emd/simbiom/search/TextFilter.class
