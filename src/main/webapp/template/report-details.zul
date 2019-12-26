@@ -17,7 +17,8 @@
         </cell>
         <hlayout>
           <textbox id="txtReportDetailsName" width="250px"/>
-          <button id="btReportDetailsGenerate" label="Generate"/>
+          <button id="btReportDetailsGenerate" label="Generate" width="100px" iconSclass="z-icon-edit"/>
+          <button id="btReportDetailsClose" label="Close" width="100px" iconSclass="z-icon-times"/>
         </hlayout>
       </row>
       <row>
@@ -38,7 +39,8 @@
         </cell>
         <hlayout>
           <combobox id="cbReportDetailsOutputSelector" autodrop="true" width="400px" mold="rounded" buttonVisible="true"/>		      
-          <button id="btReportDetailsDownload" label="Download"/>
+          <button id="btReportDetailsDownload" label="Download" iconSclass="z-icon-save"/>
+          <button id="btReportDetailsCancel" label="Close" width="100px" iconSclass="z-icon-times"/>
         </hlayout>
       </row>
     </rows>

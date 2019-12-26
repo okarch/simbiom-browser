@@ -9,7 +9,9 @@ import org.apache.commons.logging.LogFactory;
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.event.Event;
 
-// import org.zkoss.zul.Grid;
+import org.zkoss.zul.Combobox;
+import org.zkoss.zul.Grid;
+import org.zkoss.zul.Listbox;
 // import org.zkoss.zul.ListModelList;
 import org.zkoss.zul.Window;
 
@@ -19,6 +21,8 @@ import com.emd.simbiom.config.InventoryPreferences;
 import com.emd.simbiom.dao.SampleInventory;
 
 import com.emd.simbiom.view.UIUtils;
+
+import com.emd.util.Stringx;
 
 import com.emd.zk.ZKContext;
 import com.emd.zk.view.ViewAction;
@@ -35,6 +39,7 @@ import com.emd.zk.view.ViewAction;
 public class InventoryViewAction extends ViewAction {
     private String               portletId;
     private long                 userId;
+    private String messageRowId;
     // private List<ActionProcessor> processors;
 
     private static Log log = LogFactory.getLog(InventoryViewAction.class);
@@ -93,6 +98,48 @@ public class InventoryViewAction extends ViewAction {
      */
     public void setUserId(long newUserId) {
 	this.userId = newUserId;
+    }
+
+    /**
+     * Get the <code>MessageRowId</code> value.
+     *
+     * @return a <code>String</code> value
+     */
+    public final String getMessageRowId() {
+	return messageRowId;
+    }
+
+    /**
+     * Set the <code>MessageRowId</code> value.
+     *
+     * @param messageRowId The new MessageRowId value.
+     */
+    public final void setMessageRowId(final String messageRowId) {
+	this.messageRowId = messageRowId;
+    }
+
+    private String getLabelId() {
+	return Stringx.getDefault(getMessageRowId(),"rowMessage").replace( "row", "lb" );
+    }
+
+    protected void writeMessage( Window wnd, String msg ) {
+	UIUtils.showMessage( wnd, Stringx.getDefault(getMessageRowId(),"rowMessage"), getLabelId(), msg );
+    }
+
+    protected void writeMessage( Grid grid, String msg ) {
+	Window wnd = ZKContext.findWindow( grid );
+	if( wnd != null )
+	    writeMessage( wnd, msg );
+    }
+    protected void writeMessage( Listbox listbox, String msg ) {
+	Window wnd = ZKContext.findWindow( listbox );
+	if( wnd != null )
+	    writeMessage( wnd, msg );
+    }
+    protected void writeMessage( Combobox combobox, String msg ) {
+	Window wnd = ZKContext.findWindow( combobox );
+	if( wnd != null )
+	    writeMessage( wnd, msg );
     }
 
     /**

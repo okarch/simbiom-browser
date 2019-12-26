@@ -416,24 +416,24 @@
                template="/template/report-details.zul"
                messageRowId="rowReportDetailsMessage"
                detailsLayout="vlReportDetailsView"
-               width="1000px">
+               width="1200px">
 
-        <action config-class="com.emd.simbiom.budget.UpdateInvoice"
-                component="btInvDetailsStore"
+        <action config-class="com.emd.simbiom.report.ReportDetailsAction"
+                component="btReportDetailsGenerate"
+                messageRowId="rowReportDetailsMessage"
                 event="onClick" />
-        <action config-class="com.emd.simbiom.budget.UpdateInvoice"
-                component="btInvDetailsClose"
+        <action config-class="com.emd.simbiom.report.ReportDetailsAction"
+                component="btReportDetailsClose"
+                messageRowId="rowReportDetailsMessage"
                 event="onClick" />
-        <action config-class="com.emd.simbiom.budget.UpdateInvoice"
-                component="btInvDetailsCopy"
+        <action config-class="com.emd.simbiom.report.ReportDetailsAction"
+                component="btReportDetailsCancel"
+                messageRowId="rowReportDetailsMessage"
                 event="onClick" />
-        <action config-class="com.emd.simbiom.budget.UpdateInvoice"
-                component="btInvDetailsForward"
+        <action config-class="com.emd.simbiom.report.ReportDetailsAction"
+                component="btReportDetailsDownload"
+                messageRowId="rowReportDetailsMessage"
                 event="onClick" />
-        <action config-class="com.emd.simbiom.budget.UpdateInvoice"
-                component="btInvDetailsBackward"
-                event="onClick" />
-
       </details>
 
     </result>

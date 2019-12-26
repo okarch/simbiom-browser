@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="com.emd.simbiom.portlet.SampleInventoryApplicationTests" time="6.898" tests="1" errors="0" skipped="0" failures="0">
+<testsuite name="com.emd.simbiom.portlet.SampleInventoryApplicationTests" time="55.262" tests="1" errors="0" skipped="0" failures="0">
   <properties>
     <property name="java.runtime.name" value="Java(TM) SE Runtime Environment"/>
     <property name="sun.boot.library.path" value="/local/java/jdk1.8.0_172/jre/lib/amd64"/>
@@ -57,5 +57,5 @@
     <property name="sun.io.unicode.encoding" value="UnicodeLittle"/>
     <property name="sun.cpu.isalist" value=""/>
   </properties>
-  <testcase name="contextLoads" classname="com.emd.simbiom.portlet.SampleInventoryApplicationTests" time="6.898"/>
+  <testcase name="contextLoads" classname="com.emd.simbiom.portlet.SampleInventoryApplicationTests" time="55.262"/>
 </testsuite>

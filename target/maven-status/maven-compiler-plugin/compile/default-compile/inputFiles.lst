@@ -63,6 +63,7 @@
 /home/okarch/classes/simbiom-browser/src/main/java/com/emd/simbiom/storage/PurchaseChange.java
 /home/okarch/classes/simbiom-browser/src/main/java/com/emd/simbiom/template/UploadSelector.java
 /home/okarch/classes/simbiom-browser/src/main/java/com/emd/simbiom/view/SwitchTab.java
+/home/okarch/classes/simbiom-browser/src/main/java/com/emd/simbiom/report/ReportDetailsAction.java
 /home/okarch/classes/simbiom-browser/src/main/java/com/emd/simbiom/view/ModelProducer.java
 /home/okarch/classes/simbiom-browser/src/main/java/com/emd/simbiom/portlet/InventoryPortletController.java
 /home/okarch/classes/simbiom-browser/src/main/java/com/emd/simbiom/cost/SampleTypeModel.java

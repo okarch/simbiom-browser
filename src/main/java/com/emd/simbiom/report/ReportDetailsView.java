@@ -121,6 +121,14 @@ public class ReportDetailsView extends VelocityView implements EventListener {
 	this.setUserId( userId );
     }
 
+    private void updateTemplate( InventoryUploadTemplate templ ) {
+	ViewAction[] acts = getActions();
+	for( int i = 0; i < acts.length; i++ ) {
+	    if( acts[i] instanceof ReportDetailsAction ) 
+		((ReportDetailsAction)acts[i]).setTemplate( templ );
+	}
+    }
+
     /**
      * Get the PortletId value.
      * @return the PortletId value.
@@ -526,7 +534,7 @@ public class ReportDetailsView extends VelocityView implements EventListener {
 	if( grid != null )
 	    grid.detach();
 	Button bt = (Button)wnd.getFellowIfAny( CMP_REPORT_GENERATE );
-	if( bt != null )
+	if( bt != null ) 
 	    bt.setDisabled( true );
 
 	OutputSelector outS = getOutputSelector();
@@ -543,6 +551,7 @@ public class ReportDetailsView extends VelocityView implements EventListener {
 	    writeMessage( wnd, "Error: Cannot determine report template." );
 	    return;
 	}
+	updateTemplate( templ ); 
 
 	String[] headerColumns = parseColumns( templ, TAG_HEADER );
 	log.debug( "Number of report header columns: "+headerColumns.length );

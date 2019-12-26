@@ -48,6 +48,7 @@ com/emd/simbiom/storage/EditStorageProject.class
 com/emd/simbiom/search/ColumnSelect.class
 com/emd/simbiom/template/UploadLogRenderer.class
 com/emd/simbiom/storage/StorageProjectModel.class
+com/emd/simbiom/report/ReportDetailsAction.class
 com/emd/simbiom/category/CategoryView.class
 com/emd/simbiom/category/BrowseLogisticsSamples.class
 com/emd/simbiom/storage/SelectStorageDetails.class
