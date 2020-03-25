@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<vlayout>
+  <grid id="grInvoiceDetails" fixedLayout="true" style="overflow: hidden;" >
+    <columns>
+      <column width="20%" />
+      <column width="80%" />
+    </columns>
+
+    <rows id="rsInvoice_${details.invoice.invoiceid}">
+
+      <row id="rowInvoiceDetailsMessage"/>
+
+      <row>
+        <cell colspan="2">
+          <grid fixedLayout="true" style="overflow: hidden;">
+            <rows id="rsInvoiceIssueRows">
+            </rows>
+          </grid>
+        </cell>
+      </row>
+
+      <row>
+        <cell style="text-align:left">
+	  <label value="Purchase order"/>
+        </cell>
+        <hlayout>
+          <combobox id="cbInvoicePO" autodrop="true" width="200px" mold="rounded" buttonVisible="true">
+#if( $details.invoiceExist )
+            <attribute name="onCreate">self.setSelectedIndex($details.purchaseIndex);</attribute>
+#end
+#foreach( $pItem in $details.allPurchases )
+            <comboitem label="$esc.xml($pItem.purchase)" value="$pItem.billid" />
+#end
+          </combobox>
+          <button id="btInvDetailsCopy" label="Last Invoice" iconSclass="z-icon-copy"/>
+          <button id="btInvDetailsBackward" width="25px" disabled="true" iconSclass="z-icon-angle-left"/>
+          <button id="btInvDetailsForward" width="25px" disabled="true" iconSclass="z-icon-angle-right"/>
+          <label id="lbInvDetailsCopy" value="" />
+          <label id="lbInvDetailsMoreInv" visible="false" value="" />
+        </hlayout>
+      </row>
+
+      <row>
+        <cell style="text-align:left">
+	  <label value="Invoice reference"/>
+        </cell>
+        <textbox id="txtInvoiceRef" width="200px" value="$details.invoice.invoice"/>
+      </row>
+
+      <row>
+        <cell style="text-align:left">
+	  <label value="Invoice period"/>
+        </cell>
+        <hlayout>
+	  <label value="from"/>
+          <datebox id="dbInvoiceStarted" width="150px"/>
+	  <label value="to"/>
+          <datebox id="dbInvoiceEnded" width="150px" />
+        </hlayout>
+      </row>
+
+      <row>
+        <cell style="text-align:left">
+	  <label value="Amount"/>
+        </cell>
+        <vlayout>
+          <hlayout>
+            <decimalbox id="decInvoiceAmount" width="100px" value="$details.invoice.amount"/>
+            <combobox id="cbInvoiceCurrency" autodrop="true" width="80px" mold="rounded" buttonVisible="true">
+              <attribute name="onCreate">self.setSelectedIndex($details.currencyIndex);</attribute>
+              <comboitem label="" value="" />
+              <comboitem label="EUR" value="EUR" />
+              <comboitem label="USD" value="USD" />
+              <comboitem label="SGD" value="SGD" />
+            </combobox>
+          </hlayout>
+          <hlayout>
+	    <label value="Number of samples"/>
+            <decimalbox id="decInvoiceNumsamples" width="100px" value="$details.invoice.numsamples"/>
+          </hlayout>
+        </vlayout>
+      </row>
+
+      <row>
+        <cell style="text-align:left">
+	  <label value="Status"/>
+        </cell>
+        <vlayout>
+          <hlayout>
+            <label value="Verified on"/>
+            <datebox id="dbInvoiceVerified" width="150px" />
+	    <label value="Approved on"/>
+            <datebox id="dbInvoiceApproved" width="150px" />
+	    <label value="Rejected on"/>
+            <datebox id="dbInvoiceRejected" width="150px" />
+          </hlayout>
+          <hlayout>
+            <label value="Reason to reject"/>
+            <textbox id="txtInvoiceRejected" width="200px" value="$details.invoice.reason" />
+          </hlayout>
+        </vlayout>
+      </row>
+
+      <row>
+        <cell style="text-align:left"/>
+        <hbox pack="center">
+          <button id="btInvDetailsStore" label="Store" iconSclass="z-icon-save"/>
+          <button id="btInvDetailsDelete" label="Delete" iconSclass="z-icon-minus-circle"/>
+          <button id="btInvDetailsClose" label="Close" iconSclass="z-icon-times"/>
+        </hbox>
+      </row>
+
+    </rows>
+  </grid>
+</vlayout>

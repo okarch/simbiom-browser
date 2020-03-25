@@ -32,6 +32,7 @@ import com.emd.simbiom.view.ModelProducer;
 import com.emd.simbiom.view.UIUtils;
 
 import com.emd.simbiom.model.Billing;
+import com.emd.simbiom.model.RepositoryRecord;
 import com.emd.simbiom.model.StorageDocument;
 import com.emd.simbiom.model.StorageGroup;
 import com.emd.simbiom.model.StorageProject;
@@ -55,6 +56,7 @@ public class SelectStorageDetails extends InventoryCommand {
     private static Log log = LogFactory.getLog(SelectStorageDetails.class);
 
     private static final String CMP_PROJECT_TITLE     = "txtProjectName";
+    private static final String CMP_PROJECT_AREA      = "txtProjectArea";
     private static final String CMP_PROJECT_CODE      = "txtProjectCode";
     private static final String CMP_PURCHASE_ORDER    = "txtPurchaseOrder";
     private static final String CMP_STORAGE_GROUP     = "cbStorageGroup";
@@ -85,6 +87,20 @@ public class SelectStorageDetails extends InventoryCommand {
       	if( mp.length <= 0 )
       	    return null;
       	return (StorageDocumentModel)mp[0];
+    }
+
+    private RepositoryList getRepositoryList() {
+      	ModelProducer[] mp = getPreferences().getResult( RepositoryList.class );
+      	if( mp.length <= 0 )
+      	    return null;
+      	return (RepositoryList)mp[0];
+    }
+
+    private StorageGroup[] getSortedGroups( Window wnd ) {
+	StorageGroupModel sgm = getStorageGroupModel();
+	if( sgm != null )
+	    return sgm.getStorageGroups( wnd );
+	return new StorageGroup[0];
     }
 
     /**
@@ -157,6 +173,7 @@ public class SelectStorageDetails extends InventoryCommand {
     private void clearDetails( Window wnd ) {
 	UIUtils.clearMessage( wnd, CMP_STORAGE_MSG );
 	setText( wnd, CMP_PROJECT_TITLE, "" );
+	setText( wnd, CMP_PROJECT_AREA, "" );
 	setGroups( wnd, null );
 	changeStorageGroup( wnd, true );
 	setText( wnd, CMP_PROJECT_CODE, "" );
@@ -198,8 +215,40 @@ public class SelectStorageDetails extends InventoryCommand {
 	bItem.updateBilling( wnd, bills );
     }
 
+    private void updateRepository( Window wnd, StorageProject prj ) {
+	StorageGroup[] grps = getSortedGroups( wnd );
+	if( grps.length <= 0 ) {
+	    showMessage( wnd, "rowStorageMessage", "lbStorageMessage", "Warning: No storage group defined" );
+	    return;
+	}
+	RepositoryRecord[] registrations = null;
+	SampleInventory dao = getSampleInventory();
+	if( dao != null ) {
+	    try {
+		registrations = dao.findRepositoryMember( grps[0].getGroupid(), null );
+	    }
+	    catch( SQLException sqe ) {
+		showMessage( wnd, "rowStorageMessage", "lbStorageMessage", "Error: "+
+			     Stringx.getDefault( sqe.getMessage(), "General database error" ) );
+	    }
+	}
+	if( registrations == null )
+	    registrations = new RepositoryRecord[0];
+
+	log.debug( "Number of registered samples associated with "+prj+" and group "+grps[0]+": "+registrations.length );
+
+	RepositoryList mGroups = getRepositoryList();
+	if( mGroups == null )
+	    return;
+	
+	Map ctxt = new HashMap();
+	ctxt.put( RepositoryList.RESULT, registrations );
+	mGroups.assignModel( wnd, ctxt );
+    }
+
     private void updateDetails( Window wnd, StorageProject prj ) {
 	setText( wnd, CMP_PROJECT_TITLE, prj.getTitle() );
+	setText( wnd, CMP_PROJECT_AREA, prj.getArea() );
 	setGroups( wnd, prj );
 	SampleInventory dao = getSampleInventory();
 	if( dao != null ) {
@@ -214,6 +263,7 @@ public class SelectStorageDetails extends InventoryCommand {
 	    }
 	}
 	updateDocuments( wnd, prj );
+	updateRepository( wnd, prj );
     }
 
     /**

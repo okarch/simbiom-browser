@@ -28,8 +28,10 @@ import org.zkoss.zul.Window;
 
 import com.emd.simbiom.dao.SampleInventory;
 
+import com.emd.simbiom.model.RepositoryRecord;
 import com.emd.simbiom.model.StorageGroup;
 
+import com.emd.simbiom.view.ModelProducer;
 import com.emd.simbiom.view.DefaultModelProducer;
 
 import com.emd.util.Stringx;
@@ -230,8 +232,8 @@ public class StorageGroupModel extends DefaultModelProducer implements EventList
 
 	if( !combobox.isListenerAvailable( "onAfterRender", false ) )
 	    combobox.addEventListener( "onAfterRender", this );
-	// if( !combobox.isListenerAvailable( Events.ON_SELECT, false ) )
-	//     combobox.addEventListener( Events.ON_SELECT, this );
+	if( !combobox.isListenerAvailable( Events.ON_SELECT, false ) )
+	    combobox.addEventListener( Events.ON_SELECT, this );
 
 	StorageGroup[] tList = (StorageGroup[])context.get( RESULT );
 	if( tList == null )	    
@@ -240,6 +242,39 @@ public class StorageGroupModel extends DefaultModelProducer implements EventList
 	    log.debug( "Assigning model, number of storage groups: "+tList.length );
 	    combobox.setModel( new ListModelArray( sortStorageGroups(tList) ) );
 	}
+    }
+
+    private RepositoryList getRepositoryList() {
+      	ModelProducer[] mp = getPreferences().getResult( RepositoryList.class );
+      	if( mp.length <= 0 )
+      	    return null;
+      	return (RepositoryList)mp[0];
+    }
+
+    private void updateRepository( Window wnd, StorageGroup grp ) {
+	RepositoryRecord[] registrations = null;
+	SampleInventory dao = getSampleInventory();
+	if( dao != null ) {
+	    try {
+		registrations = dao.findRepositoryMember( grp.getGroupid(), null );
+	    }
+	    catch( SQLException sqe ) {
+		// showMessage( wnd, "rowStorageMessage", "lbStorageMessage", "Error: "+
+		// 	     Stringx.getDefault( sqe.getMessage(), "General database error" ) );
+	    }
+	}
+	if( registrations == null )
+	    registrations = new RepositoryRecord[0];
+
+	log.debug( "Number of registered samples associated with group "+grp+": "+registrations.length );
+
+	RepositoryList mGroups = getRepositoryList();
+	if( mGroups == null )
+	    return;
+	
+	Map ctxt = new HashMap();
+	ctxt.put( RepositoryList.RESULT, registrations );
+	mGroups.assignModel( wnd, ctxt );
     }
 
     /**
@@ -282,13 +317,16 @@ public class StorageGroupModel extends DefaultModelProducer implements EventList
 	// 	templ = (StorageProject)cb.getModel().getElementAt( idx );
 	    }	    
 	}	
-	// else if( Events.ON_SELECT.equals( event.getName() ) ) {
-	//     if( cb.getItemCount() > 0 ) {
-	// 	int idx = cb.getSelectedIndex();
-	// 	if( idx >= 0 )
-	// 	    templ = (StorageProject)cb.getModel().getElementAt( idx );
-	//     }
-	// }
+	else if( Events.ON_SELECT.equals( event.getName() ) ) {
+	    Window wnd = ZKUtil.findWindow( cb );
+	    if( cb.getItemCount() > 0 ) {
+	 	int idx = cb.getSelectedIndex();
+	 	if( idx >= 0 ) {
+		    StorageGroup grp = (StorageGroup)cb.getModel().getElementAt( idx );
+		    updateRepository( wnd, grp );
+		}
+	    }
+	}
 
 	// if( templ != null ) {
 	//     Window wnd = ZKUtil.findWindow( cb );

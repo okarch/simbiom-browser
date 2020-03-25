@@ -658,6 +658,13 @@
 
                       <row>
                         <cell style="text-align:left">
+                          <label value="Therapeutic area"/>
+                        </cell>
+                        <textbox id="txtProjectArea" width="300px"/>
+                      </row>
+
+                      <row>
+                        <cell style="text-align:left">
                           <label value="Samples expected"/>
                         </cell>
                         <intbox id="intStorageExpected" width="100px"/>
@@ -708,6 +715,87 @@
                             </row>
                           </rows>
                         </grid>
+                      </row>
+
+                    </rows>
+                  </grid>
+                </groupbox>
+              </cell>
+	    </row>
+
+            <row>
+              <cell colspan="2">
+                <groupbox id="gbStorageSamples" mold="3d" open="false">
+                  <caption image="/images/status.png" label="Repository samples" />                  
+                  <grid id="grStorageSamples" fixedLayout="true" span="true">
+                    <columns>
+                      <column width="20%"/>
+                      <column width="80%"/>
+                    </columns>
+
+                    <rows>
+
+                      <row>
+                        <cell style="text-align:left">
+                          <label value="Repository status"/>
+                        </cell>
+                        <hlayout>
+                          <label id="lbRepositoryModified" value="Unknown"/>
+                          <label id="lbRepositoryCount"  value="Number of samples:"/>
+                        </hlayout>
+                      </row>
+
+                      <row>
+                        <cell style="text-align:left">
+                          <label value="Samples updated"/>
+                        </cell>
+                        <hlayout>
+                          <label id="lbRepositoryRegistered" value="Registered: 0"/>
+                          <label id="lbRepositoryShipped" value="Shipped: 0"/>
+                          <label id="lbRepositoryDisposed" value="Disposed: 0"/>
+                        </hlayout>
+                      </row>
+
+                      <row>
+                        <cell colspan="2">
+                          <grid id="grRepositoryList" fixedLayout="true" span="true" mold="paging" pageSize="20">
+                            <auxhead>
+                              <auxheader colspan="2">
+                                <menubar autodrop="true">
+                                  <menu label="Selection">
+                                    <menupopup>
+                                      <menuitem label="Select all" image="/images/select-all-24.png"/>
+                                      <menuitem label="Deselect all"/>
+                                      <menuitem label="Invert" image="/images/invert-selection-26.png"/>
+                                    </menupopup>
+                                  </menu>
+                                  <menu label="Report">
+                                    <menupopup>
+                                      <menuitem id="miReportRepository" label="Repository list..." image="/images/excel-24.png"/>
+                                      <menuitem label="PDF" image="/images/pdf2-24.png"/>
+                                    </menupopup>
+                                  </menu>
+                                </menubar>
+                              </auxheader>
+                              <auxheader colspan="4">		      
+                                <textbox id="txtRepositorySearch" width="200px"/>
+                                <button id="btRepositorySearch" label="Search"/>
+                                <label value="Sample status"/>
+                                <combobox id="cbRepositorySampleStatus" autodrop="true" width="150px" mold="rounded" buttonVisible="true"/>
+                              </auxheader>
+                            </auxhead> 
+                            <columns id="colRepositoryList" menupopup="auto" sizable="true">
+                              <column id="colRepositoryListSelect" hflex="min"/>
+                              <column id="colRepositoryList_0" width="15%" label="Registration"/>
+                              <column id="colRepositoryList_1" width="15%" label="Sample Type"/>
+                              <column id="colRepositoryList_2" width="15%" label="Division"/>
+                              <column id="colRepositoryList_3" width="15%" label="Status"/>
+                              <column id="colRepositoryList_4" width="13%" label="Registered"/>
+                              <column id="colRepositoryList_5" width="13%" label="Shipped"/>
+                              <column id="colRepositoryList_6" hflex="14%" label="Disposed"/>
+                            </columns>
+                          </grid>
+                        </cell>
                       </row>
 
                     </rows>

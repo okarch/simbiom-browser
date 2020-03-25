@@ -150,6 +150,9 @@ public class EditStorageProject extends InventoryCommand {
 	Textbox txt = (Textbox)wnd.getFellowIfAny( "txtProjectName" );
 	if( txt != null )
 	    txt.setValue( title );
+	txt = (Textbox)wnd.getFellowIfAny( "txtProjectArea" );
+	if( txt != null )
+	    txt.setValue( "" );
 	Decimalbox dec = (Decimalbox)wnd.getFellowIfAny( "decBillingRemainder" );
 	if( dec != null )
 	    dec.setValue( new BigDecimal(0) );
@@ -217,6 +220,12 @@ public class EditStorageProject extends InventoryCommand {
 	    showMessage( wnd, "rowStorageMessage", "lbStorageMessage", "Error: Project title must not be empty." );
 	    return null;
 	}
+	txt = (Textbox)wnd.getFellowIfAny( "txtProjectArea" );
+	String area = null;
+	if( txt != null )
+	    area = Stringx.getDefault( txt.getValue(), "Other" ).trim();
+	else
+	    area = "Other";
 
 	// collect storage groups
 
@@ -248,6 +257,7 @@ public class EditStorageProject extends InventoryCommand {
 	   }
 	   if( prj != null ) {
 	       prj.setStorageGroups( grps );
+	       prj.setArea( area );
 	       prj = dao.storeStorageProject( prj );
 	   }
       	}

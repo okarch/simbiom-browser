@@ -17,6 +17,7 @@ com/emd/simbiom/view/ColumnRenderer.class
 com/emd/simbiom/template/LogLevelFilter.class
 com/emd/simbiom/auth/UserLogin.class
 com/emd/simbiom/storage/StorageGroupModel$1.class
+com/emd/simbiom/storage/RegistrationView.class
 com/emd/simbiom/budget/EditInvoice.class
 com/emd/simbiom/storage/StorageGroupModel.class
 com/emd/simbiom/category/ChartCategoryView.class
@@ -29,6 +30,7 @@ com/emd/simbiom/budget/BudgetPeriod.class
 com/emd/simbiom/search/DisplayColumn.class
 com/emd/simbiom/cost/SelectRegion.class
 com/emd/simbiom/template/ResultLog.class
+com/emd/simbiom/storage/RepositoryList.class
 com/emd/simbiom/report/ReportStrategies.class
 com/emd/simbiom/budget/IssueMessage.class
 com/emd/simbiom/template/OpenResultLog.class
@@ -66,6 +68,7 @@ com/emd/simbiom/budget/InvoiceStatusFilter.class
 com/emd/simbiom/view/CategoryTreeModel.class
 com/emd/simbiom/report/ReportEngine.class
 com/emd/simbiom/template/TemplateModel$1.class
+com/emd/simbiom/storage/RepositoryListRenderer.class
 com/emd/simbiom/template/UploadSelector.class
 com/emd/simbiom/budget/InvoiceStatusModel.class
 com/emd/simbiom/template/EditTemplate$3.class

@@ -747,6 +747,68 @@
 
     </result>
 
+    <result config-class="com.emd.simbiom.storage.RepositoryList"
+            messageRowId="rowStorageMessage"
+            modelName="grRepositoryList">
+
+      <columns config-class="com.emd.simbiom.view.ColumnSet">
+        <column config-class="com.emd.simbiom.view.ColumnRenderer"
+                columnId="colRepositoryList_0"
+                label="Registration"
+                contentField="registrationid"
+                sort="string"
+                caseInsensitive="true" />
+        <column config-class="com.emd.simbiom.view.ColumnRenderer"
+                columnId="colRepositoryList_1"
+                label="Sample Type"
+                contentField="typename"
+                sort="string"
+                caseInsensitive="true" />
+        <column config-class="com.emd.simbiom.view.ColumnRenderer"
+                columnId="colRepositoryList_2"
+                label="Division"
+                contentField="division"
+                sort="string"
+                caseInsensitive="true" />
+        <column config-class="com.emd.simbiom.view.ColumnRenderer"
+                columnId="colRepositoryList_3"
+                label="Status"
+                contentField="status"
+                sort="string"
+                caseInsensitive="true" />
+        <column config-class="com.emd.simbiom.view.ColumnRenderer"
+                columnId="colRepositoryList_4"
+                label="Registered"
+                contentField="registered"
+                sort="date"
+                dateFormat="dd-MMM-yyyy" />
+        <column config-class="com.emd.simbiom.view.ColumnRenderer"
+                columnId="colRepositoryList_5"
+                label="Shipped"
+                contentField="shipped"
+                sort="date"
+                dateFormat="dd-MMM-yyyy" />
+        <column config-class="com.emd.simbiom.view.ColumnRenderer"
+                columnId="colRepositoryList_6"
+                label="Disposed"
+                contentField="disposed"
+                sort="date"
+                dateFormat="dd-MMM-yyyy" />
+      </columns>
+
+      <details config-class="com.emd.simbiom.storage.RegistrationView"
+               template="/template/registration-details.zul"
+               detailsLayout="vlRegistrationView"
+               width="1000px">
+<!--
+        <action config-class="com.emd.simbiom.search.UpdateColumns"
+                component="btDetailsKeep"
+                event="onClick" />
+-->
+      </details>
+
+    </result>
+
 <!--
     <inventory config-class="com.emd.simbiom.dao.SampleInventoryDAO"
               url="jdbc:mysql://localhost/biobank"
